@@ -14,6 +14,13 @@ private:
 
 public:
   Edge(int, Road *);
+
+  // checkRoad() checks if a road exists already (returns true if no road exists)
+  void checkRoad(int);
+
+  // buildRoad() adds a Road object to the edge and calls the builder's buildRoad function
+  void buildRoad(Builder* builder);
+
   friend class BoardModel;
 };
 
