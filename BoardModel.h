@@ -2,6 +2,7 @@
 #define __BOARDMODEL_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 class Tile;
@@ -20,6 +21,7 @@ private:
 
 public:
   void init();
+  void loadLayout(std::string fileName = "layout.txt");
 };
 
 #endif // __BOARDMODEL_H_

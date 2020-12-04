@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 void BoardModel::init() {
@@ -71,5 +72,48 @@ void BoardModel::init() {
       int edgeNum = stoi(str);
       tiles.at(tileNum)->edges.emplace_back(edgeNum);
     }
+  }
+
+  // loading layout from layout.txt
+  loadLayout();
+}
+
+void BoardModel::loadLayout(std::string fileName) {
+  std::ifstream layoutFile{fileName};
+  std::string line;
+  int tileNum = 0;
+  while (std::getline(layoutFile, line)) {
+    std::stringstream ss;
+    std::string str;
+    int tileValue;
+    int resourceNum;
+    ss >> str;
+    resourceNum = stoi(str);
+    ss >> str;
+    tileValue = stoi(str);
+    switch (resourceNum) {
+    case BRICK:
+      tiles.at(tileNum)->resourceType = BRICK;
+      break;
+    case ENERGY:
+      tiles.at(tileNum)->resourceType = ENERGY;
+      break;
+    case GLASS:
+      tiles.at(tileNum)->resourceType = GLASS;
+      break;
+    case HEAT:
+      tiles.at(tileNum)->resourceType = HEAT;
+      break;
+    case WIFI:
+      tiles.at(tileNum)->resourceType = WIFI;
+      break;
+    case PARK:
+      break;
+    default:
+      throw std::invalid_argument(
+          "Invalid Resource Type, Check you layout file");
+    }
+    tiles.at(tileNum)->value = tileValue;
+    tileNum++;
   }
 }
