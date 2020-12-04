@@ -6,6 +6,7 @@
 
 
 class BoardView() {
+  public:
     // Prints the current status of all builders in order from builder 0 to 3
     void printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Builder>>> builderVectorPtr);
 
