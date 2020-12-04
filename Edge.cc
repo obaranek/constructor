@@ -1,7 +1,5 @@
 #include "Edge.h"
 
-Edge::Edge(int number) : number { number };
+Edge::Edge(int number) : number{number} {};
 
-int Edge::getEdgeNum() {
-  return number;
-}
+int Edge::getEdgeNum() { return number; }
