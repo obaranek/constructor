@@ -16,6 +16,8 @@ private:
 
 public:
   int getTileNum();
+
+  friend class BoardModel;
 };
 
 #endif // __TILE_H_
