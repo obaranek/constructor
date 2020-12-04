@@ -17,11 +17,11 @@ void BoardView::printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Bu
         // print the required output
         std::cout << currentBuilder->getColour() << " has ";
         std::cout << currentBuilder->getPoints() << " building points, ";
-        std::cout << residenceMap[Brick] << " brick, ";
-        std::cout << residenceMap[Energy] << " energy, ";
-        std::cout << residenceMap[Glass] << " glass, ";
-        std::cout << residenceMap[Heat] << " heat, and ";
-        std::cout << residenceMap[Brick] << " WiFi." << std::endl;   
+        std::cout << residenceMap[ResourceType::BRICK] << " brick, ";
+        std::cout << residenceMap[ResourceType::ENERGY] << " energy, ";
+        std::cout << residenceMap[ResourceType::GLASS] << " glass, ";
+        std::cout << residenceMap[ResourceType::HEAT] << " heat, and ";
+        std::cout << residenceMap[ResourceType::WIFI] << " WiFi." << std::endl;   
     }
 }
 
