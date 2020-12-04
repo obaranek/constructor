@@ -26,6 +26,7 @@ public:
 
   // return the edge number
   int getEdgeNum();
+  friend class BoardModel;
 };
 
 #endif // __EDGE_H_

@@ -15,6 +15,8 @@ private:
 public:
   Vertex(int);
   int getVertexNum();
+
+  friend class BoardModel;
 };
 
 #endif // __VERTEX_H_
