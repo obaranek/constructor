@@ -29,7 +29,10 @@ public:
   void moveGeese(int tileNum);
 
   // buildResidence() builds a residence on the given vertexNum
-  void buildResidence(int vertexNum);
+  void buildResidence(int vertexNum, bool turnStart);
+
+  // improveResidence() delegates improving residence to Vertex
+  void improveResidence(int vertexNum);
 };
 
 #endif // __BOARDMODEL_H_

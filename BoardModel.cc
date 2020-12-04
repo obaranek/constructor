@@ -121,39 +121,64 @@ void BoardModel::loadLayout(std::string fileName) {
 
 void BoardModel::moveGeese(int tileNum){
   gooseTile = tiles.at(tileNum - 1);
+  // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
-void BoardModel::buildResidence(int vertexNum){
+void BoardModel::buildResidence(int vertexNum, bool turnStart){
  
   shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
   
   // Check if builder has enough resources
   bool enoughResources = currBuilder->checkResidenceResources(); 
 
+  if(!enoughResources){
+    //@TODO: Throw exception- not enough resources
+  }
 
-  // Check if builder has a road connecting to vertex
-  bool connectingRoad = false;
- 
-  for(auto edgeNumIt = currVertex->edges.begin(); edgeNumIt != currVertex->edges.end(); edgeNumIt++){
-    int edgeNum = *edgeNumIt;
-    auto ownerColour = edges.at(edgeNum - 1)->getOwnerColour();
+  if(!turnStart){
+    // Check if builder has a road connecting to vertex
+    bool connectingRoad = false;
+  
+    for(auto edgeNumIt = currVertex->edges.begin(); edgeNumIt != currVertex->edges.end(); edgeNumIt++){
+      int edgeNum = *edgeNumIt;
+      auto ownerColour = edges.at(edgeNum - 1)->getOwnerColour();
     
-    if(ownerColour == currBuilder->getColour()){
-      connectingRoad = true;
+      if(ownerColour == currBuilder->getColour()){
+        connectingRoad = true;
+        break;
+      }
+    }
+
+    if(! connectingRoad){
+      //@TODO: Throw exception- Not start of turn && no connecting road
+    }
+  }
+
+  // Check if no building exists on the vertex
+  if(currVertex->residence != NULL){
+    //@TODO: Throw exception- Building already exists at that vertex
+  } 
+
+  // Check if any adjacent vertices already have a residence built
+  bool adjacentResidence = false;
+  
+  for(auto vertexNumIt = currVertex->adjacentVertices.begin(); vertexNumIt != currVertex->adjacentVertices.end(); vertexNumIt++){
+    int vertexNum = *vertexNumIt;
+    
+    if(vertices.at(vertexNum - 1)->residence != NULL){
+      adjacentResidence = true;
       break;
     }
   }
-  
-  // Check if no building exists on the vertex
-  bool buildingExists = false;
-  if(currVertex->residence != NULL){
-    buildingExists = true;
-  } 
 
-  if(enoughResources && connectingRoad && !buildingExists){
-    // Build Residence on the vertex 
-    currVertex->buildResidence(currBuilder);
-  }else{
-    //@TODO: throw exception that couldn't build residence
+  if(adjacentResidence){
+    //@TODO: Throw Exception- Building in adjacent vertex
   }
+
+  // All conditions checked- Can build residence
+  currVertex->buildResidence(currBuilder);
+}
+
+void BoardModel::improveResidence(int vertexNum){
+  vertices.at(vertexNum - 1)->improveResidence(currBuilder);
 }
