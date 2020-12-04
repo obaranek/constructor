@@ -12,7 +12,7 @@ class Residence(){
     std::shared_ptr<Builder> owner;
   
   public:
-    ~Residence() = 0;
+    virtual ~Residence() = 0;
 };
 
 #endif
