@@ -8,6 +8,12 @@
 #include <stdexcept>
 #include <string>
 
+using std::getline;
+using std::ifstream;
+using std::shared_ptr;
+using std::string;
+using std::stringstream;
+
 void BoardModel::init() {
   // reset state
   edges.clear();
@@ -15,7 +21,7 @@ void BoardModel::init() {
   tiles.clear();
 
   std::ifstream verticiesFile{"vertices.txt"};
-  std::string line;
+  string line;
 
   // creating a vector of all the tiles
   for (int i = 0; i < 19; i++) {
@@ -33,10 +39,10 @@ void BoardModel::init() {
   }
 
   // initializing edges' and vertices' neighbours
-  while (std::getline(verticiesFile, line)) {
+  while (getline(verticiesFile, line)) {
     std::stringstream ss;
     ss << line;
-    std::string str;
+    string str;
     ss >> str;
     int vertexNum = stoi(str);
     // adding adjacent vertices and edges to each other
@@ -49,10 +55,10 @@ void BoardModel::init() {
 
   // initializing vertices neighbouring each tile
   std::ifstream tileVerticesFile{"tile_vertices.txt"};
-  while (std::getline(tileVerticesFile, line)) {
-    std::stringstream ss;
+  while (getline(tileVerticesFile, line)) {
+    stringstream ss;
     ss << line;
-    std::string str;
+    string str;
     ss >> str;
     int tileNum = stoi(str);
     while (ss >> str) {
@@ -63,10 +69,10 @@ void BoardModel::init() {
 
   // initializing edges neighbouring each tile
   std::ifstream tileEdgesFile{"tile_edges.txt"};
-  while (std::getline(tileVerticesFile, line)) {
-    std::stringstream ss;
+  while (getline(tileVerticesFile, line)) {
+    stringstream ss;
     ss << line;
-    std::string str;
+    string str;
     ss >> str;
     int tileNum = stoi(str);
     while (ss >> str) {
@@ -80,12 +86,12 @@ void BoardModel::init() {
 }
 
 void BoardModel::loadLayout(std::string fileName) {
-  std::ifstream layoutFile{fileName};
-  std::string line;
+  ifstream layoutFile{fileName};
+  string line;
   int tileNum = 0;
   while (std::getline(layoutFile, line)) {
     std::stringstream ss;
-    std::string str;
+    string str;
     int tileValue;
     int resourceNum;
     ss >> str;
@@ -119,59 +125,61 @@ void BoardModel::loadLayout(std::string fileName) {
   }
 }
 
-void BoardModel::moveGeese(int tileNum){
+void BoardModel::moveGeese(int tileNum) {
   gooseTile = tiles.at(tileNum - 1);
   // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
-void BoardModel::buildResidence(int vertexNum, bool turnStart){
- 
-  shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
-  
-  // Check if builder has enough resources
-  bool enoughResources = currBuilder->checkResidenceResources(); 
+void BoardModel::buildResidence(int vertexNum, bool turnStart) {
 
-  if(!enoughResources){
+  shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+
+  // Check if builder has enough resources
+  bool enoughResources = currBuilder->checkResidenceResources();
+
+  if (!enoughResources) {
     //@TODO: Throw exception- not enough resources
   }
 
-  if(!turnStart){
+  if (!turnStart) {
     // Check if builder has a road connecting to vertex
     bool connectingRoad = false;
-  
-    for(auto edgeNumIt = currVertex->edges.begin(); edgeNumIt != currVertex->edges.end(); edgeNumIt++){
+
+    for (auto edgeNumIt = currVertex->edges.begin();
+         edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
       int edgeNum = *edgeNumIt;
       auto ownerColour = edges.at(edgeNum - 1)->getOwnerColour();
-    
-      if(ownerColour == currBuilder->getColour()){
+
+      if (ownerColour == currBuilder->getColour()) {
         connectingRoad = true;
         break;
       }
     }
 
-    if(! connectingRoad){
+    if (!connectingRoad) {
       //@TODO: Throw exception- Not start of turn && no connecting road
     }
   }
 
   // Check if no building exists on the vertex
-  if(currVertex->residence != NULL){
+  if (currVertex->residence != NULL) {
     //@TODO: Throw exception- Building already exists at that vertex
-  } 
+  }
 
   // Check if any adjacent vertices already have a residence built
   bool adjacentResidence = false;
-  
-  for(auto vertexNumIt = currVertex->adjacentVertices.begin(); vertexNumIt != currVertex->adjacentVertices.end(); vertexNumIt++){
+
+  for (auto vertexNumIt = currVertex->adjacentVertices.begin();
+       vertexNumIt != currVertex->adjacentVertices.end(); vertexNumIt++) {
     int vertexNum = *vertexNumIt;
-    
-    if(vertices.at(vertexNum - 1)->residence != NULL){
+
+    if (vertices.at(vertexNum - 1)->residence != NULL) {
       adjacentResidence = true;
       break;
     }
   }
 
-  if(adjacentResidence){
+  if (adjacentResidence) {
     //@TODO: Throw Exception- Building in adjacent vertex
   }
 
@@ -179,6 +187,6 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart){
   currVertex->buildResidence(currBuilder);
 }
 
-void BoardModel::improveResidence(int vertexNum){
+void BoardModel::improveResidence(int vertexNum) {
   vertices.at(vertexNum - 1)->improveResidence(currBuilder);
 }
