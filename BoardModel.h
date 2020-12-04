@@ -21,7 +21,15 @@ private:
 
 public:
   void init();
+  
+  // loadLayout() sets up the board according to the given text file
   void loadLayout(std::string fileName = "layout.txt");
+
+  // moveGeese() sets gooseTile to point at tile of tileNum
+  void moveGeese(int tileNum);
+
+  // buildResidence() builds a residence on the given vertexNum
+  void buildResidence(int vertexNum);
 };
 
 #endif // __BOARDMODEL_H_

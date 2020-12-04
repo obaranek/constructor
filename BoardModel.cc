@@ -2,6 +2,7 @@
 #include "Edge.h"
 #include "Tile.h"
 #include "Vertex.h"
+
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -115,5 +116,44 @@ void BoardModel::loadLayout(std::string fileName) {
     }
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
+  }
+}
+
+void BoardModel::moveGeese(int tileNum){
+  gooseTile = tiles.at(tileNum - 1);
+}
+
+void BoardModel::buildResidence(int vertexNum){
+ 
+  shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+  
+  // Check if builder has enough resources
+  bool enoughResources = currBuilder->checkResidenceResources(); 
+
+
+  // Check if builder has a road connecting to vertex
+  bool connectingRoad = false;
+ 
+  for(auto edgeNumIt = currVertex->edges.begin(); edgeNumIt != currVertex->edges.end(); edgeNumIt++){
+    int edgeNum = *edgeNumIt;
+    auto ownerColour = edges.at(edgeNum - 1)->getOwnerColour();
+    
+    if(ownerColour == currBuilder->getColour()){
+      connectingRoad = true;
+      break;
+    }
+  }
+  
+  // Check if no building exists on the vertex
+  bool buildingExists = false;
+  if(currVertex->residence != NULL){
+    buildingExists = true;
+  } 
+
+  if(enoughResources && connectingRoad && !buildingExists){
+    // Build Residence on the vertex 
+    currVertex->buildResidence(currBuilder);
+  }else{
+    //@TODO: throw exception that couldn't build residence
   }
 }
