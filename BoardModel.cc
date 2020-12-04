@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <fstream>
 #include <sstream>
+#include <string>
 
 void BoardModel::init() {
   // reset state
@@ -15,17 +16,17 @@ void BoardModel::init() {
   std::string line;
 
   // creating a vector of all the tiles
-  for (int i = 0; i < 19; i++) { //
+  for (int i = 0; i < 19; i++) {
     tiles.emplace_back(i);
   }
 
   // creating a vector of all the vertices
-  for (int i = 0; i < 54; i++) { //
+  for (int i = 0; i < 54; i++) {
     vertices.emplace_back(i);
   }
 
   // creating a vector of all the edges
-  for (int i = 0; i < 72; i++) { //
+  for (int i = 0; i < 72; i++) {
     edges.emplace_back(i);
   }
 
