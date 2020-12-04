@@ -1,5 +1,6 @@
 #include "BoardModel.h"
 #include "Edge.h"
+#include "Tile.h"
 #include "Vertex.h"
 #include <fstream>
 #include <sstream>
@@ -30,7 +31,6 @@ void BoardModel::init() {
 
   // initializing edges' and vertices' neighbours
   while (std::getline(verticiesFile, line)) {
-
     std::stringstream ss;
     ss << line;
     std::string str;
@@ -50,10 +50,10 @@ void BoardModel::init() {
     std::stringstream ss;
     ss << line;
     std::string str;
+    ss >> str;
     int tileNum = stoi(str);
     while (ss >> str) {
       int vertexNum = stoi(str);
-      //@TODO: check with dhruv
       tiles.at(tileNum)->vertices.emplace_back(vertexNum);
     }
   }
@@ -64,10 +64,10 @@ void BoardModel::init() {
     std::stringstream ss;
     ss << line;
     std::string str;
+    ss >> str;
     int tileNum = stoi(str);
     while (ss >> str) {
       int edgeNum = stoi(str);
-      //@TODO: check with dhruv
       tiles.at(tileNum)->edges.emplace_back(edgeNum);
     }
   }
