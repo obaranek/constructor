@@ -13,9 +13,8 @@ private:
   std::vector<int> edges;
 
 public:
-  Vertex(int, Residence *);
-
-  friend class BoardModel;
+  Vertex(int);
+  int getVertexNum();
 };
 
 #endif // __VERTEX_H_
