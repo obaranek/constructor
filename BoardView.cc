@@ -40,15 +40,15 @@ void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
 
 // prints out the list of commands
 void BoardView::help() {
-std::cout << "Valid commands:" << std::endl;
-std::cout << "board" << std::endl;
-std::cout << "status" << std::endl;
-std::cout << "residence" << std::endl;
-std::cout << "build-road <edge#>" << std::endl;
-std::cout << "build-res <housing#>" << std::endl;
-std::cout << "improve <housing#>" << std::endl;
-std::cout << "trade <colour> <give> <take>" << std::endl;
-std::cout << "next" << std::endl;
-std::cout << "save <file>" << std::endl;
-std::cout << "help" << std::endl;
+std::cout << "Valid Commands:" << std::endl;
+std::cout << "~ board : prints the current board." << std::endl;
+std::cout << "~ status : prints the current status of all builders in order from builder 0 to 3." << std::endl;
+std::cout << "~ residence : prints the residences the current builder has currently completed." << std::endl;
+std::cout << "~ build-road <edge#> : attempts to builds the road at <road#>." << std::endl;
+std::cout << "~ build-res <housing#> : attempts to builds a basement at <housing#>." << std::endl;
+std::cout << "~ improve <housing#> : attempts to improve the residence at <housing#>." << std::endl;
+std::cout << "~ trade <colour> <give> <take> : attempts to trade with builder <colour>, giving one resource of type <give> and receiving one resource of type <take>." << std::endl;
+std::cout << "~ next : passes control onto the next builder in the game." << std::endl;
+std::cout << "~ save <file> : saves the current game state to <file>." << std::endl;
+std::cout << "~ help : prints out the list of commands." << std::endl;
 }
