@@ -40,7 +40,7 @@ void BoardModel::init() {
 
   // initializing edges' and vertices' neighbours
   while (getline(verticiesFile, line)) {
-    std::stringstream ss;
+    stringstream ss;
     ss << line;
     string str;
     ss >> str;
@@ -54,7 +54,7 @@ void BoardModel::init() {
   }
 
   // initializing vertices neighbouring each tile
-  std::ifstream tileVerticesFile{"tile_vertices.txt"};
+  ifstream tileVerticesFile{"tile_vertices.txt"};
   while (getline(tileVerticesFile, line)) {
     stringstream ss;
     ss << line;
@@ -68,7 +68,7 @@ void BoardModel::init() {
   }
 
   // initializing edges neighbouring each tile
-  std::ifstream tileEdgesFile{"tile_edges.txt"};
+  ifstream tileEdgesFile{"tile_edges.txt"};
   while (getline(tileVerticesFile, line)) {
     stringstream ss;
     ss << line;
@@ -90,7 +90,7 @@ void BoardModel::loadLayout(std::string fileName) {
   string line;
   int tileNum = 0;
   while (std::getline(layoutFile, line)) {
-    std::stringstream ss;
+    stringstream ss;
     string str;
     int tileValue;
     int resourceNum;
@@ -117,8 +117,8 @@ void BoardModel::loadLayout(std::string fileName) {
     case PARK:
       break;
     default:
-      throw std::invalid_argument(
-          "Invalid Resource Type, Check you layout file");
+      throw std::invalid_argument("BoardModel::loadLayout: Invalid Resource "
+                                  "Type, Check you layout file");
     }
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
@@ -189,4 +189,21 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
 
 void BoardModel::improveResidence(int vertexNum) {
   vertices.at(vertexNum - 1)->improveResidence(currBuilder);
+}
+
+void BoardModel::obtainResouces(int value) {
+  for (auto &tile : tiles) {
+    if (tile->value == value) {
+      ResourceType tileResource = tile->resourceType;
+      for (auto &tileVertexNum : tile->vertices) {
+        auto tileVertex = vertices.at(tileVertexNum);
+        //@TODO add getter for tile
+        auto residence = tileVertex->getResidence();
+        //@TODO add getter for residence
+        int reward = residence->getReward();
+        //@TODO add takeResources for Builder
+        residence->getOwner->takeResources(tileResource, reward);
+      }
+    }
+  }
 }

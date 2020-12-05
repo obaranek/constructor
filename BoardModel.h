@@ -21,7 +21,7 @@ private:
 
 public:
   void init();
-  
+
   // loadLayout() sets up the board according to the given text file
   void loadLayout(std::string fileName = "layout.txt");
 
@@ -33,6 +33,10 @@ public:
 
   // improveResidence() delegates improving residence to Vertex
   void improveResidence(int vertexNum);
+
+  // send the apropriate resources to all the builder who own a residence on the
+  // tile with the given value
+  void obtainResouces(int value);
 };
 
 #endif // __BOARDMODEL_H_
