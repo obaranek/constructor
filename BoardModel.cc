@@ -126,7 +126,7 @@ void BoardModel::loadLayout(std::string fileName) {
 }
 
 void BoardModel::moveGeese(int tileNum) {
-  gooseTile = tiles.at(tileNum - 1);
+  gooseTile = tiles.at(tileNum);
   // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
@@ -148,7 +148,7 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
     for (auto edgeNumIt = currVertex->edges.begin();
          edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
       int edgeNum = *edgeNumIt;
-      auto ownerColour = edges.at(edgeNum - 1)->getOwnerColour();
+      auto ownerColour = edges.at(edgeNum)->getOwnerColour();
 
       if (ownerColour == currBuilder->getColour()) {
         connectingRoad = true;
@@ -173,7 +173,7 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
        vertexNumIt != currVertex->adjacentVertices.end(); vertexNumIt++) {
     int vertexNum = *vertexNumIt;
 
-    if (vertices.at(vertexNum - 1)->residence != NULL) {
+    if (vertices.at(vertexNum)->residence != NULL) {
       adjacentResidence = true;
       break;
     }
@@ -188,7 +188,7 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
 }
 
 void BoardModel::improveResidence(int vertexNum) {
-  vertices.at(vertexNum - 1)->improveResidence(currBuilder);
+  vertices.at(vertexNum)->improveResidence(currBuilder);
 }
 
 void BoardModel::obtainResouces(int value) {
