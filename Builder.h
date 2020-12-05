@@ -32,16 +32,19 @@ class Builder{
     // builder has enough resources to build a road
     bool checkRoadResources();
     
-    //buildResidence adds verexNum to list of buildings
+    // buildResidence() adds verexNum to list of buildings
     void buildResidence(int vertexNum);
     
+    // buildRoad() adds edgeNum to list of roads
+    void buildRoad(int edgeNum);
     
-    //void buildRoad(int edgeNum);
-    
+    // improveResidence() updates building in buildings with new type
     void improveResidence(int vertexNum, char residenceType);
 
     //takeResources() adds the quantity of resource to builders resources
     void takeResources(ResourceType type, int reward);
+
+    /***** Getters and Setters *****/
 
     Colour getColour();
     int getPoints();

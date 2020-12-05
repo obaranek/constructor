@@ -51,10 +51,13 @@ bool Builder::checkRoadResources() {
 }
 
 
-
-
 void Builder::buildResidence(int vertexNum){
   buildings.insert(pair<int, char>(vertexNum, 'B'));
+}
+
+
+void Builder::buildRoad(int edgeNum){
+  roads.emplace_back(edgeNum);
 }
 
 
@@ -67,7 +70,6 @@ void Builder::improveResidence(int vertexNum, char residenceType){
     //@TODO: Throw exception: Builder doesn't own the vertex
   }
 }
-
 
 void Builder::takeResources(ResourceType type, int reward){
   auto resourceIt = resources.find(type);
