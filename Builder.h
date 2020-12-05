@@ -26,10 +26,11 @@ class Builder{
 
     // checkResidenceResource() returns true if 
     // builder has enough resources to build a basement
-    bool checkResidenceResource();
+    bool checkResidenceResources();
     
-    
-    //bool checkRoad(int edgeNum);
+    // checkRoadResource() returns true if 
+    // builder has enough resources to build a road
+    bool checkRoadResources();
     
     //buildResidence adds verexNum to list of buildings
     void buildResidence(int vertexNum);
@@ -38,6 +39,10 @@ class Builder{
     //void buildRoad(int edgeNum);
     
     void improveResidence(int vertexNum, char residenceType);
+
+    //takeResources() adds the quantity of resource to builders resources
+    void takeResources(ResourceType type, int reward);
+
     Colour getColour();
     int getPoints();
 };

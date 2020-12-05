@@ -3,7 +3,7 @@
 
 using namespace std;
 
-bool Builder::checkResidenceResource() {
+bool Builder::checkResidenceResources() {
   // Basement costs;
   // 1 BRICK, 1 ENERGY, 1 GLASS, 1 WIFI
 
@@ -32,6 +32,27 @@ bool Builder::checkResidenceResource() {
 }
 
 
+bool Builder::checkRoadResources() {
+  // Road costs;
+  // 1 HEAT, 1 WIFI
+
+  auto wifiIt = resources.find(ResourceType::WIFI);
+  auto heatIt = resources.find(ResourceType::HEAT);
+
+  if(*wifiIt < 1){
+    return false;
+  }
+
+  if(*heatIt < 1){
+    return false;
+  }
+
+  return true;
+}
+
+
+
+
 void Builder::buildResidence(int vertexNum){
   buildings.insert(pair<int, char>(vertexNum, 'B'));
 }
@@ -46,6 +67,17 @@ void Builder::improveResidence(int vertexNum, char residenceType){
     //@TODO: Throw exception: Builder doesn't own the vertex
   }
 }
+
+
+void Builder::takeResources(ResourceType type, int reward){
+  auto resourceIt = resources.find(type);
+ if(resourceIt != resources.end()){
+  resourceIt->second = reward;
+ }
+ else{
+  // @TODO: Throw exception: ResourceType not valid
+ }
+} 
 
 /***** Setters and Getters *****/
 
