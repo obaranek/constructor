@@ -26,7 +26,7 @@ void Controller::playTurn() {
                 theBoardModel->setDice('F');
                 std::cin >> userInput;
             } else if (userInput == "help") {
-                theBoardModel->beforeGameHelp();
+                theBoardModel->beginGameHelp();
             } else {
                 std::cout << "Invalid Input." << std::endl;
                 std::cout << "Please enter 'help' for a list of valid commands." << std::endl;
@@ -95,7 +95,7 @@ void Controller::playTurn() {
             } else if (userInput == ) { // save <file>
 
             } else if (userInput == "help") { // help
-                theBoardModel->help();
+                theBoardModel->duringGameHelp();
             } else if (userInput == "next") {
                 theBoardModel->next();
             } else {
