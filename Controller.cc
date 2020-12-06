@@ -2,7 +2,10 @@
 #include <string>
 #include "Controller.h"
 
-void Controller::playTurn() {}
+void Controller::playTurn() {
+    // Print the board
+    // Call BaordModel::printCurrTurn();
+}
 
 void Controller::startGame() {}
 
