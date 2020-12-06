@@ -1,5 +1,6 @@
 #include "BoardModel.h"
 #include "Edge.h"
+#include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
 
