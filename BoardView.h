@@ -20,8 +20,11 @@ class BoardView() {
     // Print Current Builder's Turn
     void printCurrBuilderTurn(const std::shared_ptr<Builder> builder);
 
-    // prints out the list of commands
-    void help();
+    // prints out the list of commands for begin game setting
+    void beginGameHelp();
+
+    // prints out the list of commands for during game setting
+    void duringGameHelp();
 };
 
 #endif

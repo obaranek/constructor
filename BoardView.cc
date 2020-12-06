@@ -49,17 +49,27 @@ void printCurrBuilderTurn(const std::shared_ptr<Builder> builder) {
     std::cout << "Builder " << builder->getColour() << "'s turn." << std::endl;
 }
 
-// prints out the list of commands
-void BoardView::help() {
-std::cout << "Valid Commands:" << std::endl;
-std::cout << "~ board : prints the current board." << std::endl;
-std::cout << "~ status : prints the current status of all builders in order from builder 0 to 3." << std::endl;
-std::cout << "~ residence : prints the residences the current builder has currently completed." << std::endl;
-std::cout << "~ build-road <edge#> : attempts to builds the road at <road#>." << std::endl;
-std::cout << "~ build-res <housing#> : attempts to builds a basement at <housing#>." << std::endl;
-std::cout << "~ improve <housing#> : attempts to improve the residence at <housing#>." << std::endl;
-std::cout << "~ trade <colour> <give> <take> : attempts to trade with builder <colour>, giving one resource of type <give> and receiving one resource of type <take>." << std::endl;
-std::cout << "~ next : passes control onto the next builder in the game." << std::endl;
-std::cout << "~ save <file> : saves the current game state to <file>." << std::endl;
-std::cout << "~ help : prints out the list of commands." << std::endl;
+// prints out the list of commands for begin game setting
+void BoardView::beginGameHelp() {
+    std::cout << "Valid Commands:" << std::endl;
+    std::cout << "~ load : changes current builder's dice type to 'loaded'" << std::endl;
+    std::cout << "~ fair : changes current builder's dice type to 'fair'" << std::endl;
+    std::cout << "~ roll : rolls the dice and distributes resources." << std::endl;
+    std::cout << "~ status : prints the current status of all builders in order from builder 0 to 3." << std::endl;
+    std::cout << "~ help : prints out the list of commands." << std::endl;
+}
+
+// prints out the list of commands for during game setting
+void BoardView::duringGameHelp() {
+    std::cout << "Valid Commands:" << std::endl;
+    std::cout << "~ board : prints the current board." << std::endl;
+    std::cout << "~ status : prints the current status of all builders in order from builder 0 to 3." << std::endl;
+    std::cout << "~ residence : prints the residences the current builder has currently completed." << std::endl;
+    std::cout << "~ build-road <edge#> : attempts to builds the road at <road#>." << std::endl;
+    std::cout << "~ build-res <housing#> : attempts to builds a basement at <housing#>." << std::endl;
+    std::cout << "~ improve <housing#> : attempts to improve the residence at <housing#>." << std::endl;
+    std::cout << "~ trade <colour> <give> <take> : attempts to trade with builder <colour>, giving one resource of type <give> and receiving one resource of type <take>." << std::endl;
+    std::cout << "~ next : passes control onto the next builder in the game." << std::endl;
+    std::cout << "~ save <file> : saves the current game state to <file>." << std::endl;
+    std::cout << "~ help : prints out the list of commands." << std::endl;
 }
