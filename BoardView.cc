@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <iomanip>
 #include "boardmodel.h"
 #include "builder.h"
 
@@ -15,7 +16,7 @@ void BoardView::printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Bu
         std::map<ResourceType, int> resourceMap{ builder->getResource() };
 
         // print the required output
-        std::cout << currentBuilder->getColour() << " has ";
+        std::cout << currentBuilder->getColour() << " has " << std::setw(5);
         std::cout << currentBuilder->getPoints() << " building points, ";
         std::cout << residenceMap[ResourceType::BRICK] << " brick, ";
         std::cout << residenceMap[ResourceType::ENERGY] << " energy, ";
