@@ -2,7 +2,7 @@
 #include <string>
 #include "Controller.h"
 
-Controller::Controller();
+Controller::Controller() {}
 
 void Controller::playTurn() {
     bool IsGameEnd{ false };
@@ -21,17 +21,18 @@ void Controller::playTurn() {
         while(userInput != "roll") {
             if (userInput == "loaded") {
                 theBoardModel->setDice('L');
-                std::cin >> userInput;
             } else if (userInput == "fair") {
                 theBoardModel->setDice('F');
-                std::cin >> userInput;
+            } else if (userInput == 'status') {
+                theBoardModel->printStatus();
             } else if (userInput == "help") {
                 theBoardModel->beginGameHelp();
             } else {
                 std::cout << "Invalid Input." << std::endl;
                 std::cout << "Please enter 'help' for a list of valid commands." << std::endl;
-                std::cin >> userInput;
             }
+
+            std::cin >> userInput;
         }
         
         // final dice type or dice type used last round
@@ -88,11 +89,11 @@ void Controller::playTurn() {
                 } else {
                     theBoardModel->buildResidence();
                 }
-            } else if (userInput == ) { // improve <housing#>
+            } else if (userInput == "improve") { // improve <housing#>
 
-            } else if (userInput == ) { // trade <colour> <give> <take>
+            } else if (userInput == "trade") { // trade <colour> <give> <take>
 
-            } else if (userInput == ) { // save <file>
+            } else if (userInput == "save") { // save <file>
 
             } else if (userInput == "help") { // help
                 theBoardModel->duringGameHelp();
@@ -112,14 +113,14 @@ void Controller::playTurn() {
         bool isPlayerWon{ theBoardModel->checkWinner() };
 
         if (isPlayerWon == true) {
-            std::cout << "Do you want to play again? (yes / no)" << std::endl;
+            std::cout << "Would you like to play again?" << std::endl;
 
             std::string userReplayInput;
             std::cin >> userReplayInput;
 
             while (userReplayInput != "yes" || userReplayInput != "no") {
                 std::cout << "Invalid input." << std::endl;
-                std::cout << "Do you want to play again? (yes / no)" << std::endl;
+                std::cout << "Would you like to play again? (yes / no)" << std::endl;
                 std::cin >> userReplayInput;
             }
 
@@ -134,24 +135,4 @@ void Controller::playTurn() {
 
 void Controller::startGame() {}
 
-void Controller::save() {}
-
 void Controller::load() {}
-
-void Controller::playAgain() {
-    std::string answerInput;
-    
-    std::cout << "Would you like to play again?" << std::endl;
-    std::cin >> answerInput;
-    
-    if (answerInput != "yes" || answerInput != "no") {
-        std::cout << "Would you like to play again? (yes / no)" << std::endl;
-        std::cin >> answerInput;
-    }
-
-    if (answerInput == "yes") {
-        // start game
-    } else {
-        // end game
-    }
-}

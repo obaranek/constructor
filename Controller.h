@@ -12,11 +12,8 @@ class Controller() {
     
     void startGame();
     
-    void save();
-    
     void load();
     
-    void playAgain();
 };
 
 #endif
