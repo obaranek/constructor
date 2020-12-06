@@ -18,6 +18,8 @@ class Builder{
     char dice; //dice can be either F or L. It is L at the start of the game
 
   public:
+    Builder(Colour colour);
+
     // TODO: Change raw pointers to smart pointers?
     //void stealResources(Builder* otherBuilder);
     

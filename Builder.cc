@@ -5,6 +5,10 @@
 
 using namespace std;
 
+Builder::Builder(Colour colour) 
+  : colour{colour}, points{0}, dice{'L'} {}
+
+
 bool Builder::checkResidenceResources() {
   // Basement costs;
   // 1 BRICK, 1 ENERGY, 1 GLASS, 1 WIFI
