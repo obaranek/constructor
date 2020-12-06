@@ -202,7 +202,7 @@ void BoardModel::obtainResouces(int value) {
         //@TODO add getter for residence
         int reward = residence->getReward();
         //@TODO add takeResources for Builder
-        residence->getOwner->takeResources(tileResource, reward);
+        residence->getOwner()->takeResources(tileResource, reward);
       }
     }
   }
