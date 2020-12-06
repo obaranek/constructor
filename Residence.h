@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #ifndef __RESIDENCE_H_
 #define __RESIDENCE_H_
 
