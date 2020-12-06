@@ -90,6 +90,16 @@ bool Builder::haveRoad(int edgeNum){
 }
 
 
+bool Builder::haveResource(ResourceType type){
+  auto resourceIt = resources.find(type);
+  if(resourceIt != resources.end()){
+    return (*resourceIt) > 0;
+  }
+  else{
+   // @TODO: Throw exception: ResourceType not valid
+  }
+}
+
 /***** Setters and Getters *****/
 
 Colour Builder::getColour(){

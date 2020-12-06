@@ -42,8 +42,11 @@ class Builder{
     //takeResources() adds the quantity of resource to builders resources
     void takeResources(ResourceType type, int reward);
 
-    // haveRoad() returns true if currBuilder owns a road at the edgeNum
+    // haveRoad() returns true if builder owns a road at the edgeNum
     bool haveRoad(int edgeNum);
+
+    // haveResource() returns true if builder owns at least 1 of that resource
+    bool haveResource(ResourceType type);
 
     /***** Getters and Setters *****/
 
