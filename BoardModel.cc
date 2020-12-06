@@ -11,6 +11,7 @@
 
 using std::getline;
 using std::ifstream;
+using std::invalid_argument;
 using std::shared_ptr;
 using std::string;
 using std::stringstream;
@@ -193,6 +194,10 @@ void BoardModel::improveResidence(int vertexNum) {
 }
 
 void BoardModel::obtainResouces(int value) {
+  if (value == 7 || value > 12 || value < 2) {
+    throw invalid_argument("BoardModel::obtainResources:: Invalid value");
+  }
+
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
