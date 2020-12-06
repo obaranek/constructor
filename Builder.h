@@ -15,13 +15,11 @@ class Builder{
     std::map<ResourceType, int> resources;
     std::map<int, char> buildings; // map of <vertexNum, buildingType>
     std::vector<int> roads;
-    Dice dice;
+    char dice; //dice can be either F or L. It is L at the start of the game
 
   public:
     // TODO: Change raw pointers to smart pointers?
     //void stealResources(Builder* otherBuilder);
-    //void rollDice();
-    //void tradeResource(Builder* otherBuilder, ResourceType res1, ResourceType res2);
     
 
     // checkResidenceResource() returns true if 
@@ -39,15 +37,20 @@ class Builder{
     void buildRoad(int edgeNum);
     
     // improveResidence() updates building in buildings with new type
-    void improveResidence(int vertexNum, char residenceType);
+    void updateResidence(int vertexNum, char residenceType);
 
     //takeResources() adds the quantity of resource to builders resources
     void takeResources(ResourceType type, int reward);
+
+    // haveRoad() returns true if currBuilder owns a road at the edgeNum
+    bool haveRoad(int edgeNum);
 
     /***** Getters and Setters *****/
 
     Colour getColour();
     int getPoints();
+
+    void setDice(char diceType);
 };
 
 #endif // __BUILDER_H_

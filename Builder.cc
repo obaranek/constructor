@@ -1,6 +1,8 @@
 #include "Builder.h"
 #include "ResourceType.h"
 
+#include <algorithm>
+
 using namespace std;
 
 bool Builder::checkResidenceResources() {
@@ -61,7 +63,7 @@ void Builder::buildRoad(int edgeNum){
 }
 
 
-void Builder::improveResidence(int vertexNum, char residenceType){
+void Builder::updateResidence(int vertexNum, char residenceType){
   // change the buildingType at vertexNum 
   auto itr = buildings.find(vertexNum);
   if(itr != buildings.end()){
@@ -81,6 +83,13 @@ void Builder::takeResources(ResourceType type, int reward){
  }
 } 
 
+
+bool Builder::haveRoad(int edgeNum){
+  auto edgeIt =  find(roads.begin(), roads.end(), edgeNum);
+  return edgeIt != roads.end();
+}
+
+
 /***** Setters and Getters *****/
 
 Colour Builder::getColour(){
@@ -89,4 +98,8 @@ Colour Builder::getColour(){
 
 int Builder::getPoints(){
   return points;
+}
+
+void setDice(char diceType) {
+  dice = diceType;
 }
