@@ -3,13 +3,19 @@
 #include "BoardModel.h"
 
 class Controller() {
-    std::shared_ptr<BoardModel> theBoard;
+    std::unique_ptr<BoardModel> theBoardModel;
+    
+    Controller();
 
   public:
     void playTurn();
+    
     void startGame();
+    
     void save();
+    
     void load();
+    
     void playAgain();
 };
 
