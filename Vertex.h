@@ -4,17 +4,23 @@
 #include <memory>
 #include <vector>
 
+using std::shared_ptr;
+using std::vector;
+
 class Residence;
 
 class Vertex {
 private:
   int number;
-  std::unique_ptr<Residence> residence;
-  std::vector<int> edges;
+  shared_ptr<Residence> residence;
+  vector<int> edges;
 
 public:
   Vertex(int);
+
   int getVertexNum();
+
+  shared_ptr<Residence> getResidence() { return residence; }
 
   friend class BoardModel;
 };
