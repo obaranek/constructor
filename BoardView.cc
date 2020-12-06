@@ -31,11 +31,21 @@ void BoardView::printResidence(const std::shared_ptr<Builder> builder) {
     std::cout << builder->getColor() << " has built: " << std::endl;
   
     //print all <vertex> <buildingType>
+    std::map<int, char> buildingsMap{ builder->getBuildings() };
+
+    for (std::map<int, char>::iterator it = buildingsMap.begin(); it != buildingsMap.end(); ++it) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
 }
 
 // Prints the current board
 void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
 
+}
+
+// Print Current Builder's Turn
+void printCurrBuilderTurn(const std::shared_ptr<Builder> builder) {
+    std::cout << "Builder " << builder->getColour() << "'s turn." << std::endl;
 }
 
 // prints out the list of commands

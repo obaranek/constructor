@@ -2,6 +2,7 @@
 #define _BOARDVIEW_H_
 #include <vector>
 #include <memory>
+#include "builder.h"
 
 
 
@@ -15,6 +16,9 @@ class BoardView() {
 
     // Prints the current board
     void printBoard(const std::shared_ptr<BoardModel> board);
+
+    // Print Current Builder's Turn
+    void printCurrBuilderTurn(const std::shared_ptr<Builder> builder);
 
     // prints out the list of commands
     void help();
