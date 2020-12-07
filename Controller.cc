@@ -89,7 +89,7 @@ void Controller::playTurn() {
                 if (! (0 <= vertexValue && vertexValue <= 53)) {
                     std::cout << "Invalid <housing#>" << std::endl;
                 } else {
-                    theBoardModel->buildResidence(vertexValue, /*boolean*/); // NEEDS ADDITIONAL LOOK INTO
+                    theBoardModel->buildResidence(vertexValue, false);
                 }
             } else if (userInput == "improve") { // improve <housing#>
                 int vertexValue;
