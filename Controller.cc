@@ -1,10 +1,13 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Controller.h"
 #include "Colour.h"
 #include "ResourceType.h"
 
-Controller::Controller() {}
+Controller::Controller() {
+    theBoardModel{ std::make_unique<BoardModel>() }
+}
 
 void Controller::playTurn() {
     bool IsGameEnd{ false };
@@ -175,4 +178,7 @@ void Controller::playTurn() {
 
 void Controller::startGame() {}
 
-void Controller::load() {}
+void Controller::load() {
+    std::ifstream loadFile;
+    theBoardModel->load(loadFile);
+}
