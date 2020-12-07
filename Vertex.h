@@ -25,7 +25,7 @@ public:
   void improveResidence(shared_ptr<Builder> currBuilder);
 
   int getVertexNum();
-  shared_ptr<Residence> getResidence() { return residence; }
+  shared_ptr<Residence> getResidence();
 
   friend class BoardModel;
 };
