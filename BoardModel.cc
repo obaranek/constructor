@@ -17,6 +17,15 @@ using std::shared_ptr;
 using std::string;
 using std::stringstream;
 
+
+/***** Constructors *****/
+
+BoardModel::BoardModel() : seed{0}, useSeed{false} {}
+
+BoardModel::BoardModel(int seed) : seed{seed}, useSeed{true} {}
+
+/***** Functions *****/ 
+
 void BoardModel::init() {
   // reset state
   edges.clear();
@@ -227,6 +236,9 @@ void BoardModel::obtainResources(int value) {
     }
   }
 }
+
+int BoardModel::rollDice(){ return currBuilder->rollDice(useSeed, seed);}
+
 
 /***** Print Functions *****/
 

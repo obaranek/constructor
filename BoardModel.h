@@ -20,8 +20,17 @@ private:
   std::vector<std::shared_ptr<Builder>> builders;
   std::shared_ptr<Builder> currBuilder;
   std::unique_ptr<BoardView> theBoardView;
+  int seed;
+  bool useSeed;
 
 public:
+
+  // default constructor sets seed to be 0
+  BoardModel();
+
+  // overloaded constructor sets seed to argument
+  BoardModel(int seed);
+
   void init();
 
   // loadLayout() sets up the board according to the given text file
@@ -40,8 +49,8 @@ public:
   // tile with the given value
   void obtainResouces(int value);
 
-  
-  
+  // rollDice() calls currBuilder's dice roller
+  int rollDice();
 
   /***** Print Functions *****/
   
