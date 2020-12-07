@@ -168,7 +168,7 @@ void Controller::playTurn() {
             }
 
             if (userReplayInput == "yes") {
-                // RESTART GAME
+                theBoardModel->init(); // OMAR, HOW DO YOU RESTART GAME WITH INIT()?
             } else {
                 isGameEnd = true;
             }
@@ -176,7 +176,31 @@ void Controller::playTurn() {
     }
 }
 
-void Controller::startGame() {}
+void Controller::startGame() {
+    for(int counter = 0; counter < 8; ++counter) {
+        int userVertexInput;
+
+        do {
+            // outputs the start-of-game where-to-build message
+            theBoardModel->printWhereBuild();
+
+            // get user input
+            std::cin >> userVertexInput;
+        } while (! (0 <= userVertexInput && userVertexInput <= 53))
+
+        // Build the residence
+        theBoardModel->buildResidence(userVertexInput, true);
+
+        if (0 <= counter && counter <= 2) {
+            theBoardModel->next();
+        } else if (4 <= counter && counter <= 7) {
+            theBoardModel->previous();
+        }
+    }
+    
+    // begin play turn after start game procedure (loop)
+    playTurn();
+}
 
 void Controller::load() {
     std::ifstream loadFile;

@@ -1,5 +1,6 @@
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
+#include <memory>
 #include "BoardModel.h"
 
 class Controller() {
