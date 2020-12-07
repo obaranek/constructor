@@ -87,6 +87,10 @@ void Builder::takeResources(ResourceType type, int reward){
  }
 } 
 
+bool Builder::haveResidence(int vertexNum){
+  auto vertexIt = buildings.find(vertexNum);
+  return vertexIt != buildings.end();
+}
 
 bool Builder::haveRoad(int edgeNum){
   auto edgeIt =  find(roads.begin(), roads.end(), edgeNum);
@@ -106,14 +110,14 @@ bool Builder::haveResource(ResourceType type){
 
 /***** Setters and Getters *****/
 
-Colour Builder::getColour(){
-  return colour;
-}
+Colour Builder::getColour() { return colour; }
 
-int Builder::getPoints(){
-  return points;
-}
+int Builder::getPoints(){ return points; }
 
-void setDice(char diceType) {
-  dice = diceType;
-}
+char Builder::getDiceType() { return dice; }
+
+map<ResourceType,int>& Builder::getResources() { return resources; }
+
+map<int, char>& Builder::getBuildings() { return buildings; }
+
+void setDice(char diceType) { dice = diceType; }

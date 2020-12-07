@@ -5,8 +5,7 @@
 #include<map>
 
 class Colour;
-//enum ResourceType;
-class Dice;
+class ResourceType;
 
 class Builder{
   private:
@@ -44,6 +43,9 @@ class Builder{
     //takeResources() adds the quantity of resource to builders resources
     void takeResources(ResourceType type, int reward);
 
+    // haveResidence() returns true if builder owns a residence at the vertexNum
+    bool haveResidence(int vertexNum);
+
     // haveRoad() returns true if builder owns a road at the edgeNum
     bool haveRoad(int edgeNum);
 
@@ -54,6 +56,9 @@ class Builder{
 
     Colour getColour();
     int getPoints();
+    char getDiceType();
+    std::map<ResourceType, int>& getResources();
+    std::map<int, char>& getBuildings();
 
     void setDice(char diceType);
 };
