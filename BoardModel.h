@@ -36,7 +36,7 @@ public:
 
   // send the apropriate resources to all the builder who own a residence on the
   // tile with the given value
-  void obtainResouces(int value);
+  void obtainResources(int value);
 };
 
 #endif // __BOARDMODEL_H_
