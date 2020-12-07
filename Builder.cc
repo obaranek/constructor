@@ -8,55 +8,6 @@ using namespace std;
 Builder::Builder(Colour colour) 
   : colour{colour}, points{0}, dice{'L'} {}
 
-
-bool Builder::checkResidenceResources() {
-  // Basement costs;
-  // 1 BRICK, 1 ENERGY, 1 GLASS, 1 WIFI
-
-  auto brickIt = resources.find(ResourceType::BRICK);
-  auto energyIt = resources.find(ResourceType::ENERGY);
-  auto glassIt = resources.find(ResourceType::GLASS);
-  auto wifiIt = resources.find(ResourceType::WIFI);
-
-  if(*brickIt < 1){
-    return false;
-  }
-
-  if(*energyIt < 1){
-    return false;
-  }
-
-  if(*glassIt < 1){
-    return false;
-  }
-
-  if(*wifiIt < 1){
-    return false;
-  }
-
-  return true;
-}
-
-
-bool Builder::checkRoadResources() {
-  // Road costs;
-  // 1 HEAT, 1 WIFI
-
-  auto wifiIt = resources.find(ResourceType::WIFI);
-  auto heatIt = resources.find(ResourceType::HEAT);
-
-  if(*wifiIt < 1){
-    return false;
-  }
-
-  if(*heatIt < 1){
-    return false;
-  }
-
-  return true;
-}
-
-
 void Builder::buildResidence(int vertexNum){
   buildings.insert(pair<int, char>(vertexNum, 'B'));
 }
