@@ -27,3 +27,5 @@ void Vertex::improveResidence(shared_ptr<Builder> currBuilder){
 }
 
 int Vertex::getVertexNum() { return number; }
+
+shared_ptr<Residence> getResidence() { return residence; }
