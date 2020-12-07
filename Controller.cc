@@ -168,7 +168,7 @@ void Controller::playTurn() {
             }
 
             if (userReplayInput == "yes") {
-                theBoardModel->init(); // OMAR, HOW DO YOU RESTART GAME WITH INIT()?
+                startGame();
             } else {
                 isGameEnd = true;
             }
@@ -177,6 +177,9 @@ void Controller::playTurn() {
 }
 
 void Controller::startGame() {
+    // creates a new board for a new game
+    theBoardModel->init(); // OMAR, HOW DO YOU RESTART GAME WITH INIT()?
+
     for(int counter = 0; counter < 8; ++counter) {
         int userVertexInput;
 
