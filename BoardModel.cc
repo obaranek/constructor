@@ -194,7 +194,7 @@ void BoardModel::improveResidence(int vertexNum) {
   vertices.at(vertexNum)->improveResidence(currBuilder);
 }
 
-void BoardModel::obtainResouces(int value) {
+void BoardModel::obtainResources(int value) {
   if (value == 7 || value > 12 || value < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
@@ -206,6 +206,9 @@ void BoardModel::obtainResouces(int value) {
         auto tileVertex = vertices.at(tileVertexNum);
         //@TODO add getter for tile
         auto residence = tileVertex->getResidence();
+        if (!residence) {
+          break;
+        }
         //@TODO add getter for residence
         int reward = residence->getReward();
         //@TODO add takeResources for Builder

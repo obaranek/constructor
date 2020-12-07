@@ -69,6 +69,7 @@ public:
   char getDiceType();
 
   void setDice(char type);
+
 };
 
 #endif // __BOARDMODEL_H_
