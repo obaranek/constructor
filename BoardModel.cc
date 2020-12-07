@@ -135,10 +135,17 @@ void BoardModel::moveGeese(int tileNum) {
 
 void BoardModel::buildResidence(int vertexNum, bool turnStart) {
 
-  shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+  std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+
+  std::map<ResourceType, int> requiredResources = {
+    {ResourceType::BRICK, 1},
+    {ResourceType::ENERGY, 1}, 
+    {ResourceType::GLASS, 1}, 
+    {ResourceType::WIFI, 1},
+  };
 
   // Check if builder has enough resources
-  bool enoughResources = currBuilder->checkResidenceResources();
+  bool enoughResources = currBuilder->checkResources(requiredResources);
 
   if (!enoughResources) {
     //@TODO: Throw exception- not enough resources
