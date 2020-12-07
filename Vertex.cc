@@ -1,5 +1,29 @@
 #include "Vertex.h"
+#include "Residence.h"
+#include "Builder.h"
 
-Vertex::Vertex(int number) : number{number} {};
+using namespace std;
+
+
+Vertex::Vertex(int number) : vertexNumber{number} {};
+
+void Vertex::buildResidence(shared_ptr<Builder> currBuilder){
+  residence = make_shared<Residence>(vertexNumber);
+  currBuilder->buildResidence(vertexNumber);
+}
+
+void Vertex::improveResidence(shared_ptr<Builder> currBuilder){
+  if( !(currBuilder->haveResidence(vertexNumber)) ){
+    //@TODO: Throw exception- currBuilder doesn't have residence built
+  }
+
+  try{
+    char newResType = residence->improveResidence();
+    currBuilder->updateResidence(vertexNumber, newResType);
+  }catch(...){
+    //@TODO: Throw exception- 
+  }
+
+}
 
 int Vertex::getVertexNum() { return number; }
