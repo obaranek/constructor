@@ -98,15 +98,23 @@ bool Builder::haveRoad(int edgeNum){
 }
 
 
-bool Builder::haveResource(ResourceType type){
-  auto resourceIt = resources.find(type);
-  if(resourceIt != resources.end()){
-    return (*resourceIt) > 0;
+bool checkResources(map<ResourceType,int>& requiredResources){
+  bool haveEnough = true;
+  
+  // Loop through the required resources
+  for( auto reqResIt = requiredResources.begin(); reqResIt != requiredResources.end(); reqResIt++){
+    auto myResIt = resources.find(reqResIt->first);
+    int myResQuantity = myResIt->second; // quantity in my storage
+    int reqResQuantity = reqResIt->second; // quantity needed
+
+    if(myResQuantity < reqResQuantity) {
+      haveEnough = false;
+      break;
+    }
   }
-  else{
-   // @TODO: Throw exception: ResourceType not valid
-  }
+  return haveEnough;
 }
+
 
 /***** Setters and Getters *****/
 

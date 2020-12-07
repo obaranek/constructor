@@ -23,14 +23,6 @@ class Builder{
     //void stealResources(Builder* otherBuilder);
     
 
-    // checkResidenceResource() returns true if 
-    // builder has enough resources to build a basement
-    bool checkResidenceResources();
-    
-    // checkRoadResource() returns true if 
-    // builder has enough resources to build a road
-    bool checkRoadResources();
-    
     // buildResidence() adds verexNum to list of buildings
     void buildResidence(int vertexNum);
     
@@ -49,8 +41,9 @@ class Builder{
     // haveRoad() returns true if builder owns a road at the edgeNum
     bool haveRoad(int edgeNum);
 
-    // haveResource() returns true if builder owns at least 1 of that resource
-    bool haveResource(ResourceType type);
+    // checkResources() returns true if builder owns at least
+    // the passed in quantity of respective ResourceType
+    bool checkResources(std::map<ResourceType,int>& requiredResources);
 
     /***** Getters and Setters *****/
 
