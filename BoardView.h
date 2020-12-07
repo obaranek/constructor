@@ -22,8 +22,11 @@ class BoardView() {
     // Print Current Builder's Turn
     void printCurrBuilderTurn(const std::shared_ptr<Builder> builder);
 
-    // // Prints the required output to display when a trade is proposed
+    // Prints the required output to display when a trade is proposed
     void printTradeResource(const Colour thisBuilder, const Colour otherBuilder, const ResourceType giveResource, const ResourceType takeResource);
+
+    // Prints the required output of where to build the building at the start of the game
+    void printWhereBuild(const Colour thisBuilder);
 
     // Prints out the list of commands for begin game setting
     void beginGameHelp();

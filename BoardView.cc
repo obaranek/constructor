@@ -55,6 +55,10 @@ void printTradeResource(const Colour thisBuilder, const Colour otherBuilder, con
     std::cout << "Does " << otherBuilder << " accept this offer?" << std::endl;
 }
 
+void printWhereBuild(const Colour thisBuilder) {
+    std::cout << "Builder " << thisBuilder << ", where do you want to build a basement?" << std::endl;
+}
+
 // prints out the list of commands for begin game setting
 void BoardView::beginGameHelp() {
     std::cout << "Valid Commands:" << std::endl;
