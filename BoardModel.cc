@@ -1,7 +1,9 @@
 #include "BoardModel.h"
 #include "Edge.h"
+#include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
+#include "BoardView.h"
 
 #include <fstream>
 #include <sstream>
@@ -10,6 +12,7 @@
 
 using std::getline;
 using std::ifstream;
+using std::invalid_argument;
 using std::shared_ptr;
 using std::string;
 using std::stringstream;
@@ -130,36 +133,16 @@ void BoardModel::moveGeese(int tileNum) {
   // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
-void BoardModel::buildResidence(int vertexNum, bool turnStart) {
+void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
-  shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+  std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
 
-  // Check if builder has enough resources
-  bool enoughResources = currBuilder->checkResidenceResources();
-
-  if (!enoughResources) {
-    //@TODO: Throw exception- not enough resources
-  }
-
-  if (!turnStart) {
-    // Check if builder has a road connecting to vertex
-    bool connectingRoad = false;
-
-    for (auto edgeNumIt = currVertex->edges.begin();
-         edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
-      int edgeNum = *edgeNumIt;
-      auto ownerColour = edges.at(edgeNum)->getOwnerColour();
-
-      if (ownerColour == currBuilder->getColour()) {
-        connectingRoad = true;
-        break;
-      }
-    }
-
-    if (!connectingRoad) {
-      //@TODO: Throw exception- Not start of turn && no connecting road
-    }
-  }
+  std::map<ResourceType, int> requiredResources = {
+    {ResourceType::BRICK, 1},
+    {ResourceType::ENERGY, 1}, 
+    {ResourceType::GLASS, 1}, 
+    {ResourceType::WIFI, 1},
+  };
 
   // Check if no building exists on the vertex
   if (currVertex->residence != NULL) {
@@ -183,6 +166,36 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
     //@TODO: Throw Exception- Building in adjacent vertex
   }
 
+
+  if (!gameStart) {
+    
+    // Check if builder has enough resources
+    bool enoughResources = currBuilder->checkResources(requiredResources);
+
+    if (!enoughResources) {
+      //@TODO: Throw exception- not enough resources
+    }
+
+    
+    // Check if builder has a road connecting to vertex
+    bool connectingRoad = false;
+
+    for (auto edgeNumIt = currVertex->edges.begin();
+         edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
+      int edgeNum = *edgeNumIt;
+      auto ownerColour = edges.at(edgeNum)->getOwnerColour();
+
+      if (ownerColour == currBuilder->getColour()) {
+        connectingRoad = true;
+        break;
+      }
+    }
+
+    if (!connectingRoad) {
+      //@TODO: Throw exception- Not start of turn && no connecting road
+    }
+  }
+
   // All conditions checked- Can build residence
   currVertex->buildResidence(currBuilder);
 }
@@ -191,7 +204,11 @@ void BoardModel::improveResidence(int vertexNum) {
   vertices.at(vertexNum)->improveResidence(currBuilder);
 }
 
-void BoardModel::obtainResouces(int value) {
+void BoardModel::obtainResources(int value) {
+  if (value == 7 || value > 12 || value < 2) {
+    throw invalid_argument("BoardModel::obtainResources:: Invalid value");
+  }
+
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
@@ -199,6 +216,9 @@ void BoardModel::obtainResouces(int value) {
         auto tileVertex = vertices.at(tileVertexNum);
         //@TODO add getter for tile
         auto residence = tileVertex->getResidence();
+        if (!residence) {
+          break;
+        }
         //@TODO add getter for residence
         int reward = residence->getReward();
         //@TODO add takeResources for Builder
@@ -207,3 +227,33 @@ void BoardModel::obtainResouces(int value) {
     }
   }
 }
+
+/***** Print Functions *****/
+
+void BoardModel::printBoard() { theBoardView->printBoard(this); }
+
+void BoardModel::printResidences() { theBoardView->printResidences(currBuilder); }
+
+void BoardModel::printCurrBuilderTurn() { theBoardView->printCurrBuilderTurn(currBuilder); }
+
+void BoardModel::printStatus() { theBoardView->printStatus(builders); }
+
+void BoardModel::beginGameHelp() { theBoardView->beginGameHelp(); }
+
+void BoardModel::duringGameHelp() { theBoardView->duringGameHelp(); }
+
+void BoardModel::printTradeResources(const Colour otherBuilder, 
+    const ResourceType give, const ResourceType take) {
+  
+  theBoardView->printTradeResources(
+      currBuilder->getColour(), otherBuilder->getColour, give, take );
+}
+
+
+/***** Getters and Setters *****/
+
+std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
+
+char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
+
+void BoardModel::setDice(char type) { currBuilder->setDice(type); }
