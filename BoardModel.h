@@ -9,6 +9,7 @@ class Tile;
 class Vertex;
 class Builder;
 class Edge;
+class BoardView;
 
 class BoardModel {
 private:
@@ -18,6 +19,7 @@ private:
   std::vector<std::shared_ptr<Edge>> edges;
   std::vector<std::shared_ptr<Builder>> builders;
   std::shared_ptr<Builder> currBuilder;
+  std::unique_ptr<BoardView> theBoardView;
 
 public:
   void init();
@@ -37,6 +39,36 @@ public:
   // send the apropriate resources to all the builder who own a residence on the
   // tile with the given value
   void obtainResouces(int value);
+
+  
+  
+
+  /***** Print Functions *****/
+  
+  void printBoard();
+
+  void printResidences();
+
+  void printCurrBuilderTurn();
+
+  void printStatus();
+
+  void beginGameHelp();
+
+  void duringGameHelp();
+
+  void printTradeResources(const Colour otherBuilder, const ResourceType give, 
+      const ResourceType take);
+
+
+
+  /***** Getters and Setters *****/
+
+  std::shared_ptr<Builder> getCurrBuilder(); 
+
+  char getDiceType();
+
+  void setDice(char type);
 };
 
 #endif // __BOARDMODEL_H_

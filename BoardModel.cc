@@ -3,6 +3,7 @@
 #include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
+#include "BoardView.h"
 
 #include <fstream>
 #include <sstream>
@@ -213,3 +214,33 @@ void BoardModel::obtainResouces(int value) {
     }
   }
 }
+
+/***** Print Functions *****/
+
+void BoardModel::printBoard() { theBoardView->printBoard(this); }
+
+void BoardModel::printResidences() { theBoardView->printResidences(currBuilder); }
+
+void BoardModel::printCurrBuilderTurn() { theBoardView->printCurrBuilderTurn(currBuilder); }
+
+void BoardModel::printStatus() { theBoardView->printStatus(builders); }
+
+void BoardModel::beginGameHelp() { theBoardView->beginGameHelp(); }
+
+void BoardModel::duringGameHelp() { theBoardView->duringGameHelp(); }
+
+void BoardModel::printTradeResources(const Colour otherBuilder, 
+    const ResourceType give, const ResourceType take) {
+  
+  theBoardView->printTradeResources(
+      currBuilder->getColour(), otherBuilder->getColour, give, take );
+}
+
+
+/***** Getters and Setters *****/
+
+std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
+
+char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
+
+void BoardModel::setDice(char type) { currBuilder->setDice(type); }
