@@ -178,7 +178,7 @@ void Controller::playTurn() {
 
 void Controller::startGame() {
     // creates a new board for a new game
-    theBoardModel->init(); // OMAR, HOW DO YOU RESTART GAME WITH INIT()?
+    theBoardModel->init();
 
     for(int counter = 0; counter < 8; ++counter) {
         int userVertexInput;
