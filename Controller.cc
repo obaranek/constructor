@@ -89,7 +89,7 @@ void Controller::playTurn() {
                 if (! (0 <= vertexValue && vertexValue <= 53)) {
                     std::cout << "Invalid <housing#>" << std::endl;
                 } else {
-                    theBoardModel->buildResidence(); // NEEDS ADDITIONAL LOOK INTO
+                    theBoardModel->buildResidence(vertexValue, /*boolean*/); // NEEDS ADDITIONAL LOOK INTO
                 }
             } else if (userInput == "improve") { // improve <housing#>
                 int vertexValue;
@@ -102,8 +102,8 @@ void Controller::playTurn() {
                 }
             } else if (userInput == "trade") { // trade <colour> <give> <take>
                     // Reads in the other player's color
-                    Colour otherPlayer;
-                    std::cin >> otherPlayer;
+                    Colour otherPlayerColour;
+                    std::cin >> otherPlayerColour;
 
                     // Reads in the offered resource
                     ResourceType giveResource;
@@ -113,8 +113,10 @@ void Controller::playTurn() {
                     ResourceType takeResource;
                     std::cin >> takeResource;
                     
+                    std::shared_ptr<Builder> currBuilder{ theBoardModel->getCurrBuilder() };
+
                     // print required output to display
-                    theBoardModel->printTradeResources();
+                    theBoardModel->printTradeResource(currBuilder->getColour(), otherPlayerColour, giveResource, takeResource);
 
                     // wait for reply (yes / no)
                     std::string acceptTrade;
@@ -122,7 +124,7 @@ void Controller::playTurn() {
 
                     while (acceptTrade != "yes" || acceptTrade != "no") {
                         std::cout << "Invalid input." << std::endl;
-                        theBoardModel->printTradeResources();
+                        theBoardModel->printTradeResource(currBuilder->getColour(), otherPlayerColour, giveResource, takeResource);
                         std::cin >> acceptTrade;
                     }
 
@@ -140,7 +142,7 @@ void Controller::playTurn() {
             } else if (userInput == "next") {
                 theBoardModel->next();
             } else {
-                std::cout << "Invalid Command." << std::endl;
+                std::cout << "Invalid command." << std::endl;
                 std::cout << "Please enter 'help' for a list of valid commands." << std::endl;
             }
         }
@@ -148,8 +150,6 @@ void Controller::playTurn() {
         //
         // END PLAYER TURN
         //
-
-        // check if won
         bool isPlayerWon{ theBoardModel->checkWinner() };
 
         if (isPlayerWon == true) {
