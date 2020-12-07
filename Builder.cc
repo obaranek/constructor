@@ -10,6 +10,7 @@ Builder::Builder(Colour colour)
 
 void Builder::buildResidence(int vertexNum){
   buildings.insert(pair<int, char>(vertexNum, 'B'));
+  points++;
 }
 
 
