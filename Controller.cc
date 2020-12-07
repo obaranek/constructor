@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "Controller.h"
+#include "Colour.h"
+#include "ResourceType.h"
 
 Controller::Controller() {}
 
@@ -87,14 +89,52 @@ void Controller::playTurn() {
                 if (! (0 <= vertexValue && vertexValue <= 53)) {
                     std::cout << "Invalid <housing#>" << std::endl;
                 } else {
-                    theBoardModel->buildResidence();
+                    theBoardModel->buildResidence(); // NEEDS ADDITIONAL LOOK INTO
                 }
             } else if (userInput == "improve") { // improve <housing#>
+                int vertexValue;
+                std::cin >> vertexValue;
 
+                if (! (0 <= vertexValue && vertexValue <= 53)) {
+                    std::cout << "Invalid <housing#>" << std::endl;
+                } else {
+                    theBoardModel->improveResidence(vertexValue);
+                }
             } else if (userInput == "trade") { // trade <colour> <give> <take>
+                    // Reads in the other player's color
+                    Colour otherPlayer;
+                    std::cin >> otherPlayer;
+
+                    // Reads in the offered resource
+                    ResourceType giveResource;
+                    std::cin >> giveResource;
+
+                    // Reads in the requested resource
+                    ResourceType takeResource;
+                    std::cin >> takeResource;
+                    
+                    // print required output to display
+                    theBoardModel->printTradeResources();
+
+                    // wait for reply (yes / no)
+                    std::string acceptTrade;
+                    std::cin >> acceptTrade;
+
+                    while (acceptTrade != "yes" || acceptTrade != "no") {
+                        std::cout << "Invalid input." << std::endl;
+                        theBoardModel->printTradeResources();
+                        std::cin >> acceptTrade;
+                    }
+
+                    if (acceptTrade == "yes") {
+                        theBoardModel->tradeResources(otherPlayer, giveResource, takeResource);
+                    }
 
             } else if (userInput == "save") { // save <file>
+                    std::string fileName;
+                    std::cin >> fileName;
 
+                    theBoardModel->save(fileName);
             } else if (userInput == "help") { // help
                 theBoardModel->duringGameHelp();
             } else if (userInput == "next") {
