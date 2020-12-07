@@ -133,7 +133,7 @@ void BoardModel::moveGeese(int tileNum) {
   // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
-void BoardModel::buildResidence(int vertexNum, bool turnStart) {
+void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
   std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
 
@@ -143,33 +143,6 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
     {ResourceType::GLASS, 1}, 
     {ResourceType::WIFI, 1},
   };
-
-  // Check if builder has enough resources
-  bool enoughResources = currBuilder->checkResources(requiredResources);
-
-  if (!enoughResources) {
-    //@TODO: Throw exception- not enough resources
-  }
-
-  if (!turnStart) {
-    // Check if builder has a road connecting to vertex
-    bool connectingRoad = false;
-
-    for (auto edgeNumIt = currVertex->edges.begin();
-         edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
-      int edgeNum = *edgeNumIt;
-      auto ownerColour = edges.at(edgeNum)->getOwnerColour();
-
-      if (ownerColour == currBuilder->getColour()) {
-        connectingRoad = true;
-        break;
-      }
-    }
-
-    if (!connectingRoad) {
-      //@TODO: Throw exception- Not start of turn && no connecting road
-    }
-  }
 
   // Check if no building exists on the vertex
   if (currVertex->residence != NULL) {
@@ -191,6 +164,36 @@ void BoardModel::buildResidence(int vertexNum, bool turnStart) {
 
   if (adjacentResidence) {
     //@TODO: Throw Exception- Building in adjacent vertex
+  }
+
+
+  if (!gameStart) {
+    
+    // Check if builder has enough resources
+    bool enoughResources = currBuilder->checkResources(requiredResources);
+
+    if (!enoughResources) {
+      //@TODO: Throw exception- not enough resources
+    }
+
+    
+    // Check if builder has a road connecting to vertex
+    bool connectingRoad = false;
+
+    for (auto edgeNumIt = currVertex->edges.begin();
+         edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
+      int edgeNum = *edgeNumIt;
+      auto ownerColour = edges.at(edgeNum)->getOwnerColour();
+
+      if (ownerColour == currBuilder->getColour()) {
+        connectingRoad = true;
+        break;
+      }
+    }
+
+    if (!connectingRoad) {
+      //@TODO: Throw exception- Not start of turn && no connecting road
+    }
   }
 
   // All conditions checked- Can build residence
