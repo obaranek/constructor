@@ -237,8 +237,6 @@ void BoardModel::obtainResources(int value) {
   }
 }
 
-int BoardModel::rollDice(){ return currBuilder->rollDice(useSeed, seed);}
-
 
 /***** Print Functions *****/
 

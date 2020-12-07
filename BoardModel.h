@@ -49,9 +49,6 @@ public:
   // tile with the given value
   void obtainResouces(int value);
 
-  // rollDice() calls currBuilder's dice roller
-  int rollDice();
-
   /***** Print Functions *****/
   
   void printBoard();
