@@ -2,8 +2,8 @@
 #define _BOARDVIEW_H_
 #include <vector>
 #include <memory>
-#include "builder.h"
-
+#include "Builder.h"
+#include "ResourceType.h"
 
 
 class BoardView() {
@@ -20,10 +20,13 @@ class BoardView() {
     // Print Current Builder's Turn
     void printCurrBuilderTurn(const std::shared_ptr<Builder> builder);
 
-    // prints out the list of commands for begin game setting
+    // // Prints the required output to display when a trade is proposed
+    void printTradeResource(const Colour thisBuilder, const Colour otherBuilder, const ResourceType giveResource, const ResourceType takeResource);
+
+    // Prints out the list of commands for begin game setting
     void beginGameHelp();
 
-    // prints out the list of commands for during game setting
+    // Prints out the list of commands for during game setting
     void duringGameHelp();
 };
 

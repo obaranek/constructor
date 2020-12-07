@@ -4,10 +4,10 @@
 #include <memory>
 #include <map>
 #include <iomanip>
-#include "boardmodel.h"
-#include "builder.h"
-
-
+#include "BoardModel.h"
+#include "Builder.h"
+#include "Colour.h"
+#include "ResourceType.h"
 
 // Prints the current status of all builders in order from builder 0 to 3
 void BoardView::printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Builder>>> builderVectorPtr) {
@@ -47,6 +47,12 @@ void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
 // Print Current Builder's Turn
 void printCurrBuilderTurn(const std::shared_ptr<Builder> builder) {
     std::cout << "Builder " << builder->getColour() << "'s turn." << std::endl;
+}
+
+// prints the required output to display when a trade is proposed
+void printTradeResource(const Colour thisBuilder, const Colour otherBuilder, const ResourceType giveResource, const ResourceType takeResource) {
+    std::cout << thisBuilder << " offers " << otherBuilder << " one " << giveResource << " for one " << takeResource << "." << std::endl;
+    std::cout << "Does " << otherBuilder << " accept this offer?" << std::endl;
 }
 
 // prints out the list of commands for begin game setting
