@@ -20,8 +20,17 @@ private:
   std::vector<std::shared_ptr<Builder>> builders;
   std::shared_ptr<Builder> currBuilder;
   std::unique_ptr<BoardView> theBoardView;
+  int seed;
+  bool useSeed;
 
 public:
+
+  // default constructor sets seed to be 0
+  BoardModel();
+
+  // overloaded constructor sets seed to argument
+  BoardModel(int seed);
+
   void init();
 
   // loadLayout() sets up the board according to the given text file
@@ -39,9 +48,6 @@ public:
   // send the apropriate resources to all the builder who own a residence on the
   // tile with the given value
   void obtainResouces(int value);
-
-  
-  
 
   /***** Print Functions *****/
   
