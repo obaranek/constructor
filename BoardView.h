@@ -4,12 +4,14 @@
 #include <memory>
 #include "Builder.h"
 #include "ResourceType.h"
+#include "BoardModel.h"
+#include "Colour.h"
 
 
 class BoardView() {
   public:
     // Prints the current status of all builders in order from builder 0 to 3
-    void printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Builder>>> builderVectorPtr);
+    void printStatus(const std::vector<std::shared_ptr<Builder>> & builderVectorPtr);
 
     // Prints the residence owned by the builder
     void printResidence(const std::shared_ptr<Builder> builder);

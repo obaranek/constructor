@@ -10,14 +10,14 @@
 #include "ResourceType.h"
 
 // Prints the current status of all builders in order from builder 0 to 3
-void BoardView::printStatus(const std::shared_ptr<std::vector<std::shared_ptr<Builder>>> builderVectorPtr) {
+void BoardView::printStatus(const std::vector<std::shared_ptr<Builder>> & builderVectorPtr) {
     for (int counter = 0; counter < (*builderVectorPtr.size()); ++counter) {
-        std::shared_ptr<Builder> currentBuilder{ *builderVectorPtr)[counter] };
-        std::map<ResourceType, int> resourceMap{ builder->getResource() };
+        std::shared_ptr<Builder> currentBuilder{ *(builderVectorPtr[counter]) };
+        std::map<ResourceType, int> resourceMap{ builder.getResource() };
 
         // print the required output
-        std::cout << currentBuilder->getColour() << " has " << std::setw(5);
-        std::cout << currentBuilder->getPoints() << " building points, ";
+        std::cout << currentBuilder.getColour() << " has " << std::setw(5);
+        std::cout << currentBuilder.getPoints() << " building points, ";
         std::cout << residenceMap[ResourceType::BRICK] << " brick, ";
         std::cout << residenceMap[ResourceType::ENERGY] << " energy, ";
         std::cout << residenceMap[ResourceType::GLASS] << " glass, ";
