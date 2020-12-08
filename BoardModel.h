@@ -80,6 +80,8 @@ public:
   void printTradeResources(const Colour otherBuilder, const ResourceType give,
                            const ResourceType take);
 
+  void printWhereBuild();
+
 
   /***** Getters and Setters *****/
 

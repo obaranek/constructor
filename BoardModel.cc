@@ -333,6 +333,10 @@ void BoardModel::printTradeResources(const Colour otherBuilder,
                                     otherBuilder->getColour, give, take);
 }
 
+void BoardModel::printWhereBuild(){
+  theBoardView->printWhereBuild(currBuilder->getColour());
+}
+
 /***** Getters and Setters *****/
 
 std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
