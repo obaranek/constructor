@@ -21,7 +21,6 @@ private:
   std::shared_ptr<Builder> currBuilder;
   std::unique_ptr<BoardView> theBoardView;
   int seed;
-  bool useSeed;
 
 public:
   // default constructor sets seed to be 0
@@ -48,8 +47,21 @@ public:
   // builds a road on the given edge number
   void BuildRoad(int);
 
+  // returns a random number between 2 and 12 inclusives
+  int rollDice();
+
   // decides how to proceede with roll after the dice has been rolled
   void playRoll(int);
+
+  // next() increments the currBuilder to the next one
+  void next();
+
+  // prevBuilder() decrements the currBuilder to the prev one
+  void prevBuilder();
+
+  // returns true if a builder won the game
+  bool checkWinner();
+
 
   /***** Print Functions *****/
 
@@ -68,8 +80,6 @@ public:
   void printTradeResources(const Colour otherBuilder, const ResourceType give,
                            const ResourceType take);
 
-  // returns true if a builder won the game
-  bool checkWinner();
 
   /***** Getters and Setters *****/
 

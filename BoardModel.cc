@@ -8,7 +8,9 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-#include <string>
+#include <algorithm>
+#include <random>
+#include <chrono>
 
 using std::getline;
 using std::ifstream;
@@ -16,10 +18,13 @@ using std::invalid_argument;
 using std::shared_ptr;
 using std::string;
 using std::stringstream;
+using std::vector;
+using std::chrono;
+using std::default_random_engine;
 
 /***** Constructors *****/
 
-BoardModel::BoardModel() : seed{0}, useSeed{false} {}
+BoardModel::BoardModel() : seed{-1} {}
 
 /***** Functions *****/
 
@@ -237,11 +242,60 @@ void BoardModel::BuildRoad(int edgeNum) {
   edges.at(edgeNum)->buildRoad(currBuilder);
 }
 
+int BoardModel::rollDice() {
+  vector<int> diceOptions = {2,3,4,5,6,7,8,9,10,11,12};
+  
+  // set the correct seed based on if flag is used or not
+  int localSeed;
+  if(seed < 0){
+    localSeed = chrono::system_clock::now().time_since_epoch().count();
+  } else {
+    localSeed = seed;
+  }
+  
+  // defining random number generator with correct seed
+  default_random_engine rng{localSeed};
+  // shuffling the dice option vector
+  shuffle(diceOptions.begin(), diceOptions.end(), rng);
+  // return a shuffled element from the dice options array
+  return *(diceOptions.begin());
+}
+
 void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
   diceValue == 7 ? playGoose : obtainResources(diceValue);
+}
+
+void BoardModel::next(){
+  auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
+  
+  if(currBuilderIt == builders.end()){ // buider not found (should never happen)
+    //@TODO: Throw exception- Builder not found when incrementing
+  }
+
+  // increment the currBuilder 
+  if(currBuilderIt + 1 == builders.end()){ // if we are at last builder
+    currBuilder = *(builders.begin());
+  }else{ // there is a builder ahead (not at last builder)
+    currBuilder = *(currBuilderIt++);
+  }
+}
+
+void BoardModel::prevBuilder(){
+  auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
+  
+  if(currBuilderIt == builders.end()){ // buider not found (should never happen)
+    //@TODO: Throw exception- Builder not found when decrementing
+  }
+
+  // decrementing the currBuilder 
+  if(currBuilderIt == builders.begin()){ // if we are at the first builder
+    currBuilder = *(builders.end() - 1);
+  }else{ // there is a builder infront of us (not at first builder)
+    currBuilder = *(currBuilderIt--);
+  }
 }
 
 bool BoardModel::checkWinner() {
@@ -285,9 +339,18 @@ std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
-void BoardModel::setDice(char type) { currBuilder->setDice(type); }
+void BoardModel::setDice(char type) { 
+  if(type == 'L' || type == 'F'){
+    currBuilder->setDice(type);  
+  } else{
+    //@TODO: Throw exception- type can only be L or F
+  }
+}
 
-void BoardModel::setSeed(int _seed) {
-  seed = _seed;
-  useSeed = true;
+void BoardModel::setSeed(int _seed) {i
+  if(_seed >= 0){
+   seed = _seed;
+  } else{
+    //@TODO: Throw exception- _seed can't be negative
+  }
 }
