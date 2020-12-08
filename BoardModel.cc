@@ -31,7 +31,7 @@ void BoardModel::init() {
   vertices.clear();
   tiles.clear();
 
-  std::ifstream verticiesFile{"vertices.txt"};
+  ifstream verticiesFile{"vertices.txt"};
   string line;
 
   // creating a vector of all the tiles
@@ -237,6 +237,13 @@ void BoardModel::obtainResources(int value) {
 void BoardModel::BuildRoad(int edgeNum) {
   currBuilder->checkResources({{HEAT, 1}, {WIFI, 1}});
   edges.at(edgeNum)->buildRoad(currBuilder);
+}
+
+void BoardModel::playRoll(int diceValue) {
+  if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
+    throw invalid_argument("BoardModel::obtainResources:: Invalid value");
+  }
+  diceValue == 7 ? playGoose : obtainResources(diceValue);
 }
 
 /***** Print Functions *****/

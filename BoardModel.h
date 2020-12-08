@@ -46,10 +46,13 @@ public:
 
   // send the apropriate resources to all the builder who own a residence on the
   // tile with the given value
-  void obtainResouces(int value);
+  void obtainResources(int value);
 
   // builds a road on the given edge number
   void BuildRoad(int);
+
+  // decides how to proceede with roll after the dice has been rolled
+  void playRoll(int);
 
   /***** Print Functions *****/
 
