@@ -246,6 +246,15 @@ void BoardModel::playRoll(int diceValue) {
   diceValue == 7 ? playGoose : obtainResources(diceValue);
 }
 
+bool BoardModel::checkWinner() {
+  for (auto &builder : builders) {
+    if (builder->getPoints() >= 10) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /***** Print Functions *****/
 
 void BoardModel::printBoard() { theBoardView->printBoard(this); }

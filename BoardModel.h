@@ -71,6 +71,9 @@ public:
   void printTradeResources(const Colour otherBuilder, const ResourceType give,
                            const ResourceType take);
 
+  // returns true if a builder won the game
+  bool checkWinner();
+
   /***** Getters and Setters *****/
 
   std::shared_ptr<Builder> getCurrBuilder();
