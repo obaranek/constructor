@@ -1,9 +1,9 @@
 #include "BoardModel.h"
+#include "BoardView.h"
 #include "Edge.h"
 #include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
-#include "BoardView.h"
 
 #include <fstream>
 #include <sstream>
@@ -17,14 +17,13 @@ using std::shared_ptr;
 using std::string;
 using std::stringstream;
 
-
 /***** Constructors *****/
 
 BoardModel::BoardModel() : seed{0}, useSeed{false} {}
 
 BoardModel::BoardModel(int seed) : seed{seed}, useSeed{true} {}
 
-/***** Functions *****/ 
+/***** Functions *****/
 
 void BoardModel::init() {
   // reset state
@@ -147,10 +146,10 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
   std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
 
   std::map<ResourceType, int> requiredResources = {
-    {ResourceType::BRICK, 1},
-    {ResourceType::ENERGY, 1}, 
-    {ResourceType::GLASS, 1}, 
-    {ResourceType::WIFI, 1},
+      {ResourceType::BRICK, 1},
+      {ResourceType::ENERGY, 1},
+      {ResourceType::GLASS, 1},
+      {ResourceType::WIFI, 1},
   };
 
   // Check if no building exists on the vertex
@@ -175,9 +174,8 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
     //@TODO: Throw Exception- Building in adjacent vertex
   }
 
-
   if (!gameStart) {
-    
+
     // Check if builder has enough resources
     bool enoughResources = currBuilder->checkResources(requiredResources);
 
@@ -185,7 +183,6 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
       //@TODO: Throw exception- not enough resources
     }
 
-    
     // Check if builder has a road connecting to vertex
     bool connectingRoad = false;
 
@@ -237,14 +234,22 @@ void BoardModel::obtainResources(int value) {
   }
 }
 
+void BoardModel::BuildRoad(int edgeNum) {
+  currBuilder->checkResources({{HEAT, 1}, {WIFI, 1}});
+  edges.at(edgeNum)->buildRoad(currBuilder);
+}
 
 /***** Print Functions *****/
 
 void BoardModel::printBoard() { theBoardView->printBoard(this); }
 
-void BoardModel::printResidences() { theBoardView->printResidences(currBuilder); }
+void BoardModel::printResidences() {
+  theBoardView->printResidences(currBuilder);
+}
 
-void BoardModel::printCurrBuilderTurn() { theBoardView->printCurrBuilderTurn(currBuilder); }
+void BoardModel::printCurrBuilderTurn() {
+  theBoardView->printCurrBuilderTurn(currBuilder);
+}
 
 void BoardModel::printStatus() { theBoardView->printStatus(builders); }
 
@@ -252,13 +257,13 @@ void BoardModel::beginGameHelp() { theBoardView->beginGameHelp(); }
 
 void BoardModel::duringGameHelp() { theBoardView->duringGameHelp(); }
 
-void BoardModel::printTradeResources(const Colour otherBuilder, 
-    const ResourceType give, const ResourceType take) {
-  
-  theBoardView->printTradeResources(
-      currBuilder->getColour(), otherBuilder->getColour, give, take );
-}
+void BoardModel::printTradeResources(const Colour otherBuilder,
+                                     const ResourceType give,
+                                     const ResourceType take) {
 
+  theBoardView->printTradeResources(currBuilder->getColour(),
+                                    otherBuilder->getColour, give, take);
+}
 
 /***** Getters and Setters *****/
 

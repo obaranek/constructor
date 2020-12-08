@@ -24,7 +24,6 @@ private:
   bool useSeed;
 
 public:
-
   // default constructor sets seed to be 0
   BoardModel();
 
@@ -49,8 +48,11 @@ public:
   // tile with the given value
   void obtainResouces(int value);
 
+  // builds a road on the given edge number
+  void BuildRoad(int);
+
   /***** Print Functions *****/
-  
+
   void printBoard();
 
   void printResidences();
@@ -63,19 +65,16 @@ public:
 
   void duringGameHelp();
 
-  void printTradeResources(const Colour otherBuilder, const ResourceType give, 
-      const ResourceType take);
-
-
+  void printTradeResources(const Colour otherBuilder, const ResourceType give,
+                           const ResourceType take);
 
   /***** Getters and Setters *****/
 
-  std::shared_ptr<Builder> getCurrBuilder(); 
+  std::shared_ptr<Builder> getCurrBuilder();
 
   char getDiceType();
 
   void setDice(char type);
-
 };
 
 #endif // __BOARDMODEL_H_
