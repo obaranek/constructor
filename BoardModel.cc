@@ -21,8 +21,6 @@ using std::stringstream;
 
 BoardModel::BoardModel() : seed{0}, useSeed{false} {}
 
-BoardModel::BoardModel(int seed) : seed{seed}, useSeed{true} {}
-
 /***** Functions *****/
 
 void BoardModel::init() {
@@ -288,3 +286,8 @@ std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
 void BoardModel::setDice(char type) { currBuilder->setDice(type); }
+
+void BoardModel::setSeed(int _seed) {
+  seed = _seed;
+  useSeed = true;
+}

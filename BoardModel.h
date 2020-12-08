@@ -27,9 +27,6 @@ public:
   // default constructor sets seed to be 0
   BoardModel();
 
-  // overloaded constructor sets seed to argument
-  BoardModel(int seed);
-
   void init();
 
   // loadLayout() sets up the board according to the given text file
@@ -77,10 +74,10 @@ public:
   /***** Getters and Setters *****/
 
   std::shared_ptr<Builder> getCurrBuilder();
-
   char getDiceType();
 
   void setDice(char type);
+  void setSeed(int _seed);
 };
 
 #endif // __BOARDMODEL_H_
