@@ -19,7 +19,7 @@ class Controller {
 
     void initRandomBoard();
 
-    void initBoard(std::string fileName = "layout.txt");
+    void initBoard(std::string fileName);
 
     void initBoard();
 
