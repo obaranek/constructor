@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <vector>
+#include "Colour.h"
 
 class Builder;
-class Colour;
 
 class Edge {
   private:
@@ -22,9 +22,9 @@ class Edge {
     // buildRoad function
     void buildRoad(std::shared_ptr<Builder> builderPtr);
 
-    
+
     // hasRoad() returns true if there is a road at this edge
-    bool hasRoad();
+    bool doesHaveRoad();
 
     /***** Getters and Setters *****/
 
