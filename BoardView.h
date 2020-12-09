@@ -14,6 +14,7 @@
 class Tile;
 class Vertex;
 class Edge;
+class BoardModel;
 
 class BoardView{
   private:
