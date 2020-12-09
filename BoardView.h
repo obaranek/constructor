@@ -58,7 +58,7 @@ class BoardView{
     void printResidence(const std::shared_ptr<Builder> builder);
 
     // Prints the current board
-    void printBoard(const std::shared_ptr<BoardModel> board);
+    void printBoard(const BoardModel* board);
 
     // Print Current Builder's Turn
     void printCurrBuilderTurn(const std::shared_ptr<Builder> builder);
