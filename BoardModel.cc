@@ -397,7 +397,15 @@ void BoardModel::printWhereBuild() {
 
 /***** Getters and Setters *****/
 
-std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
+shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
+
+shared_ptr<Vertex> getVertexPtr(int vertexNum) {
+  return vertices.at(vertexNum);
+}
+
+shared_ptr<Tile> getTilePtr(int tileNum) { return tiles.at(tileNum); }
+
+std::shared_ptr<Edge> getEdgePtr(int edgeNum) { return edges.at(edgeNum); }
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 

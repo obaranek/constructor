@@ -86,6 +86,9 @@ public:
 
   std::shared_ptr<Builder> getCurrBuilder();
   char getDiceType();
+  std::shared_ptr<Vertex> getVertexPtr(int);
+  std::shared_ptr<Edge> getEdgePtr(int);
+  std::shared_ptr<Tile> getTilePtr(int);
 
   void setDice(char type);
   void setSeed(int _seed);
