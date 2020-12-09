@@ -419,7 +419,7 @@ void BoardModel::setDice(char type) {
 }
 
 void BoardModel::setSeed(int _seed) {
-  i if (_seed >= 0) { seed = _seed; }
+  if (_seed >= 0) { seed = _seed; }
   else {
     //@TODO: Throw exception- _seed can't be negative
   }
