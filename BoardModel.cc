@@ -12,7 +12,6 @@
 #include <sstream>
 #include <stdexcept>
 
-using std::chrono;
 using std::default_random_engine;
 using std::getline;
 using std::ifstream;
@@ -24,6 +23,7 @@ using std::stoi;
 using std::string;
 using std::stringstream;
 using std::vector;
+using std::chrono::system_clock::now;
 
 /***** Constructors *****/
 
@@ -304,7 +304,7 @@ int BoardModel::rollDice() {
   // set the correct seed based on if flag is used or not
   int localSeed;
   if (seed < 0) {
-    localSeed = chrono::system_clock::now().time_since_epoch().count();
+    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
   } else {
     localSeed = seed;
   }
