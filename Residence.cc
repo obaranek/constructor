@@ -5,8 +5,9 @@
 
 using std::logic_error;
 
-Residence::Residence()
-    : reward{1}, type{'B'}, cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}} {};
+Residence::Residence(std::shared_ptr<Builder> owner)
+    : cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}}, reward{1},
+    type{'B'}, owner{owner}{};
 
 char Residence::getType() { return type; }
 

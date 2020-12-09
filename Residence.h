@@ -20,7 +20,7 @@ private:
   shared_ptr<Builder> owner;
 
 public:
-  Residence();
+  Residence(std::shared_ptr<Builder> owner);
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
