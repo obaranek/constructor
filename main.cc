@@ -33,6 +33,9 @@ int main(int argc, char* argv[]) {
     if (argc == 1) {
         theController->initBoard();
         theController->setInitMethodCall("initBoard");
+
+        // start the game
+        theController->startGame();
     } else {
         // Loop to check for '-seed xxx'
         for (int counter = 0; counter < argc; ++counter) {
@@ -64,6 +67,9 @@ int main(int argc, char* argv[]) {
 
                     boardPresent = true;
                     ++counter;
+
+                    // start the game
+                    theController->startGame();
                 } else if (argument == "-load") {
                     std::string fileName{ argv[counter + 1] };
 
@@ -73,11 +79,17 @@ int main(int argc, char* argv[]) {
 
                     loadPresent = true;
                     ++counter;
+
+                    // load the game
+                    theController->playTurn();
                 } else if (argument == "-random-board") {
                     theController->initRandomBoard();
                     theController->setInitMethodCall("initRandomBoard");
 
                     randomBoardPresent = true;
+
+                    // start the game
+                    theController->startGame();
                 } else if (argument != "-seed") {
                     usage_UnrecognizedCommandLineOption(argument);
                 }
@@ -92,6 +104,4 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-
-    theController->startGame();
 }
