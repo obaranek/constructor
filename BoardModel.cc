@@ -4,6 +4,7 @@
 #include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
+#include "Builder.h"
 
 #include <algorithm>
 #include <chrono>
@@ -399,13 +400,13 @@ void BoardModel::printWhereBuild() {
 
 shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
 
-shared_ptr<Vertex> getVertexPtr(int vertexNum) {
+shared_ptr<Vertex> BoardModel::getVertexPtr(int vertexNum) {
   return vertices.at(vertexNum);
 }
 
-shared_ptr<Tile> getTilePtr(int tileNum) { return tiles.at(tileNum); }
+shared_ptr<Tile> BoardModel::getTilePtr(int tileNum) { return tiles.at(tileNum); }
 
-std::shared_ptr<Edge> getEdgePtr(int edgeNum) { return edges.at(edgeNum); }
+std::shared_ptr<Edge> BoardModel::getEdgePtr(int edgeNum) { return edges.at(edgeNum); }
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
