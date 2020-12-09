@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <memory>
+#include "BoardView.h"
 #include "Controller.h"
 
 
