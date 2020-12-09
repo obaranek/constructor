@@ -23,7 +23,7 @@ void usage_UnrecognizedCommandLineOption() {
 }
 
 int main(int argc, char* argv[]) {
-    std::unique_ptr<Controller> theController = Controller{ std::make_unique<Controller>() };
+    std::unique_ptr<Controller> theController = std::make_unique<Controller>();
 
     // booleans to determine if other 
     bool boardPresent{ false };

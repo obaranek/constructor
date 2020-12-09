@@ -4,7 +4,7 @@
 #include <string>
 #include "BoardModel.h"
 
-class Controller() {
+class Controller {
     std::unique_ptr<BoardModel> theBoardModel;
     std::string initMethodCall;
     std::string fileName;
