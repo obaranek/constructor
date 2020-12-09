@@ -3,9 +3,7 @@
 
 #include <stdexcept>
 
-using std::invalid_argument;
 using std::logic_error;
-using std::make_pair;
 
 Residence::Residence()
     : reward{1}, type{'B'}, cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}} {};
@@ -16,12 +14,12 @@ shared_ptr<Builder> Residence::getOwner() { return owner; }
 
 int Residence::getReward() { return reward; }
 
-char Residence::improveResidence(shared_ptr<Builder> builder) {
+char Residence::improveResidence() {
   if (type == 'T') {
     throw logic_error("Residence::improveResidence: Tower can't be upgraded");
   }
   //@TODO do checkResources
-  if (!builder->checkResources(cost)) {
+  if (!owner->checkResources(cost)) {
     throw logic_error(
         "Residence::improveResidence: Builder Doesn't have enough resources");
   }
