@@ -21,11 +21,11 @@ void Vertex::improveResidence(shared_ptr<Builder> currBuilder){
     char newResType = residence->improveResidence();
     currBuilder->updateResidence(vertexNumber, newResType);
   }catch(...){
-    //@TODO: Throw exception- 
+    //@TODO: Throw exception-
   }
 
 }
 
-int Vertex::getVertexNum() { return number; }
+int Vertex::getVertexNum() { return vertexNumber; }
 
-shared_ptr<Residence> getResidence() { return residence; }
+shared_ptr<Residence> Vertex::getResidence() { return residence; }
