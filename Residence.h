@@ -24,7 +24,7 @@ public:
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
-  char improveResidence(shared_ptr<Builder>);
+  char improveResidence();
 };
 
 #endif // __RESIDENCE_H_
