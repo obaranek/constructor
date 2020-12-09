@@ -353,7 +353,7 @@ void BoardView::printResidence(const std::shared_ptr<Builder> builder) {
 }
 
 // Prints the current board
-void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
+void BoardView::printBoard(const BoardModel* board) {
     int vertexCounter = 0;
     int edgeCounter = 0;
     int tileCounter = 0;
