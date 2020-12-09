@@ -27,7 +27,7 @@ private:
   int seed;
 
 public:
-  // default constructor sets seed to be 0
+  // default constructor sets seed to be -1
   BoardModel();
 
   void initBoard(std::string fileName = "layout.txt");
