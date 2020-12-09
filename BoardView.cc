@@ -672,7 +672,32 @@ void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
     cout << endl;
 
     // Line 38:
+    print1BarSet();
 
+    // Line 39:
+    edgeTileNumEdge(cout, true);
+    edgeTileNumEdge(cout, true);
+    edgeTileNumEdge(cout, false, 
+        board->getEdgePtr(69), 
+        NULL,
+        board->getEdgePtr(70));
+    edgeTileNumEdge(cout, true);
+    edgeTileNumEdge(cout, true);
+    cout << endl;
+
+    // Line 40:
+    print1BarSet();
+
+    // Line 41:
+    vertexEdgeVertex(cout, true);
+    vertexEdgeVertex(cout, true);
+    vertexEdgeVertex(cout, false, 
+        board->getVertexPtr(52),
+        board->getEdgePtr(71),
+        board->getVertexPtr(53));
+    vertexEdgeVertex(cout, true);
+    vertexEdgeVertex(cout, true);
+    cout << endl;
 }
 
 // Print Current Builder's Turn
