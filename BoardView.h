@@ -15,7 +15,7 @@ class Tile;
 class Vertex;
 class Edge;
 
-class BoardView() {
+class BoardView{
   private:
     
    // Returns a string with freq spaces
