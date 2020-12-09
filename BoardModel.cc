@@ -72,12 +72,13 @@ void BoardModel::init(string fileName) {
       edges.at(edgeNum)->vertices.emplace_back(vertexNum);
     }
   }
-
   ifs.close();
+
   ifs.open("tile_vertices.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open tile_vertices.txt");
   }
+
   // initializing vertices neighbouring each tile
   while (getline(ifs, line)) {
     iss << line;
@@ -91,11 +92,12 @@ void BoardModel::init(string fileName) {
   }
   ifs.close();
 
-  // initializing edges neighbouring each tile
   ifs.open("tile_edges.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open tile_edges.txt");
   }
+
+  // initializing edges neighbouring each tile
   while (getline(ifs, line)) {
     iss << line;
     string str;
@@ -104,6 +106,42 @@ void BoardModel::init(string fileName) {
     while (iss >> str) {
       int edgeNum = stoi(str);
       tiles.at(tileNum)->edges.emplace_back(edgeNum);
+    }
+  }
+  ifs.close();
+
+  // initializing the adjacent vertices for each vertex
+  ifs.open("adjacentVertices");
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open adjacentVertices");
+  }
+
+  while (getline(ifs, line)) {
+    iss << line;
+    string word;
+    iss >> word;
+    int vertexNum = stoi(word);
+    while (iss >> word) {
+      int adjacentVertexNum = stoi(word);
+      vertices.at(vertexNum)->adjacentVertices.push_back(adjacentVertexNum);
+    }
+  }
+  ifs.close();
+
+  // initializing the adjacent vertices for each vertex
+  ifs.open("adjacentedges");
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open adjacentedges file");
+  }
+
+  while (getline(ifs, line)) {
+    iss << line;
+    string word;
+    iss >> word;
+    int edgeNum = stoi(word);
+    while (iss >> word) {
+      int adjacentEdgeNum = stoi(word);
+      edges.at(edgeNum)->adjacentEdges.push_back(adjacentEdgeNum);
     }
   }
   ifs.close();
