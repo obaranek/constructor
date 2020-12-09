@@ -1,14 +1,54 @@
 #ifndef _BOARDVIEW_H_
 #define _BOARDVIEW_H_
+
 #include <vector>
 #include <memory>
+#include <string>
+#include <iostream>
+
 #include "Builder.h"
 #include "ResourceType.h"
 #include "BoardModel.h"
 #include "Colour.h"
 
+class Tile;
+class Vertex;
+class Edge;
 
 class BoardView() {
+  private:
+    
+   // Returns a string with freq spaces
+   std::string makeBlank(int freq);
+
+   // Returns a string with house or vertex number
+   std::string printVertex(std::shared_ptr<Vertex> vertex);
+
+   // Returns a string with road or edge number
+   std::string printEdge(std::shared_ptr<Edge> edge);
+
+   std::ostream & edgeTileNumEdge(std::ostream& os, bool blank = false,
+       const std::shared_ptr<Edge> leftEdge = NULL, 
+       const std::shared_ptr<Tile> tile = NULL,
+       const std::shared_ptr<Edge> rightEdge = NULL);  
+
+   std::ostream& vertexEdgeVertex(std::ostream& os, bool blank = false,
+       const std::shared_ptr<Vertex> leftVertex = NULL, 
+       const std::shared_ptr<Edge> edge = NULL,
+       const std::shared_ptr<Vertex> rightVertex = NULL);  
+
+    std::ostream& borderResourceBorder(std::ostream& os, bool blank = false,
+       const std::shared_ptr<Tile> tile = NULL, 
+       bool leftBar = false, bool rightBar = false);
+
+    std::ostream& vertexTileValVertex(std::ostream& os,
+       const std::shared_ptr<Vertex> leftVertex = NULL,
+       const std::shared_ptr<Tile> tile = NULL,
+       const std::shared_ptr<Vertex> rightVertex = NULL);
+
+    std::ostream& printTileVal(std::ostream& os,
+        const std:: shared_ptr<Tile> tile = NULL);
+
   public:
     // Prints the current status of all builders in order from builder 0 to 3
     void printStatus(const std::vector<std::shared_ptr<Builder>> & builderVectorPtr);
