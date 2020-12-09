@@ -5,9 +5,12 @@
 #include "Colour.h"
 #include "ResourceType.h"
 
-Controller::Controller() {
-    theBoardModel{ std::make_unique<BoardModel>() }
-}
+Controller::Controller()
+    : theBoardModel{ std::make_unique<BoardModel>() },
+      initMethodCall{""},
+      fileName{""},
+      seedValue{-1}
+{}
 
 void Controller::playTurn() {
     bool IsGameEnd{ false };
@@ -67,7 +70,17 @@ void Controller::playTurn() {
         // DURING PLAYER TURN
         //
         while (userInput != "next") {
+            std::cout << "¿" << std::endl;
             std::cin >> userInput;
+
+            // READS EOF, SAVE AND EXIT.
+            if (std::cin.eof()) {
+                std::string eofSaveFile{"backup.sv"};
+                theBoardModel->save(eofSaveFile);
+
+                std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
+                exit(0);
+            }
 
             // board
             if (userInput == "board") {
@@ -156,6 +169,7 @@ void Controller::playTurn() {
         bool isPlayerWon{ theBoardModel->checkWinner() };
 
         if (isPlayerWon == true) {
+            std::cout << "Congratulations! " << (theBoardModel->getCurrBuilder())->getColour() << " has won!" << std::endl;
             std::cout << "Would you like to play again?" << std::endl;
 
             std::string userReplayInput;
@@ -178,7 +192,21 @@ void Controller::playTurn() {
 
 void Controller::startGame() {
     // creates a new board for a new game
-    theBoardModel->init();
+
+    if (initMethodCall.empty()) {
+        initBoard();
+    } else if (initMethodCall == "initLoad") {
+        initLoad(fileName);
+    } else (initMethodCall == "initBoard") {
+        initBoard(fileName);
+    } else {
+        initRandomBoard();
+    }
+
+    // if user gives a seed value
+    if (seedValue >= 0) {
+        setSeedValue(seedValue);
+    }
 
     for(int counter = 0; counter < 8; ++counter) {
         int userVertexInput;
@@ -205,7 +233,30 @@ void Controller::startGame() {
     playTurn();
 }
 
-void Controller::load() {
-    std::ifstream loadFile;
-    theBoardModel->load(loadFile);
+void Controller::initRandomBoard() {
+    theBoardModel->initRandomBoard();
+}
+
+void Controller::initBoard(std::string fileName) {
+    theBoardModel->initBoard(fileName);
+}
+
+void Controller::initLoad(std::string fileName) {
+    theBoardModel->load(fileName);
+}
+
+void setBoardSeed(int seed) {
+    theBoardModel->setSeed(seed);
+}
+
+void setSeedValue(int seed) { 
+    seedValue = seed;
+}
+
+void setInitMethodCall(std::string initMethod) { 
+    initMethodCall = initMethod; 
+}
+
+void setFileName(std::string inputFileName) {
+    fileName = inputFileName;
 }
