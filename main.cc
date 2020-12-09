@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <memory>
 #include "Controller.h"
@@ -17,7 +18,7 @@ void usage_UnrecognizedCommandLineOption(std::string option) {
     exit(1);
 }
 
-void usage_UnrecognizedCommandLineOption() {
+void usage_invalidSeedValue() {
     std::cerr << eInvalidSeedValue << std::endl;
     exit(1);
 }
@@ -39,10 +40,13 @@ int main(int argc, char* argv[]) {
     } else {
         // Loop to check for '-seed xxx'
         for (int counter = 0; counter < argc; ++counter) {
+            std::string argument{ argv[counter] };
+            
             if (argument == "-seed") {
-                int seedNumber{ argv[counter + 1] };
+                std::istringstream ss{ argv[counter + 1] };
+                int seedNumber;
 
-                if (seedNumber < 0) {
+                if (ss >> seedNumber && seedNumber < 0) {
                     usage_invalidSeedValue();
                 } else {
                     theController->setBoardSeed(seedNumber);

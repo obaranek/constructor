@@ -10,16 +10,18 @@ class Controller {
     std::string fileName;
     int seedValue;
     
+  public:
     Controller();
 
     void playTurn();
-    
-  public:
+
     void startGame();
 
     void initRandomBoard();
 
-    void initBoard(std::string fileName);
+    void initBoard(std::string fileName = "layout.txt");
+
+    void initBoard();
 
     void initLoad(std::string fileName);
 
