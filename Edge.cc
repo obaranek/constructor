@@ -8,12 +8,12 @@ Edge::Edge(int edgeNumber)
   : edgeNumber{edgeNumber}, hasRoad{false} {};
 
 void Edge::buildRoad(shared_ptr<Builder> builderPtr){
-  
+
   // check if edge already has a road
   if(hasRoad){
     //@TODO: Throw exception- Edge already has a road
   }
-  
+
   // Check if user has an adjacent residence or road
   bool hasAdjacentRoad = false;
   bool hasAdjacentResidence = false;
@@ -39,10 +39,14 @@ void Edge::buildRoad(shared_ptr<Builder> builderPtr){
   }
 }
 
+bool Edge::doesHaveRoad(){
+  return hasRoad;
+}
+
 /***** Getters and Setters *****/
 
-int Edge::getEdgeNum() { return number; }
+int Edge::getEdgeNum() { return edgeNumber; }
 
-Colour getOwnerColour() {
+Colour Edge::getOwnerColour() {
   return owner->getColour();
 }
