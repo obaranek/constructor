@@ -73,4 +73,4 @@ map<ResourceType, int> &Builder::getResources() { return resources; }
 
 map<int, char> &Builder::getBuildings() { return buildings; }
 
-void setDice(char diceType) { dice = diceType; }
+void Builder::setDice(char diceType) { dice = diceType; }

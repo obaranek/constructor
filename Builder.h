@@ -1,11 +1,11 @@
 #ifndef __BUILDER_H_
 #define __BUILDER_H_
 
+#include "Colour.h"
+#include "ResourceType.h"
+
 #include <map>
 #include <vector>
-
-class Colour;
-class ResourceType;
 
 class Builder{
   private:
