@@ -321,7 +321,8 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  diceValue == 7 ? playGoose() : obtainResources(diceValue);
+  //diceValue == 7 ? playGoose() : obtainResources(diceValue);
+  obtainResources(diceValue); //@TODO: remove this once we implement goose
 }
 
 void BoardModel::next() {
@@ -370,7 +371,7 @@ bool BoardModel::checkWinner() {
 void BoardModel::printBoard() { theBoardView->printBoard(this); }
 
 void BoardModel::printResidences() {
-  theBoardView->printResidences(currBuilder);
+  theBoardView->printResidence(currBuilder);
 }
 
 void BoardModel::printCurrBuilderTurn() {
@@ -387,8 +388,8 @@ void BoardModel::printTradeResources(const Colour otherBuilder,
                                      const ResourceType give,
                                      const ResourceType take) {
 
-  theBoardView->printTradeResources(currBuilder->getColour(),
-                                    otherBuilder->getColour, give, take);
+  theBoardView->printTradeResource(currBuilder->getColour(),
+                                    otherBuilder, give, take);
 }
 
 void BoardModel::printWhereBuild() {
