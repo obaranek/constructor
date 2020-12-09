@@ -10,11 +10,11 @@ class Controller {
     std::string fileName;
     int seedValue;
     
+  public:
     Controller();
 
     void playTurn();
-    
-  public:
+
     void startGame();
 
     void initRandomBoard();
