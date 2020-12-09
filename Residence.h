@@ -20,10 +20,11 @@ private:
   shared_ptr<Builder> owner;
 
 public:
-  Residence(char type);
+  Residence();
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
+  char improveResidence(shared_ptr<Builder>);
 };
 
 #endif // __RESIDENCE_H_
