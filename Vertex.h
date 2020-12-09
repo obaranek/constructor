@@ -8,19 +8,24 @@ using std::shared_ptr;
 using std::vector;
 
 class Residence;
+class Builder;
 
 class Vertex {
 private:
-  int number;
+  int vertexNumber;
   shared_ptr<Residence> residence;
   vector<int> edges;
+  vector<int> adjacentVertices;
 
 public:
   Vertex(int);
 
-  int getVertexNum();
+  void buildResidence(shared_ptr<Builder> currBuilder);
 
-  shared_ptr<Residence> getResidence() { return residence; }
+  void improveResidence(shared_ptr<Builder> currBuilder);
+
+  int getVertexNum();
+  shared_ptr<Residence> getResidence();
 
   friend class BoardModel;
 };

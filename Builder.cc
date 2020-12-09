@@ -8,6 +8,7 @@ using namespace std;
 Builder::Builder(Colour colour) 
   : colour{colour}, points{0}, dice{'L'} {}
 
+
 void Builder::buildResidence(int vertexNum){
   buildings.insert(pair<int, char>(vertexNum, 'B'));
   points++;
