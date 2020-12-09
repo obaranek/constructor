@@ -21,6 +21,8 @@ class Controller {
 
     void initBoard(std::string fileName);
 
+    void initBoard();
+
     void initLoad(std::string fileName);
 
     void setBoardSeed(int seed);

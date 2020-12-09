@@ -42,9 +42,10 @@ int main(int argc, char* argv[]) {
             std::string argument{ argv[counter] };
             
             if (argument == "-seed") {
-                int seedNumber{ argv[counter + 1] };
+                std::istringstream ss{ argv[counter + 1] };
+                int seedNumber;
 
-                if (seedNumber < 0) {
+                if (ss >> seedNumber && seedNumber < 0) {
                     usage_invalidSeedValue();
                 } else {
                     theController->setBoardSeed(seedNumber);

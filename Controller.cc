@@ -241,6 +241,10 @@ void Controller::initBoard(std::string fileName) {
     theBoardModel->initBoard(fileName);
 }
 
+void Controller::initBoard() {
+    theBoardModel->initBoard();
+}
+
 void Controller::initLoad(std::string fileName) {
     theBoardModel->load(fileName);
 }
