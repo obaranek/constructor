@@ -8,7 +8,7 @@ using namespace std;
 Vertex::Vertex(int number) : vertexNumber{number} {};
 
 void Vertex::buildResidence(shared_ptr<Builder> currBuilder){
-  residence = make_shared<Residence>(vertexNumber);
+  residence = make_shared<Residence>(currBuilder);
   currBuilder->buildResidence(vertexNumber);
 }
 
