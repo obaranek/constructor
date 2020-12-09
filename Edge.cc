@@ -39,6 +39,10 @@ void Edge::buildRoad(shared_ptr<Builder> builderPtr){
   }
 }
 
+bool Edge::hasRoad(){
+  return hasRoad;
+}
+
 /***** Getters and Setters *****/
 
 int Edge::getEdgeNum() { return number; }

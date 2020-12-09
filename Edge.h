@@ -22,6 +22,10 @@ class Edge {
     // buildRoad function
     void buildRoad(std::shared_ptr<Builder> builderPtr);
 
+    
+    // hasRoad() returns true if there is a road at this edge
+    bool hasRoad();
+
     /***** Getters and Setters *****/
 
     // getEdgeNum() returns the edge number
