@@ -42,7 +42,7 @@ class Builder{
 
     // checkResources() returns true if builder owns at least
     // the passed in quantity of respective ResourceType
-    bool checkResources(std::map<ResourceType,int>& requiredResources);
+    bool checkResources(std::map<ResourceType,int> requiredResources);
 
     /***** Getters and Setters *****/
 
