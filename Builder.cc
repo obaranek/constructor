@@ -43,7 +43,7 @@ bool Builder::haveRoad(int edgeNum) {
   return edgeIt != roads.end();
 }
 
-bool Builder::checkResources(map<ResourceType, int> &requiredResources) {
+bool Builder::checkResources(map<ResourceType, int> requiredResources) {
   bool haveEnough = true;
 
   // Loop through the required resources
