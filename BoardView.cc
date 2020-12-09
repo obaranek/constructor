@@ -10,6 +10,33 @@
 #include "Colour.h"
 #include "ResourceType.h"
 
+// takes in a colour and returns the string equivalent of the colour
+std::string colourReturn(Colour buildercolour) {
+  if (builderColour == COLOUR::Blue) {
+    return "Blue";
+  } else if (builderColour == COLOUR::Red) {
+    return "Red";
+  } else if (builderColour == COLOUR::Orange) {
+    return "Orange";
+  } else {
+    return "Yellow";
+  }
+}
+
+// takes in a resourcetype and returns the string equivalent of the resource
+std::string resourceReturn(ResourceType resource) {
+  if (resource == ResourceType::BRICK) {
+    return "brick";
+  } else if (resource == ResourceType::ENERGY) {
+    return "energy";
+  } else if (resource == ResourceType::GLASS) {
+    return "glass";
+  } else if (resource == ResourceType::HEAT) {
+    return "heat";
+  } else {
+    return "wifi";
+  }
+}
 
 // Takes in a ResourceType and maps it to a string.
 std::string resToString(ResourceType res){
@@ -302,7 +329,7 @@ void BoardView::printStatus(const std::vector<std::shared_ptr<Builder>> & builde
         std::map<ResourceType, int> resourceMap{ builder.getResource() };
 
         // print the required output
-        std::cout << currentBuilder.getColour() << " has " << std::setw(5);
+        std::cout << colourReturn(currentBuilder.getColour()) << " has " << std::setw(5);
         std::cout << currentBuilder.getPoints() << " building points, ";
         std::cout << residenceMap[ResourceType::BRICK] << " brick, ";
         std::cout << residenceMap[ResourceType::ENERGY] << " energy, ";
@@ -314,8 +341,8 @@ void BoardView::printStatus(const std::vector<std::shared_ptr<Builder>> & builde
 
 // Prints the residence owned by the builder
 void BoardView::printResidence(const std::shared_ptr<Builder> builder) {
-    // print <color> has built
-    std::cout << builder->getColor() << " has built: " << std::endl;
+    // print <colour> has built
+    std::cout << colourReturn(builder->getColor()) << " has built: " << std::endl;
   
     //print all <vertex> <buildingType>
     std::map<int, char> buildingsMap{ builder->getBuildings() };
@@ -738,17 +765,19 @@ void BoardView::printBoard(const std::shared_ptr<BoardModel> board) {
 
 // Print Current Builder's Turn
 void BoardView::printCurrBuilderTurn(const std::shared_ptr<Builder> builder) {
-    std::cout << "Builder " << builder->getColour() << "'s turn." << std::endl;
+  Colour builderColour{ builder->getColour() };
+
+    std::cout << "Builder "<< colourReturn(builderColour) << "'s turn." << std::endl;
 }
 
 // prints the required output to display when a trade is proposed
 void BoardView::printTradeResource(const Colour thisBuilder, const Colour otherBuilder, const ResourceType giveResource, const ResourceType takeResource) {
-    std::cout << thisBuilder << " offers " << otherBuilder << " one " << giveResource << " for one " << takeResource << "." << std::endl;
-    std::cout << "Does " << otherBuilder << " accept this offer?" << std::endl;
+    std::cout << colourReturn(thisBuilder) << " offers " << colourReturn(otherBuilder) << " one " << resourceReturn(giveResource) << " for one " << resourceReturn(takeResource) << "." << std::endl;
+    std::cout << "Does " << colorReturn(otherBuilder) << " accept this offer?" << std::endl;
 }
 
 void BoardView::printWhereBuild(const Colour thisBuilder) {
-    std::cout << "Builder " << thisBuilder << ", where do you want to build a basement?" << std::endl;
+    std::cout << "Builder " << colourReturn(thisBuilder) << ", where do you want to build a basement?" << std::endl;
 }
 
 // prints out the list of commands for begin game setting
