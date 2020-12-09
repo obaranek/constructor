@@ -27,7 +27,7 @@ public:
   // default constructor sets seed to be 0
   BoardModel();
 
-  void init(std::string fileName = "layout.txt");
+  void initBoard(std::string fileName = "layout.txt");
 
   // loadLayout() sets up the board according to the given text file
   void loadLayout(std::ifstream &, std::string fileName = "layout.txt");

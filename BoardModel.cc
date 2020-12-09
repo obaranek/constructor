@@ -31,7 +31,7 @@ BoardModel::BoardModel() : seed{-1} {}
 
 /***** Functions *****/
 
-void BoardModel::init(string fileName) {
+void BoardModel::initBoard(string fileName) {
   // reset state
   edges.clear();
   vertices.clear();
