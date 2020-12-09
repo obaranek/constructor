@@ -1,6 +1,9 @@
 #ifndef __BOARDMODEL_H_
 #define __BOARDMODEL_H_
 
+#include "Colour.h"
+#include "ResourceType.h"
+
 #include <fstream>
 #include <memory>
 #include <string>
