@@ -5,22 +5,25 @@
 #include "Tile.h"
 #include "Vertex.h"
 
+#include <algorithm>
+#include <chrono>
 #include <fstream>
+#include <random>
 #include <sstream>
 #include <stdexcept>
-#include <algorithm>
-#include <random>
-#include <chrono>
 
+using std::chrono;
+using std::default_random_engine;
 using std::getline;
 using std::ifstream;
 using std::invalid_argument;
+using std::istringstream;
+using std::logic_error;
 using std::shared_ptr;
+using std::stoi;
 using std::string;
 using std::stringstream;
 using std::vector;
-using std::chrono;
-using std::default_random_engine;
 
 /***** Constructors *****/
 
@@ -28,14 +31,11 @@ BoardModel::BoardModel() : seed{-1} {}
 
 /***** Functions *****/
 
-void BoardModel::init() {
+void BoardModel::init(string fileName) {
   // reset state
   edges.clear();
   vertices.clear();
   tiles.clear();
-
-  ifstream verticiesFile{"vertices.txt"};
-  string line;
 
   // creating a vector of all the tiles
   for (int i = 0; i < 19; i++) {
@@ -52,59 +52,76 @@ void BoardModel::init() {
     edges.emplace_back(i);
   }
 
+  ifstream ifs;
+  ifs.open("vertices.txt");
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open vertices.txt");
+  }
+  string line;
+  stringstream iss;
   // initializing edges' and vertices' neighbours
-  while (getline(verticiesFile, line)) {
-    stringstream ss;
-    ss << line;
-    string str;
-    ss >> str;
-    int vertexNum = stoi(str);
+  while (getline(ifs, line)) {
+    iss << line;
+    string word;
+    iss >> word;
+    int vertexNum = stoi(word);
     // adding adjacent vertices and edges to each other
-    while (ss >> str) {
-      int edgeNum = stoi(str);
+    while (iss >> word) {
+      int edgeNum = stoi(word);
       vertices.at(vertexNum)->edges.emplace_back(edgeNum);
       edges.at(edgeNum)->vertices.emplace_back(vertexNum);
     }
   }
 
+  ifs.close();
+  ifs.open("tile_vertices.txt");
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open tile_vertices.txt");
+  }
   // initializing vertices neighbouring each tile
-  ifstream tileVerticesFile{"tile_vertices.txt"};
-  while (getline(tileVerticesFile, line)) {
-    stringstream ss;
-    ss << line;
-    string str;
-    ss >> str;
-    int tileNum = stoi(str);
-    while (ss >> str) {
-      int vertexNum = stoi(str);
+  while (getline(ifs, line)) {
+    iss << line;
+    string word;
+    iss >> word;
+    int tileNum = stoi(word);
+    while (iss >> word) {
+      int vertexNum = stoi(word);
       tiles.at(tileNum)->vertices.emplace_back(vertexNum);
     }
   }
+  ifs.close();
 
   // initializing edges neighbouring each tile
-  ifstream tileEdgesFile{"tile_edges.txt"};
-  while (getline(tileVerticesFile, line)) {
-    stringstream ss;
-    ss << line;
+  ifs.open("tile_edges.txt");
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open tile_edges.txt");
+  }
+  while (getline(ifs, line)) {
+    iss << line;
     string str;
-    ss >> str;
+    iss >> str;
     int tileNum = stoi(str);
-    while (ss >> str) {
+    while (iss >> str) {
       int edgeNum = stoi(str);
       tiles.at(tileNum)->edges.emplace_back(edgeNum);
     }
   }
+  ifs.close();
 
   // loading layout from layout.txt
-  loadLayout();
+  ifs.open(fileName);
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open the layout file");
+  }
+  loadLayout(ifs);
+  ifs.close();
 }
 
-void BoardModel::loadLayout(std::string fileName) {
-  ifstream layoutFile{fileName};
+void BoardModel::loadLayout(std::ifstream &ifs, std::string fileName) {
   string line;
   int tileNum = 0;
-  while (std::getline(layoutFile, line)) {
-    stringstream ss;
+  while (getline(ifs, line)) {
+    istringstream ss{line};
     string str;
     int tileValue;
     int resourceNum;
@@ -129,6 +146,7 @@ void BoardModel::loadLayout(std::string fileName) {
       tiles.at(tileNum)->resourceType = WIFI;
       break;
     case PARK:
+      gooseTile = tiles.at(tileNum);
       break;
     default:
       throw std::invalid_argument("BoardModel::loadLayout: Invalid Resource "
@@ -243,16 +261,16 @@ void BoardModel::BuildRoad(int edgeNum) {
 }
 
 int BoardModel::rollDice() {
-  vector<int> diceOptions = {2,3,4,5,6,7,8,9,10,11,12};
-  
+  vector<int> diceOptions = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+
   // set the correct seed based on if flag is used or not
   int localSeed;
-  if(seed < 0){
+  if (seed < 0) {
     localSeed = chrono::system_clock::now().time_since_epoch().count();
   } else {
     localSeed = seed;
   }
-  
+
   // defining random number generator with correct seed
   default_random_engine rng{localSeed};
   // shuffling the dice option vector
@@ -268,32 +286,34 @@ void BoardModel::playRoll(int diceValue) {
   diceValue == 7 ? playGoose : obtainResources(diceValue);
 }
 
-void BoardModel::next(){
+void BoardModel::next() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
-  
-  if(currBuilderIt == builders.end()){ // buider not found (should never happen)
+
+  if (currBuilderIt ==
+      builders.end()) { // buider not found (should never happen)
     //@TODO: Throw exception- Builder not found when incrementing
   }
 
-  // increment the currBuilder 
-  if(currBuilderIt + 1 == builders.end()){ // if we are at last builder
+  // increment the currBuilder
+  if (currBuilderIt + 1 == builders.end()) { // if we are at last builder
     currBuilder = *(builders.begin());
-  }else{ // there is a builder ahead (not at last builder)
+  } else { // there is a builder ahead (not at last builder)
     currBuilder = *(currBuilderIt++);
   }
 }
 
-void BoardModel::prevBuilder(){
+void BoardModel::prevBuilder() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
-  
-  if(currBuilderIt == builders.end()){ // buider not found (should never happen)
+
+  if (currBuilderIt ==
+      builders.end()) { // buider not found (should never happen)
     //@TODO: Throw exception- Builder not found when decrementing
   }
 
-  // decrementing the currBuilder 
-  if(currBuilderIt == builders.begin()){ // if we are at the first builder
+  // decrementing the currBuilder
+  if (currBuilderIt == builders.begin()) { // if we are at the first builder
     currBuilder = *(builders.end() - 1);
-  }else{ // there is a builder infront of us (not at first builder)
+  } else { // there is a builder infront of us (not at first builder)
     currBuilder = *(currBuilderIt--);
   }
 }
@@ -333,7 +353,7 @@ void BoardModel::printTradeResources(const Colour otherBuilder,
                                     otherBuilder->getColour, give, take);
 }
 
-void BoardModel::printWhereBuild(){
+void BoardModel::printWhereBuild() {
   theBoardView->printWhereBuild(currBuilder->getColour());
 }
 
@@ -343,18 +363,17 @@ std::shared_ptr<Builder> BoardModel::getCurrBuilder() { return currBuilder; }
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
-void BoardModel::setDice(char type) { 
-  if(type == 'L' || type == 'F'){
-    currBuilder->setDice(type);  
-  } else{
+void BoardModel::setDice(char type) {
+  if (type == 'L' || type == 'F') {
+    currBuilder->setDice(type);
+  } else {
     //@TODO: Throw exception- type can only be L or F
   }
 }
 
-void BoardModel::setSeed(int _seed) {i
-  if(_seed >= 0){
-   seed = _seed;
-  } else{
+void BoardModel::setSeed(int _seed) {
+  i if (_seed >= 0) { seed = _seed; }
+  else {
     //@TODO: Throw exception- _seed can't be negative
   }
 }

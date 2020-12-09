@@ -1,6 +1,7 @@
 #ifndef __BOARDMODEL_H_
 #define __BOARDMODEL_H_
 
+#include <fstream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -26,10 +27,10 @@ public:
   // default constructor sets seed to be 0
   BoardModel();
 
-  void init();
+  void init(std::string fileName = "layout.txt");
 
   // loadLayout() sets up the board according to the given text file
-  void loadLayout(std::string fileName = "layout.txt");
+  void loadLayout(std::ifstream &, std::string fileName = "layout.txt");
 
   // moveGeese() sets gooseTile to point at tile of tileNum
   void moveGeese(int tileNum);
@@ -62,7 +63,6 @@ public:
   // returns true if a builder won the game
   bool checkWinner();
 
-
   /***** Print Functions *****/
 
   void printBoard();
@@ -81,7 +81,6 @@ public:
                            const ResourceType take);
 
   void printWhereBuild();
-
 
   /***** Getters and Setters *****/
 
