@@ -3,6 +3,7 @@
 
 #include "Colour.h"
 #include "ResourceType.h"
+#include "BoardView.h"
 
 #include <fstream>
 #include <memory>
@@ -13,7 +14,6 @@ class Tile;
 class Vertex;
 class Builder;
 class Edge;
-class BoardView;
 
 class BoardModel {
 private:
