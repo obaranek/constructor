@@ -118,21 +118,74 @@ void Controller::playTurn() {
                 }
             } else if (userInput == "trade") { // trade <colour> <give> <take>
                     // Reads in the other player's color
-                    Colour otherPlayerColour;
+                    std::string otherPlayerColour;
                     std::cin >> otherPlayerColour;
 
+                    Colour otherBuilderColour;
+
+                    if (otherPlayerColour[0] == 'B' || otherPlayerColour[0] == 'b') { // blue
+                        otherColour = Colour::Blue;
+                    } else if (otherPlayerColour[0] == 'R' || otherPlayerColour[0] == 'r') { // red
+                        otherColour = Colour::Red;
+                    } else if (otherPlayerColour[0] == 'O' || otherPlayerColour[0] == 'o') { //orange
+                        otherColour = Colour::Orange;
+                    } else if (otherPlayerColour[0] == 'Y' || otherPlayerColour[0] == 'y') { //yellow
+                        otherColour = Colour::Yellow;
+                    } else {
+                        std::cout << "Invalid <colour>" << std::endl;
+                        continue
+                    }
+
                     // Reads in the offered resource
-                    ResourceType giveResource;
+                    std::string giveResource;
                     std::cin >> giveResource;
+
+                    ResourceType giveResourceType;
+
+                    if (giveResource[0] == 'B' || giveResource[0] == 'b') { // brick
+                        giveResourceType = ResourceType::BRICK;
+                    } else if (giveResource[0] == 'E' || giveResource[0] == 'e') { // energy
+                        giveResourceType = ResourceType::ENERGY;
+                    } else if (giveResource[0] == 'G' || giveResource[0] == 'g') { // glass
+                        giveResourceType = ResourceType::GLASS;
+                    } else if (giveResource[0] == 'H' || giveResource[0] == 'h') { // heat
+                        giveResourceType = ResourceType::HEAT;
+                    } else if (giveResource[0] == 'W' || giveResource[0] == 'w') { // wifi
+                        giveResourceType = ResourceType::WIFI;
+                    } else if (giveResource[0] == 'P' || giveResource[0] == 'p') { // park
+                        giveResourceType = ResourceType::PARK;
+                    } else {
+                        std::cout << "Invalid <give>" << std::endl;
+                        continue;
+                    }
 
                     // Reads in the requested resource
                     ResourceType takeResource;
                     std::cin >> takeResource;
+
+                    ResourceType takeResourceType;
+
+                    if (giveResource[0] == 'B' || giveResource[0] == 'b') { // brick
+                        giveResourceType = ResourceType::BRICK;
+                    } else if (giveResource[0] == 'E' || giveResource[0] == 'e') { // energy
+                        giveResourceType = ResourceType::ENERGY;
+                    } else if (giveResource[0] == 'G' || giveResource[0] == 'g') { // glass
+                        giveResourceType = ResourceType::GLASS;
+                    } else if (giveResource[0] == 'H' || giveResource[0] == 'h') { // heat
+                        giveResourceType = ResourceType::HEAT;
+                    } else if (giveResource[0] == 'W' || giveResource[0] == 'w') { // wifi
+                        giveResourceType = ResourceType::WIFI;
+                    } else if (giveResource[0] == 'P' || giveResource[0] == 'p') { // park
+                        giveResourceType = ResourceType::PARK;
+                    } else {
+                        std::cout << "Invalid <take>" << std::endl;
+                        continue;
+                    }
                     
                     std::shared_ptr<Builder> currBuilder{ theBoardModel->getCurrBuilder() };
 
                     // print required output to display
-                    theBoardModel->printTradeResource(currBuilder->getColour(), otherPlayerColour, giveResource, takeResource);
+                    theBoardModel->printTradeResource(currBuilder->getColour(), otherBuilderColour, giveResourceType, takeResourceType);
 
                     // wait for reply (yes / no)
                     std::string acceptTrade;
