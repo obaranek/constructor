@@ -271,7 +271,7 @@ void BoardModel::improveResidence(int vertexNum) {
 
 void BoardModel::obtainResources(int value) {
   if (value == 7 || value > 12 || value < 2) {
-    throw invalid_argument("BoardModel::obtainResources:: Invalid value");
+    throw logic_error("BoardMdodel::obtainResources: Invalid value");
   }
 
   for (auto &tile : tiles) {
@@ -321,7 +321,7 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  diceValue == 7 ? playGoose : obtainResources(diceValue);
+  diceValue == 7 ? playGoose() : obtainResources(diceValue);
 }
 
 void BoardModel::next() {
