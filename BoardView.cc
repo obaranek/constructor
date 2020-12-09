@@ -10,6 +10,43 @@
 #include "Colour.h"
 #include "ResourceType.h"
 
+
+// Takes in a ResourceType and maps it to a string.
+std::string resToString(ResourceType res){
+  switch(res){
+    case 0:
+      return "BRICK";
+    case 1:
+      return "ENERGY";
+    case 2:
+      return "GLASS";
+    case 3:
+      return "HEAT";
+    case 4:
+      return "WIFI";
+    case 5:
+      return "PARK";
+     default:
+        return "ERROR"; // Print error if a diff resType is given 
+  }
+}
+
+// Returns a char with the first letter of builder colour
+char getBuilderInitials(Colour col) {
+    switch(col){
+        case 0:
+          return 'B';
+        case 1:
+          return 'R';
+        case 2:
+          return 'O';
+        case 3:
+          return 'Y';
+        default:
+          return 'E'; // Incorrect ResourceType passed in
+    }
+}
+
 // Returns a string with freq spaces
 std::string BoardView::makeBlank(int freq){
   std::string ans;
@@ -31,7 +68,7 @@ std:: BoardView::printVertex(std::shared_ptr<Vertex> vertex) {
   
   if(resPtr != NULL){
     char houseType = resPtr->getType();
-    char colourInitials = resPtr->getOwner()->getColour()->getInitials();
+    char colourInitials = getBuilderInitials(resPtr->getOwner()->getColour());
     ans += colourInitials;
     ans += houseType;
   } else {
@@ -46,14 +83,14 @@ std:: BoardView::printVertex(std::shared_ptr<Vertex> vertex) {
 // Returns a string with road or edge number
 std::ostream& BoardView::printEdge(std::shared_ptr<Edge> edge) {
     
-    char hasRoad = edge->hasRoad();
+    char hasRoad = edge->doesHaveRoad();
     int edgeNum = edge->getEdgeNum();
     
     std::string ans = "";
 
 
     if(hasRoad){
-      char colourInitials = edge->getOwnerColour()->getInitials();
+      char colourInitials = getBuilderInitials(edge->getOwnerColour());
       ans = ans + colourInitials + "R";
     } else{
       edgeNum < 10 ? 
@@ -63,7 +100,6 @@ std::ostream& BoardView::printEdge(std::shared_ptr<Edge> edge) {
 
     return ans;
 }
-
 
 std::ostream & BoardView::edgeTileNumEdge(std::ostream& os, bool blank = false,
     const std::shared_ptr<Edge> leftEdge = NULL,
@@ -144,7 +180,7 @@ std::ostream& BoardView::borderResourceBorder(std::ostream& os, bool blank = fal
       std::string res = "";
 
       if(tile != NULL){
-        res = tile->getResourceType()->toString();        
+        res = resToString(tile->getResourceType());        
       }
 
       if(leftBar) os << "  | ";
