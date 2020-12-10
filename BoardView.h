@@ -41,7 +41,8 @@ private:
                                      const std::shared_ptr<Tile> tile = NULL,
                                      bool leftBar = false,
                                      bool rightBar = false,
-                                     bool checkGeese = false);
+                                     bool checkGeese = false,
+                                     const Board * board = NULL);
 
   std::ostream &
   vertexTileValVertex(std::ostream &os,
@@ -51,8 +52,6 @@ private:
 
   std::ostream &printTileVal(std::ostream &os,
                              const std::shared_ptr<Tile> tile = NULL);
-
-  void print1BarSet(const std::shared_ptr<Tile> potentialGoose = NULL);
 
 public:
   // Prints the current status of all builders in order from builder 0 to 3

@@ -197,8 +197,9 @@ BoardView::vertexEdgeVertex(std::ostream &os, bool blank,
 }
 
 std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
-                                              const std::shared_ptr<Tile> tile,
-                                              bool leftBar, bool rightBar, bool checkGeese) {
+    const std::shared_ptr<Tile> tile, bool leftBar, bool rightBar, 
+    bool checkGeese, const Board* board) {
+
   std::string middle = "";
    
   if (blank) {
@@ -220,7 +221,7 @@ std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
     }
   }
   else{ // Printing Geese (if geese tile)
-    if(tile == gooseTile){
+    if(tile == board->gooseTile){
       middle = "GEESE";
       os << " " << middle;
     } else {
@@ -303,21 +304,7 @@ std::ostream &BoardView::printTileVal(std::ostream &os,
 
 // prints a line of the board which needs only 1  "|     |"
 void BoardView::print1BarSet(const std::shared_ptr<Tile> potentialGoose) {
-  
-  borderResourceBorder(cout, true);
-  borderResourceBorder(cout, true);
-  
-  if(potentialGoose == NULL){
-   borderResourceBorder(cout, false, NULL, true, true);
-  }
-  else{
-   borderResourceBorder(cout, false, potentialGoose, true, true, true);
-  }
-  
-  borderResourceBorder(cout, true);
-  borderResourceBorder(cout, true);
-  cout << std::endl;
-}
+ }
 
 
 // Prints the current status of all builders in order from builder 0 to 3
@@ -367,7 +354,12 @@ void BoardView::printBoard(BoardModel *board) {
   cout << std::endl;
 
   // Line 2:
-  print1BarSet();
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, false, NULL, true, true);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  cout << std::endl;
 
   // Line 3:
   edgeTileNumEdge(cout, true);
@@ -399,7 +391,7 @@ void BoardView::printBoard(BoardModel *board) {
   // Line 6:
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(0), false, false, true);  
+  borderResourceBorder(cout, false, board->getTilePtr(0), false, false, true, board);  
   borderResourceBorder(cout, false, NULL, true, true);
   borderResourceBorder(cout, true);
   cout << std::endl;
@@ -435,9 +427,9 @@ void BoardView::printBoard(BoardModel *board) {
 
   // Line 10:
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(1),false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(1),false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(2), false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(2), false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
   cout << std::endl;
 
@@ -472,11 +464,11 @@ void BoardView::printBoard(BoardModel *board) {
   cout << endl;
 
   // Line 14:
-  borderResourceBorder(cout, false, board->getTilePtr(3), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(3), true, true, true, board);
   borderResourceBorder(cout, false, NULL);
-  borderResourceBorder(cout, false, board->getTilePtr(4), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(4), true, true, true, board);
   borderResourceBorder(cout, false, NULL, false, false);
-  borderResourceBorder(cout, false, board->getTilePtr(5), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(5), true, true, true, board);
   cout << std::endl;
 
   // Line 15:
@@ -510,9 +502,9 @@ void BoardView::printBoard(BoardModel *board) {
 
   // Line 18:
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(6),false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(6),false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(7), false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(7), false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
   cout << std::endl;
 
@@ -547,11 +539,11 @@ void BoardView::printBoard(BoardModel *board) {
   cout << endl;
 
   // Line 22:
-  borderResourceBorder(cout, false, board->getTilePtr(8), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(8), true, true, true, board);
   borderResourceBorder(cout, false, NULL);
-  borderResourceBorder(cout, false, board->getTilePtr(9), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(9), true, true, true, board);
   borderResourceBorder(cout, false, NULL, false, false);
-  borderResourceBorder(cout, false, board->getTilePtr(10), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(10), true, true, true, board);
   cout << std::endl;
 
   // Line 23:
@@ -585,9 +577,9 @@ void BoardView::printBoard(BoardModel *board) {
 
   // Line 26:
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(11),false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(11),false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(12), false, false, true);
+  borderResourceBorder(cout, false, board->getTilePtr(12), false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
   cout << std::endl;
 
@@ -622,11 +614,11 @@ void BoardView::printBoard(BoardModel *board) {
   cout << endl;
 
   // Line 30:
-  borderResourceBorder(cout, false, board->getTilePtr(13), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(13), true, true, true, board);
   borderResourceBorder(cout, false, NULL);
-  borderResourceBorder(cout, false, board->getTilePtr(14), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(14), true, true, true, board);
   borderResourceBorder(cout, false, NULL, false, false);
-  borderResourceBorder(cout, false, board->getTilePtr(15), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(15), true, true, true, board);
   cout << std::endl;
 
   // Line 31:
@@ -660,9 +652,9 @@ void BoardView::printBoard(BoardModel *board) {
 
   // Line 34:
   borderResourceBorder(cout, true);
-  borderResourceBorder(cout, false, board->getTilePtr(16), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(16), true, true, true, board);
   borderResourceBorder(cout, false, NULL, false, false);  
-  borderResourceBorder(cout, false, board->getTilePtr(17), true, true, true);
+  borderResourceBorder(cout, false, board->getTilePtr(17), true, true, true, board);
   borderResourceBorder(cout, true);
   cout << std::endl;
 
@@ -694,7 +686,12 @@ void BoardView::printBoard(BoardModel *board) {
   cout << endl;
 
   // Line 38:
-  print1BarSet(board->getTilePtr(18));
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, false, board->getTilePtr(18), false, false, true, board);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  cout << end;
 
   // Line 39:
   edgeTileNumEdge(cout, true);
@@ -706,7 +703,12 @@ void BoardView::printBoard(BoardModel *board) {
   cout << endl;
 
   // Line 40:
-  print1BarSet();
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, false, NULL, true, true);
+  borderResourceBorder(cout, true);
+  borderResourceBorder(cout, true);
+  cout << std::endl;
 
   // Line 41:
   vertexEdgeVertex(cout, true);
