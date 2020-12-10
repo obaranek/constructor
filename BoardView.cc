@@ -221,7 +221,7 @@ std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
     }
   }
   else{ // Printing Geese (if geese tile)
-    if(tile == board->gooseTile){
+    if(tile == board->getGooseTile()){
       middle = "GEESE";
       os << " " << middle;
     } else {
@@ -301,11 +301,6 @@ std::ostream &BoardView::printTileVal(std::ostream &os,
   os << makeBlank(2);
   return os;
 }
-
-// prints a line of the board which needs only 1  "|     |"
-void BoardView::print1BarSet(const std::shared_ptr<Tile> potentialGoose) {
- }
-
 
 // Prints the current status of all builders in order from builder 0 to 3
 void BoardView::printStatus(

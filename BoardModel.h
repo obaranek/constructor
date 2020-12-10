@@ -93,9 +93,11 @@ public:
   std::shared_ptr<Vertex> getVertexPtr(int);
   std::shared_ptr<Edge> getEdgePtr(int);
   std::shared_ptr<Tile> getTilePtr(int);
+  std::shared_ptr<Tile> getGooseTile();
 
   void setDice(char type);
   void setSeed(int _seed);
+  
 };
 
 #endif // __BOARDMODEL_H_
