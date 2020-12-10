@@ -198,7 +198,7 @@ BoardView::vertexEdgeVertex(std::ostream &os, bool blank,
 
 std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
     const std::shared_ptr<Tile> tile, bool leftBar, bool rightBar, 
-    bool checkGeese, const BoardModel* board) {
+    bool checkGeese, BoardModel* board) {
 
   std::string middle = "";
    
