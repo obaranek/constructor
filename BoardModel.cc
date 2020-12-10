@@ -209,54 +209,6 @@ void BoardModel::loadLayout( std::string fileName) {
   }
 }
 
-/*
-void BoardModel::loadLayout( std::string fileName) {
-  ifstream ifs {fileName};
-  if (ifs.fail()) {
-    throw logic_error("BoardModel::init cannot open the layout file");
-  }
-  string line;
-  int tileNum = 0;
-  while (getline(ifs, line)) {
-	  std::cout << line << std::endl;
-    istringstream ss{line};
-    //string str;
-    int tileValue;
-    int resourceNum;
-    //ss >> str;
-    ss >> resourceNum;
-    ss >> tileValue;
-    //resourceNum = stoi(str);
-    //ss >> str;
-    //tileValue = stoi(str);
-    switch (resourceNum) {
-    case BRICK:
-      tiles.at(tileNum)->resourceType = BRICK;
-      break;
-    case ENERGY:
-      tiles.at(tileNum)->resourceType = ENERGY;
-      break;
-    case GLASS:
-      tiles.at(tileNum)->resourceType = GLASS;
-      break;
-    case HEAT:
-      tiles.at(tileNum)->resourceType = HEAT;
-      break;
-    case WIFI:
-      tiles.at(tileNum)->resourceType = WIFI;
-      break;
-    case PARK:
-      gooseTile = tiles.at(tileNum);
-      break;
-    default:
-      throw std::invalid_argument("BoardModel::loadLayout: Invalid Resource "
-                                  "Type, Check you layout file");
-    }
-    tiles.at(tileNum)->value = tileValue;
-    tileNum++;
-  }
-}*/
-
 void BoardModel::moveGeese(int tileNum) {
   gooseTile = tiles.at(tileNum);
   // Lmao this wasn't trivial, i forgot about the stealing bs
@@ -390,8 +342,7 @@ void BoardModel::playRoll(int diceValue) {
 void BoardModel::next() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
 
-  if (currBuilderIt ==
-      builders.end()) { // buider not found (should never happen)
+  if (currBuilderIt == builders.end()) { // buider not found (should never happen)
     //@TODO: Throw exception- Builder not found when incrementing
   }
 
@@ -401,6 +352,8 @@ void BoardModel::next() {
   } else { // there is a builder ahead (not at last builder)
     currBuilder = *(currBuilderIt++);
   }
+
+  std::cout << "Current Builder: " currBuilder->getColour() << std::endl;
 }
 
 void BoardModel::prevBuilder() {
@@ -417,6 +370,8 @@ void BoardModel::prevBuilder() {
   } else { // there is a builder infront of us (not at first builder)
     currBuilder = *(currBuilderIt--);
   }
+  
+  std::cout << "Current Builder: " currBuilder->getColour() << std::endl;
 }
 
 bool BoardModel::checkWinner() {
