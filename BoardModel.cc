@@ -341,19 +341,18 @@ void BoardModel::playRoll(int diceValue) {
 
 void BoardModel::next() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
-
+  
   if (currBuilderIt == builders.end()) { // buider not found (should never happen)
     //@TODO: Throw exception- Builder not found when incrementing
+    throw logic_error("Builder not found when incrementing");
   }
 
   // increment the currBuilder
   if (currBuilderIt + 1 == builders.end()) { // if we are at last builder
     currBuilder = *(builders.begin());
   } else { // there is a builder ahead (not at last builder)
-    currBuilder = *(currBuilderIt++);
+    currBuilder = *(currBuilderIt + 1);
   }
-
-  std::cout << "Current Builder: " currBuilder->getColour() << std::endl;
 }
 
 void BoardModel::prevBuilder() {
@@ -368,10 +367,9 @@ void BoardModel::prevBuilder() {
   if (currBuilderIt == builders.begin()) { // if we are at the first builder
     currBuilder = *(builders.end() - 1);
   } else { // there is a builder infront of us (not at first builder)
-    currBuilder = *(currBuilderIt--);
+    currBuilder = *(currBuilderIt - 1);
   }
   
-  std::cout << "Current Builder: " currBuilder->getColour() << std::endl;
 }
 
 bool BoardModel::checkWinner() {
