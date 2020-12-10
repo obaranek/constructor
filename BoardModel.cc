@@ -227,7 +227,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
   // Check if no building exists on the vertex
   if (currVertex->residence != NULL) {
-    //@TODO: Throw exception- Building already exists at that vertex
+    throw logic_error("Building already exists at that vertex");
   }
 
   // Check if any adjacent vertices already have a residence built
@@ -244,7 +244,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
   }
 
   if (adjacentResidence) {
-    //@TODO: Throw Exception- Building in adjacent vertex
+    throw logic_error("Building exists in adjacent vertex");
   }
 
   if (!gameStart) {
@@ -253,7 +253,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
     bool enoughResources = currBuilder->checkResources(requiredResources);
 
     if (!enoughResources) {
-      //@TODO: Throw exception- not enough resources
+      throw logic_error("You don't have enough resources");
     }
 
     // Check if builder has a road connecting to vertex
@@ -271,7 +271,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
     }
 
     if (!connectingRoad) {
-      //@TODO: Throw exception- Not start of turn && no connecting road
+      throw logic_error("You don't have a connecting road to build a residence");
     }
   }
 
@@ -343,7 +343,6 @@ void BoardModel::next() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
   
   if (currBuilderIt == builders.end()) { // buider not found (should never happen)
-    //@TODO: Throw exception- Builder not found when incrementing
     throw logic_error("Builder not found when incrementing");
   }
 
@@ -360,7 +359,7 @@ void BoardModel::prevBuilder() {
 
   if (currBuilderIt ==
       builders.end()) { // buider not found (should never happen)
-    //@TODO: Throw exception- Builder not found when decrementing
+      throw logic_error("Builder not found when decrementing");
   }
 
   // decrementing the currBuilder
@@ -437,7 +436,7 @@ void BoardModel::setDice(char type) {
   if (type == 'L' || type == 'F') {
     currBuilder->setDice(type);
   } else {
-    //@TODO: Throw exception- type can only be L or F
+    throw invalid_argument("dice can only be of type L or F");
   }
 }
 
@@ -445,7 +444,7 @@ void BoardModel::setSeed(int _seed) {
   if (_seed >= 0) {
     seed = _seed;
   } else {
-    //@TODO: Throw exception- _seed can't be negative
+    throw invalid_argument("seed can't be negative");
   }
 }
 

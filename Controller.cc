@@ -279,8 +279,10 @@ void Controller::startGame() {
 
   theBoardModel->printBoard();
 
+  // Building initial houses
   for (int counter = 0; counter < 8; ++counter) {
     int userVertexInput;
+    bool acceptHouse = false;
 
     do {
       // outputs the start-of-game where-to-build message
@@ -288,11 +290,18 @@ void Controller::startGame() {
 
       // get user input
       std::cin >> userVertexInput;
-    } while (!(0 <= userVertexInput && userVertexInput <= 53));
+      
+      if(0 <= userVertexInput && userVertexInput <= 53){
+        try{ // Try building the residence
+          theBoardModel->buildResidence(userVertexInput, true);
+          acceptHouse = true;
+        } catch(std::logic_error e){
+          std::cout << e.what() << std::endl; 
+        }
+      }
+    } while (!acceptHouse);
 
-    // Build the residence
-    theBoardModel->buildResidence(userVertexInput, true);
-
+    // built house, change builder
     if (0 <= counter && counter <= 2) {
       theBoardModel->next();
     } else if (4 <= counter && counter <= 7) {
