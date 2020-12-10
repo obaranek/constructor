@@ -32,10 +32,10 @@ using std::vector;
 
 BoardModel::BoardModel() : seed{-1}, theBoardView{std::make_unique<BoardView>()} {
   // make 4 builders:
-  builders.emplace_back(make_shared<Builder>(Colour::BLUE));
-  builders.emplace_back(make_shared<Builder>(Colour::RED));
-  builders.emplace_back(make_shared<Builder>(Colour::ORANGE));
-  builders.emplace_back(make_shared<Builder>(Colour::YELLOW));
+  builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
+  builders.emplace_back(std::make_shared<Builder>(Colour::RED));
+  builders.emplace_back(std::make_shared<Builder>(Colour::ORANGE));
+  builders.emplace_back(std::make_shared<Builder>(Colour::YELLOW));
   currBuilder = builders.at(0);
 }
 
