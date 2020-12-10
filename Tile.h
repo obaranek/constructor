@@ -15,7 +15,10 @@ private:
   std::vector<int> edges;
 
 public:
+  Tile(int);
   int getTileNum();
+  ResourceType getResourceType();
+  int getTileVal();
 
   friend class BoardModel;
 };

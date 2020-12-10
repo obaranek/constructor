@@ -1,10 +1,10 @@
 #include "BoardModel.h"
 #include "BoardView.h"
+#include "Builder.h"
 #include "Edge.h"
 #include "Residence.h"
 #include "Tile.h"
 #include "Vertex.h"
-#include "Builder.h"
 
 #include <algorithm>
 #include <chrono>
@@ -39,17 +39,17 @@ void BoardModel::initBoard(string fileName) {
 
   // creating a vector of all the tiles
   for (int i = 0; i < 19; i++) {
-    tiles.emplace_back(i);
+    tiles.emplace_back(std::make_shared<Tile>(i));
   }
 
   // creating a vector of all the vertices
   for (int i = 0; i < 54; i++) {
-    vertices.emplace_back(i);
+    vertices.emplace_back(std::make_shared<Vertex>(i));
   }
 
   // creating a vector of all the edges
   for (int i = 0; i < 72; i++) {
-    edges.emplace_back(i);
+    edges.emplace_back(std::make_shared<Edge>(i));
   }
 
   ifstream ifs;
@@ -302,7 +302,7 @@ int BoardModel::rollDice() {
   vector<int> diceOptions = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
   // set the correct seed based on if flag is used or not
-  int localSeed;
+  unsigned long int localSeed;
   if (seed < 0) {
     localSeed = std::chrono::system_clock::now().time_since_epoch().count();
   } else {
@@ -321,7 +321,7 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  //diceValue == 7 ? playGoose() : obtainResources(diceValue);
+  // diceValue == 7 ? playGoose() : obtainResources(diceValue);
   obtainResources(diceValue); //@TODO: remove this once we implement goose
 }
 
@@ -388,8 +388,8 @@ void BoardModel::printTradeResources(const Colour otherBuilder,
                                      const ResourceType give,
                                      const ResourceType take) {
 
-  theBoardView->printTradeResource(currBuilder->getColour(),
-                                    otherBuilder, give, take);
+  theBoardView->printTradeResource(currBuilder->getColour(), otherBuilder, give,
+                                   take);
 }
 
 void BoardModel::printWhereBuild() {
@@ -404,9 +404,13 @@ shared_ptr<Vertex> BoardModel::getVertexPtr(int vertexNum) {
   return vertices.at(vertexNum);
 }
 
-shared_ptr<Tile> BoardModel::getTilePtr(int tileNum) { return tiles.at(tileNum); }
+shared_ptr<Tile> BoardModel::getTilePtr(int tileNum) {
+  return tiles.at(tileNum);
+}
 
-std::shared_ptr<Edge> BoardModel::getEdgePtr(int edgeNum) { return edges.at(edgeNum); }
+std::shared_ptr<Edge> BoardModel::getEdgePtr(int edgeNum) {
+  return edges.at(edgeNum);
+}
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
@@ -419,8 +423,9 @@ void BoardModel::setDice(char type) {
 }
 
 void BoardModel::setSeed(int _seed) {
-  if (_seed >= 0) { seed = _seed; }
-  else {
+  if (_seed >= 0) {
+    seed = _seed;
+  } else {
     //@TODO: Throw exception- _seed can't be negative
   }
 }
