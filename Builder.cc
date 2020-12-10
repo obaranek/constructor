@@ -26,8 +26,9 @@ void Builder::updateResidence(int vertexNum, char residenceType) {
 
 void Builder::takeResources(ResourceType type, int reward) {
   auto resourceIt = resources.find(type);
+  
   if (resourceIt != resources.end()) {
-    resourceIt->second = reward;
+	  resourceIt->second = reward;
   } else {
     // @TODO: Throw exception: ResourceType not valid
   }

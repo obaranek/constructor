@@ -287,7 +287,6 @@ void BoardModel::obtainResources(int value) {
   if (value == 7 || value > 12 || value < 2) {
     throw logic_error("BoardMdodel::obtainResources: Invalid value");
   }
-
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
