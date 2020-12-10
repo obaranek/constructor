@@ -196,6 +196,7 @@ void BoardModel::loadLayout( std::string fileName) {
       tiles.at(tileNum)->resourceType = WIFI;
       break;
     case PARK:
+      tiles.at(tileNum)->resourceType = PARK;
       gooseTile = tiles.at(tileNum);
       break;
     default:
