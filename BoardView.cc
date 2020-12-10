@@ -198,7 +198,7 @@ BoardView::vertexEdgeVertex(std::ostream &os, bool blank,
 
 std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
     const std::shared_ptr<Tile> tile, bool leftBar, bool rightBar, 
-    bool checkGeese, const Board* board) {
+    bool checkGeese, const BoardModel* board) {
 
   std::string middle = "";
    
@@ -691,7 +691,7 @@ void BoardView::printBoard(BoardModel *board) {
   borderResourceBorder(cout, false, board->getTilePtr(18), false, false, true, board);
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, true);
-  cout << end;
+  cout << endl;
 
   // Line 39:
   edgeTileNumEdge(cout, true);

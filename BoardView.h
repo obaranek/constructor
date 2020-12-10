@@ -42,7 +42,7 @@ private:
                                      bool leftBar = false,
                                      bool rightBar = false,
                                      bool checkGeese = false,
-                                     const Board * board = NULL);
+                                     const BoardModel * board = NULL);
 
   std::ostream &
   vertexTileValVertex(std::ostream &os,
