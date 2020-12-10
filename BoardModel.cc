@@ -205,6 +205,7 @@ void BoardModel::loadLayout( std::string fileName) {
     }
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
+    ss.clear();
   }
 }
 
