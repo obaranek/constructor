@@ -40,7 +40,7 @@ private:
   std::ostream &borderResourceBorder(std::ostream &os, bool blank = false,
                                      const std::shared_ptr<Tile> tile = NULL,
                                      bool leftBar = false,
-                                     bool rightBar = false
+                                     bool rightBar = false,
                                      bool checkGeese = false);
 
   std::ostream &
