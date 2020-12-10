@@ -277,6 +277,8 @@ void Controller::startGame() {
     setSeedValue(seedValue);
   }
 
+  theBoardModel->printBoard();
+
   for (int counter = 0; counter < 8; ++counter) {
     int userVertexInput;
 
