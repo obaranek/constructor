@@ -335,6 +335,7 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
+  std::cout << "Dice Value: " << diceValue << std::endl; 
   // diceValue == 7 ? playGoose() : obtainResources(diceValue);
   obtainResources(diceValue); //@TODO: remove this once we implement goose
 }
