@@ -34,7 +34,7 @@ public:
   void initBoard(std::string fileName = "layout.txt");
 
   // loadLayout() sets up the board according to the given text file
-  void loadLayout(std::ifstream &, std::string fileName = "layout.txt");
+  void loadLayout(std::string fileName="layout.txt");
 
   // moveGeese() sets gooseTile to point at tile of tileNum
   void moveGeese(int tileNum);

@@ -263,8 +263,12 @@ void Controller::startGame() {
   } else if (initMethodCall == "initLoad") {
     initLoad(fileName);
   } else if (initMethodCall == "initBoard") {
+    if (fileName == "") {
+      initBoard();
+    } else {
     initBoard(fileName);
-  } else {
+
+  }} else {
     initRandomBoard();
   }
 

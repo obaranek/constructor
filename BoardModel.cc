@@ -1,3 +1,6 @@
+#ifndef BOARDMODEL_CC
+#define BOARDMODEL_CC
+
 #include "BoardModel.h"
 #include "BoardView.h"
 #include "Builder.h"
@@ -27,7 +30,8 @@ using std::vector;
 
 /***** Constructors *****/
 
-BoardModel::BoardModel() : seed{-1} {}
+BoardModel::BoardModel() : seed{-1}, theBoardView{std::make_unique<BoardView>()} {
+}
 
 /***** Functions *****/
 
@@ -71,10 +75,11 @@ void BoardModel::initBoard(string fileName) {
       vertices.at(vertexNum)->edges.emplace_back(edgeNum);
       edges.at(edgeNum)->vertices.emplace_back(vertexNum);
     }
+    iss.clear();
   }
   ifs.close();
 
-  ifs.open("tile_vertices.txt");
+  ifs.open("tiles_vertices.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open tile_vertices.txt");
   }
@@ -89,10 +94,11 @@ void BoardModel::initBoard(string fileName) {
       int vertexNum = stoi(word);
       tiles.at(tileNum)->vertices.emplace_back(vertexNum);
     }
+    iss.clear();
   }
   ifs.close();
 
-  ifs.open("tile_edges.txt");
+  ifs.open("tiles_edges.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open tile_edges.txt");
   }
@@ -107,11 +113,12 @@ void BoardModel::initBoard(string fileName) {
       int edgeNum = stoi(str);
       tiles.at(tileNum)->edges.emplace_back(edgeNum);
     }
+    iss.clear();
   }
   ifs.close();
 
   // initializing the adjacent vertices for each vertex
-  ifs.open("adjacentVertices");
+  ifs.open("adjacentVertices.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open adjacentVertices");
   }
@@ -125,11 +132,12 @@ void BoardModel::initBoard(string fileName) {
       int adjacentVertexNum = stoi(word);
       vertices.at(vertexNum)->adjacentVertices.push_back(adjacentVertexNum);
     }
+    iss.clear();
   }
   ifs.close();
 
   // initializing the adjacent vertices for each vertex
-  ifs.open("adjacentedges");
+  ifs.open("adjacentEdges.txt");
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open adjacentedges file");
   }
@@ -143,19 +151,18 @@ void BoardModel::initBoard(string fileName) {
       int adjacentEdgeNum = stoi(word);
       edges.at(edgeNum)->adjacentEdges.push_back(adjacentEdgeNum);
     }
+    iss.clear();
   }
   ifs.close();
 
-  // loading layout from layout.txt
-  ifs.open(fileName);
+  loadLayout(fileName);
+}
+
+void BoardModel::loadLayout( std::string fileName) {
+  ifstream ifs {fileName};
   if (ifs.fail()) {
     throw logic_error("BoardModel::init cannot open the layout file");
   }
-  loadLayout(ifs);
-  ifs.close();
-}
-
-void BoardModel::loadLayout(std::ifstream &ifs, std::string fileName) {
   string line;
   int tileNum = 0;
   while (getline(ifs, line)) {
@@ -429,3 +436,5 @@ void BoardModel::setSeed(int _seed) {
     //@TODO: Throw exception- _seed can't be negative
   }
 }
+
+#endif /* BOARDMODEL_CC */
