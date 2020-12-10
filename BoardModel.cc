@@ -170,16 +170,64 @@ void BoardModel::loadLayout( std::string fileName) {
     throw logic_error("BoardModel::init cannot open the layout file");
   }
   string line;
+  getline(ifs, line);
+  
+  int tileNum = 0;
+  int tileValue= 0;
+  int resourceNum = 0;
+  
+  istringstream ss{line};
+
+  while (ss >> resourceNum) {
+    switch (resourceNum) {
+    case BRICK:
+      tiles.at(tileNum)->resourceType = BRICK;
+      break;
+    case ENERGY:
+      tiles.at(tileNum)->resourceType = ENERGY;
+      break;
+    case GLASS:
+      tiles.at(tileNum)->resourceType = GLASS;
+      break;
+    case HEAT:
+      tiles.at(tileNum)->resourceType = HEAT;
+      break;
+    case WIFI:
+      tiles.at(tileNum)->resourceType = WIFI;
+      break;
+    case PARK:
+      gooseTile = tiles.at(tileNum);
+      break;
+    default:
+      throw std::invalid_argument("BoardModel::loadLayout: Invalid Resource "
+                                  "Type, Check you layout file");
+    }
+    ss >> tileValue;
+    tiles.at(tileNum)->value = tileValue;
+    tileNum++;
+  }
+}
+
+/*
+void BoardModel::loadLayout( std::string fileName) {
+  ifstream ifs {fileName};
+  if (ifs.fail()) {
+    throw logic_error("BoardModel::init cannot open the layout file");
+  }
+  string line;
   int tileNum = 0;
   while (getline(ifs, line)) {
+	  std::cout << line << std::endl;
     istringstream ss{line};
-    string str;
+    //string str;
     int tileValue;
     int resourceNum;
-    ss >> str;
-    resourceNum = stoi(str);
-    ss >> str;
-    tileValue = stoi(str);
+    //ss >> str;
+    ss >> resourceNum;
+    ss >> tileValue;
+    //resourceNum = stoi(str);
+    //ss >> str;
+    //tileValue = stoi(str);
     switch (resourceNum) {
     case BRICK:
       tiles.at(tileNum)->resourceType = BRICK;
@@ -205,9 +253,8 @@ void BoardModel::loadLayout( std::string fileName) {
     }
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
-    ss.clear();
   }
-}
+}*/
 
 void BoardModel::moveGeese(int tileNum) {
   gooseTile = tiles.at(tileNum);
