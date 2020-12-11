@@ -18,6 +18,7 @@ private:
   int reward;
   char type;
   shared_ptr<Builder> owner;
+  map<ResourceType, int> costToImprove;
 
 public:
   Residence(std::shared_ptr<Builder> owner);
@@ -25,7 +26,7 @@ public:
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
-  char improveResidence();
+  char improveResidence(int vertexNum);
   map<ResourceType, int> getCost();
 };
 

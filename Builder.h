@@ -28,7 +28,7 @@ public:
   // buildRoad() adds edgeNum to list of roads
   void buildRoad(int edgeNum, std::map<ResourceType,int> cost, bool free);
 
-  void updateResidence(int vertexNum, char residenceType);
+  void updateResidence(int vertexNum, char residenceType, std::map<ResourceType,int> cost);
 
   // takeResources() adds the quantity of resource to builders resources
   void takeResources(ResourceType type, int reward);

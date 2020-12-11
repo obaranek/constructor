@@ -38,8 +38,12 @@ void Builder::buildRoad(int edgeNum, std::map<ResourceType,int> cost, bool free 
   }
 }
 
-void Builder::updateResidence(int vertexNum, char residenceType) {
+void Builder::updateResidence(int vertexNum, char residenceType, map<ResourceType,int> cost) {
   buildings[vertexNum] = residenceType;
+  for(auto& elem: cost){
+    int resCost = cost[elem.first];
+    resources[elem.first] -= resCost;
+  }
 }
 
 void Builder::takeResources(ResourceType type, int reward) {
