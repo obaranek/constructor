@@ -20,9 +20,7 @@ private:
 public:
   Vertex(int);
 
-  void buildResidence(shared_ptr<Builder> currBuilder);
-
-  void buildResidence(shared_ptr<Builder> currBuilder, char residenceType);
+  void buildResidence(shared_ptr<Builder> currBuilder, char residenceType, bool free);
 
   void improveResidence(shared_ptr<Builder> currBuilder);
 

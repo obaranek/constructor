@@ -215,8 +215,7 @@ void BoardModel::loadBuilder(string line, int builderNum) {
         char residenceType;
         while (ss >> vertexNumber) {
           ss >> residenceType;
-          vertices.at(vertexNumber)
-              ->buildResidence(builders.at(builderNum), residenceType);
+          vertices.at(vertexNumber)->buildResidence(builders.at(builderNum), residenceType, true);
         }
       }
     }
@@ -328,10 +327,14 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
       throw logic_error(
           "You don't have a connecting road to build a residence");
     }
-  }
 
-  // All conditions checked- Can build residence
-  currVertex->buildResidence(currBuilder);
+    // Not start of game, so not free residence
+    currVertex->buildResidence(currBuilder, 'B', false);
+  }
+  else{
+    // Build a free residence at the start of the game
+    currVertex->buildResidence(currBuilder, 'B', true);
+  }
 }
 
 void BoardModel::improveResidence(int vertexNum) {

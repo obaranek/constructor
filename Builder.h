@@ -22,9 +22,8 @@ public:
   // TODO: Change raw pointers to smart pointers?
   // void stealResources(Builder* otherBuilder);
 
-  // buildResidence() adds verexNum to list of buildings
-  void buildResidence(int vertexNum, char residenceType,
-                      std::map<ResourceType, int>);
+  // buildResidence() adds vertexNum to list of buildings
+  void buildResidence(int vertexNum, char residenceType, std::map<ResourceType, int>, bool);
 
   // buildRoad() adds edgeNum to list of roads
   void buildRoad(int edgeNum);

@@ -15,12 +15,16 @@ Builder::Builder(Colour colour)
                                                       {WIFI, 0}} {}
 
 void Builder::buildResidence(int vertexNum, char residenceType,
-                             map<ResourceType, int> cost) {
+                             map<ResourceType, int> cost, bool free) {
+  
   buildings.insert(pair<int, char>(vertexNum, 'B'));
   points++;
-  for (auto &elem : cost) {
-    int resourceCost = cost[elem.first];
-    resources[elem.first] -= resourceCost;
+  
+  if(!free){
+    for (auto &elem : cost) {
+      int resourceCost = cost[elem.first];
+      resources[elem.first] -= resourceCost;
+    }
   }
 }
 

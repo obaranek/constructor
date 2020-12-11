@@ -6,17 +6,10 @@ using namespace std;
 
 Vertex::Vertex(int number) : vertexNumber{number} {};
 
-void Vertex::buildResidence(shared_ptr<Builder> currBuilder) {
-  residence = make_shared<Residence>(currBuilder);
-  std::map<ResourceType, int> cost = residence->getCost();
-  currBuilder->buildResidence(vertexNumber, 'B', cost);
-}
-
-void Vertex::buildResidence(shared_ptr<Builder> currBuilder,
-                            char residenceType) {
+void Vertex::buildResidence(shared_ptr<Builder> currBuilder, char residenceType, bool free) {
   residence = make_shared<Residence>(currBuilder, residenceType);
   std::map<ResourceType, int> cost = residence->getCost();
-  currBuilder->buildResidence(vertexNumber, residenceType, cost);
+  currBuilder->buildResidence(vertexNumber, residenceType, cost, free);
 }
 
 void Vertex::improveResidence(shared_ptr<Builder> currBuilder) {
