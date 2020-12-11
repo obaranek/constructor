@@ -7,7 +7,7 @@
 #include <string>
 #include <stdexcept>
 
-using namespace std::logic_error;
+using std::logic_error;
 
 Controller::Controller()
     : theBoardModel{std::make_unique<BoardModel>()},
