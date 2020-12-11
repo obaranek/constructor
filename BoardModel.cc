@@ -197,6 +197,11 @@ void BoardModel::initLoad(std::string fileName) {
     }
     lineCtr++;
   }
+
+  for(auto& edge: edges){
+    std:cout << "Edge number: " << edge->getEdgeNum();
+    std::cout << " has road?: " << edge->doesHaveRoad() ? "Yes" : "No" << std::endl;
+  }
 }
 
 void BoardModel::loadBuilder(string line, int builderNum) {
