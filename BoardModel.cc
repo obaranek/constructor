@@ -276,7 +276,7 @@ void BoardModel::moveGeese(int tileNum) {
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
   if(vertexNum < 0 || vertexNum > 53){
-    throw invalid_argument("Sorry, that vertex does not exist. Please enter a different vertex number");
+    throw invalid_argument("Invalid <housing#>");
   }
 
   std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
@@ -329,7 +329,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
 void BoardModel::improveResidence(int vertexNum) {
   if(vertexNum < 0 || vertexNum > 53){
-    throw invalid_argument("That vertex does not exist, please enter another vertex number");
+    throw invalid_argument("Invalid <housing#>");
   }
 
   try{
@@ -360,6 +360,10 @@ void BoardModel::obtainResources(int value) {
 }
 
 void BoardModel::BuildRoad(int edgeNum) {
+  if(edgeNum < 0 || edgeNum > 71){
+    throw invalid_argument("Invalid <road#>");
+  }
+
   try{
     edges.at(edgeNum)->buildRoad(currBuilder, false);
   }catch(logic_error e){

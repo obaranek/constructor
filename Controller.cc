@@ -1,9 +1,13 @@
 #include "Controller.h"
 #include "Colour.h"
 #include "ResourceType.h"
+
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <stdexcept>
+
+using namespace std::logic_error;
 
 Controller::Controller()
     : theBoardModel{std::make_unique<BoardModel>()},
@@ -89,31 +93,33 @@ void Controller::playTurn() {
       } else if (userInput == "residence") { // residence
         theBoardModel->printResidences();
       } else if (userInput == "build-road") { // build-road <road#>
+        
         int edgeValue;
         std::cin >> edgeValue;
-
-        if (!(1 <= edgeValue && edgeValue <= 70)) {
-          std::cout << "Invalid <road#>" << std::endl;
-        } else {
+        try{
           theBoardModel->BuildRoad(edgeValue);
+        } catch(logic_error e){
+          std::cout << e.what() << std::endl;
         }
+
       } else if (userInput == "build-res") { // build-res <housing#>
+        
         int vertexValue;
         std::cin >> vertexValue;
-
-        if (!(0 <= vertexValue && vertexValue <= 53)) {
-          std::cout << "Invalid <housing#>" << std::endl;
-        } else {
+        try{  
           theBoardModel->buildResidence(vertexValue, false);
+        } catch(logic_error e){
+          std::cout << e.what() << std::endl;
         }
+
       } else if (userInput == "improve") { // improve <housing#>
+        
         int vertexValue;
         std::cin >> vertexValue;
-
-        if (!(0 <= vertexValue && vertexValue <= 53)) {
-          std::cout << "Invalid <housing#>" << std::endl;
-        } else {
+        try{
           theBoardModel->improveResidence(vertexValue);
+        } catch(logic_error e){
+          std::cout << e.what() << std::endl;
         }
       } else if (userInput == "trade") { // trade <colour> <give> <take>
         // Reads in the other player's color
