@@ -323,9 +323,8 @@ void Controller::initBoard(std::string fileName) {
 
 void Controller::initBoard() { theBoardModel->initBoard(); }
 
-// TODO: uncomment when implemented
 void Controller::initLoad(std::string fileName) {
-  // theBoardModel->load(fileName);
+  theBoardModel->initLoad(fileName);
 }
 
 void Controller::setBoardSeed(int seed) { theBoardModel->setSeed(seed); }

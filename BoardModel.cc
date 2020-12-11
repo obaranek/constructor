@@ -15,6 +15,7 @@
 #include <random>
 #include <sstream>
 #include <stdexcept>
+#include <iostream>
 
 using std::default_random_engine;
 using std::getline;
@@ -171,6 +172,7 @@ void BoardModel::initBoard(string fileName) {
 }
 
 void BoardModel::initLoad(std::string fileName) {
+  
   prepareBoard();
   ifstream ifs{fileName};
   if (ifs.fail()) {
@@ -179,13 +181,13 @@ void BoardModel::initLoad(std::string fileName) {
   int lineCtr = 1;
   string line;
   while (getline(ifs, line) && lineCtr <= 7) {
-    stringstream ss{line};
+	  stringstream ss{line};
     if (lineCtr == 1) {
       int builderNum;
       ss >> builderNum;
       currBuilder = builders[builderNum];
     } else if (lineCtr >= 2 && lineCtr <= 5) {
-      loadBuilder(line, lineCtr - 2);
+	    loadBuilder(line, lineCtr - 2);
     } else if (lineCtr == 6) {
       loadLayout(line, true);
     } else if (lineCtr == 7) {
@@ -193,18 +195,19 @@ void BoardModel::initLoad(std::string fileName) {
       ss >> tile;
       gooseTile = tiles.at(tile);
     }
+    lineCtr++;
   }
 }
 
 void BoardModel::loadBuilder(string line, int builderNum) {
-  stringstream ss{line};
+	stringstream ss{line};
+
   int tokenCtr = 0;
   std::string token;
   while (ss >> token) {
     if (tokenCtr >= 0 && tokenCtr <= 4) {
       int tokenNum = stoi(token);
-      builders.at(builderNum)
-          ->takeResources(static_cast<ResourceType>(tokenCtr), tokenNum);
+      builders.at(builderNum)->takeResources(static_cast<ResourceType>(tokenCtr), tokenNum);
     } else if (token == "r") {
       string temp;
       while (ss >> temp && temp != "h") {
@@ -219,6 +222,7 @@ void BoardModel::loadBuilder(string line, int builderNum) {
         }
       }
     }
+    tokenCtr++;
   }
 }
 

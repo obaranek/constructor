@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
         }
         
         // Loop to check for '-board xxx', '-load xxx', '-randomboard'
-        for (int counter = 0; counter < argc; ++counter) {
+        for (int counter = 1; counter < argc; ++counter) {
             std::string argument{ argv[counter] };
 
             if (boardPresent == false && randomBoardPresent == false && loadPresent == false) {
@@ -78,7 +78,6 @@ int main(int argc, char* argv[]) {
                     theController->startGame();
                 } else if (argument == "-load") {
                     std::string fileName{ argv[counter + 1] };
-
                     theController->initLoad(fileName);
                     theController->setInitMethodCall("initLoad");
                     theController->setFileName(fileName);
