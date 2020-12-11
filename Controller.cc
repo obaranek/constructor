@@ -266,15 +266,17 @@ void Controller::startGame() {
 
   if (initMethodCall.empty()) {
     initBoard();
-  } else if (initMethodCall == "initLoad") {
+  } 
+  else if (initMethodCall == "initLoad") {
     initLoad(fileName);
-  } else if (initMethodCall == "initBoard") {
+  } 
+  else if (initMethodCall == "initBoard") {
     if (fileName == "") {
       initBoard();
     } else {
     initBoard(fileName);
-
-  }} else {
+    }
+  } else {
     initRandomBoard();
   }
 
@@ -297,14 +299,13 @@ void Controller::startGame() {
       // get user input
       std::cin >> userVertexInput;
       
-      if(0 <= userVertexInput && userVertexInput <= 53){
-        try{ // Try building the residence
-          theBoardModel->buildResidence(userVertexInput, true);
-          acceptHouse = true;
-        } catch(std::logic_error e){
-          std::cout << e.what() << std::endl; 
-        }
+      try{ // Try building the residence
+        theBoardModel->buildResidence(userVertexInput, true);
+        acceptHouse = true;
+      } catch(std::logic_error e){
+        std::cout << e.what() << std::endl; 
       }
+
     } while (!acceptHouse);
 
     // built house, change builder
@@ -320,8 +321,7 @@ void Controller::startGame() {
 }
 
 // TODO: uncomment when implemented
-void Controller::initRandomBoard() { /**theBoardModel->initRandomBoard(); **/
-}
+void Controller::initRandomBoard() { /**theBoardModel->initRandomBoard(); **/ }
 
 void Controller::initBoard(std::string fileName) {
   theBoardModel->initBoard(fileName);
