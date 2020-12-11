@@ -211,7 +211,8 @@ void BoardModel::loadBuilder(string line, int builderNum) {
     } else if (token == "r") {
       string temp;
       while (ss >> temp && temp != "h") {
-        builders.at(builderNum)->buildRoad(stoi(temp));
+        int edgeNum = stoi(temp);
+        edges.at(edgeNum)->buildRoad(builders.at(builderNum), true);
       }
       if (temp == "h") {
         int vertexNumber;
@@ -273,20 +274,12 @@ void BoardModel::moveGeese(int tileNum) {
 
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
-  std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
-
-  std::map<ResourceType, int> requiredResources = {
-      {ResourceType::BRICK, 1},
-      {ResourceType::ENERGY, 1},
-      {ResourceType::GLASS, 1},
-      {ResourceType::WIFI, 1},
-  };
-
-  // Check if no building exists on the vertex
-  if (currVertex->residence != NULL) {
-    throw logic_error("Building already exists at that vertex");
+  if(vertexNum < 0 || vertexNum > 53){
+    throw invalid_argument("Sorry, that vertex does not exist. Please enter a different vertex number");
   }
 
+  std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
+  
   // Check if any adjacent vertices already have a residence built
   bool adjacentResidence = false;
 
@@ -303,15 +296,8 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
   if (adjacentResidence) {
     throw logic_error("Building exists in adjacent vertex");
   }
-
+  
   if (!gameStart) {
-
-    // Check if builder has enough resources
-    bool enoughResources = currBuilder->checkResources(requiredResources);
-
-    if (!enoughResources) {
-      throw logic_error("You don't have enough resources");
-    }
 
     // Check if builder has a road connecting to vertex
     bool connectingRoad = false;
@@ -331,18 +317,25 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
       throw logic_error(
           "You don't have a connecting road to build a residence");
     }
-
-    // Not start of game, so not free residence
-    currVertex->buildResidence(currBuilder, 'B', false);
   }
-  else{
-    // Build a free residence at the start of the game
-    currVertex->buildResidence(currBuilder, 'B', true);
+
+  try{
+    currVertex->buildResidence(currBuilder, 'B', gameStart);
+  } catch(logic_error e){
+    throw e;
   }
 }
 
 void BoardModel::improveResidence(int vertexNum) {
-  vertices.at(vertexNum)->improveResidence(currBuilder);
+  if(vertexNum < 0 || vertexNum > 53){
+    throw invalid_argument("That vertex does not exist, please enter another vertex number");
+  }
+
+  try{
+    vertices.at(vertexNum)->improveResidence(currBuilder);
+  } catch(logic_error e){
+    throw e;
+  }
 }
 
 void BoardModel::obtainResources(int value) {
@@ -366,8 +359,11 @@ void BoardModel::obtainResources(int value) {
 }
 
 void BoardModel::BuildRoad(int edgeNum) {
-  currBuilder->checkResources({{HEAT, 1}, {WIFI, 1}});
-  edges.at(edgeNum)->buildRoad(currBuilder);
+  try{
+    edges.at(edgeNum)->buildRoad(currBuilder);
+  }catch(logic_error e){
+    throw e;
+  }
 }
 
 int BoardModel::rollDice() {
