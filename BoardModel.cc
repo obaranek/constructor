@@ -387,6 +387,7 @@ int BoardModel::rollDice() {
   // shuffling the dice option vector
   shuffle(diceOptions.begin(), diceOptions.end(), rng);
   // return a shuffled element from the dice options array
+  std::cout << "Random Dice Number: " << *(diceOptions.begin()) << std::endl;
   return *(diceOptions.begin());
 }
 

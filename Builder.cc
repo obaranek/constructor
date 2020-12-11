@@ -17,7 +17,7 @@ Builder::Builder(Colour colour)
 void Builder::buildResidence(int vertexNum, char residenceType,
                              map<ResourceType, int> cost, bool free) {
   
-  buildings.insert(pair<int, char>(vertexNum, 'B'));
+  buildings.insert(pair<int, char>(vertexNum, residenceType));
   points++;
   
   if(!free){
