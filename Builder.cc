@@ -1,11 +1,12 @@
 #include "Builder.h"
 #include "ResourceType.h"
+#include <iostream>
 
 #include <algorithm>
 
 using namespace std;
 
-Builder::Builder(Colour colour) : colour{colour}, points{0}, dice{'L'} {}
+Builder::Builder(Colour colour) : colour{colour}, points{0}, dice{'L'}, resources{{HEAT, 0},  {BRICK, 0}, {ENERGY, 0}, {GLASS, 0}, {WIFI, 0}} {}
 
 void Builder::buildResidence(int vertexNum) {
   buildings.insert(pair<int, char>(vertexNum, 'B'));
@@ -15,23 +16,11 @@ void Builder::buildResidence(int vertexNum) {
 void Builder::buildRoad(int edgeNum) { roads.emplace_back(edgeNum); }
 
 void Builder::updateResidence(int vertexNum, char residenceType) {
-  // change the buildingType at vertexNum
-  auto itr = buildings.find(vertexNum);
-  if (itr != buildings.end()) {
-    itr->second = residenceType;
-  } else {
-    //@TODO: Throw exception: Builder doesn't own the vertex
-  }
+  buildings[vertexNum] = residenceType;
 }
 
 void Builder::takeResources(ResourceType type, int reward) {
-  auto resourceIt = resources.find(type);
-  
-  if (resourceIt != resources.end()) {
-	  resourceIt->second = reward;
-  } else {
-    // @TODO: Throw exception: ResourceType not valid
-  }
+  resources[type] += reward;
 }
 
 bool Builder::haveResidence(int vertexNum) {

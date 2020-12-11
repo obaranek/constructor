@@ -104,10 +104,6 @@ void BoardModel::initBoard(string fileName) {
   }
   ifs.close();
 
-  ifs.open("tiles_edges.txt");
-  if (ifs.fail()) {
-    throw logic_error("BoardModel::init cannot open tile_edges.txt");
-  }
 
   // initializing edges neighbouring each tile
   while (getline(ifs, line)) {
@@ -171,11 +167,11 @@ void BoardModel::loadLayout( std::string fileName) {
   }
   string line;
   getline(ifs, line);
-  
+
   int tileNum = 0;
   int tileValue= 0;
   int resourceNum = 0;
-  
+
   istringstream ss{line};
 
   while (ss >> resourceNum) {
@@ -292,14 +288,11 @@ void BoardModel::obtainResources(int value) {
       ResourceType tileResource = tile->resourceType;
       for (auto &tileVertexNum : tile->vertices) {
         auto tileVertex = vertices.at(tileVertexNum);
-        //@TODO add getter for tile
         auto residence = tileVertex->getResidence();
         if (!residence) {
-          break;
+          continue;
         }
-        //@TODO add getter for residence
         int reward = residence->getReward();
-        //@TODO add takeResources for Builder
         residence->getOwner()->takeResources(tileResource, reward);
       }
     }
@@ -334,14 +327,13 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  std::cout << "Dice Value: " << diceValue << std::endl; 
   // diceValue == 7 ? playGoose() : obtainResources(diceValue);
   obtainResources(diceValue); //@TODO: remove this once we implement goose
 }
 
 void BoardModel::next() {
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
-  
+
   if (currBuilderIt == builders.end()) { // buider not found (should never happen)
     throw logic_error("Builder not found when incrementing");
   }
@@ -368,7 +360,7 @@ void BoardModel::prevBuilder() {
   } else { // there is a builder infront of us (not at first builder)
     currBuilder = *(currBuilderIt - 1);
   }
-  
+
 }
 
 bool BoardModel::checkWinner() {
