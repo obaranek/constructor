@@ -25,7 +25,7 @@ void Edge::buildRoad(shared_ptr<Builder> builderPtr, bool free){
 
   // check if edge already has a road
   if(hasRoad){
-    throw logic_error("Edge already has a road"):
+    throw logic_error("Edge already has a road");
   }
 
   // Check if user has an adjacent residence or road

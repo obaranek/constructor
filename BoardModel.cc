@@ -360,7 +360,7 @@ void BoardModel::obtainResources(int value) {
 
 void BoardModel::BuildRoad(int edgeNum) {
   try{
-    edges.at(edgeNum)->buildRoad(currBuilder);
+    edges.at(edgeNum)->buildRoad(currBuilder, false);
   }catch(logic_error e){
     throw e;
   }

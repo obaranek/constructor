@@ -26,7 +26,7 @@ public:
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
-  char improveResidence(int vertexNum);
+  void improveResidence(int vertexNum);
   map<ResourceType, int> getCost();
 };
 

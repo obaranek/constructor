@@ -59,7 +59,7 @@ void Residence::improveResidence(int vertexNum) {
       reward = 2;
       cost = {{BRICK, 1}, {ENERGY, 1}, {HEAT, 3}, {GLASS, 3}, {WIFI, 1}};
       owner->updateResidence(vertexNum,type, costToImprove);
-      costToImprove = {{GLASS 2}, {HEAT, 3}};
+      costToImprove = {{GLASS, 2}, {HEAT, 3}};
   } 
   else if (type == 'H') {
       type = 'T';
@@ -72,7 +72,6 @@ void Residence::improveResidence(int vertexNum) {
     throw invalid_argument("Invalid housing typed passed to Residence class");
   }
 
-  return type;
 }
 
 map<ResourceType, int> Residence::getCost() { return cost; }

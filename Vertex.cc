@@ -33,7 +33,7 @@ void Vertex::improveResidence(shared_ptr<Builder> currBuilder) {
   }
 
   try {
-    residence->improveResidence();
+    residence->improveResidence(vertexNumber);
   } catch (logic_error e) {
     throw e;
   }
