@@ -13,6 +13,8 @@ void Edge::buildRoad(shared_ptr<Builder> builderPtr, bool free){
 
   // check if we want free road (only called when loading a game)
   if(free){
+    hasRoad = true;
+    owner = builderPtr;
     builderPtr->buildRoad(edgeNumber, cost, free);
     return;
   }
