@@ -22,6 +22,8 @@ public:
 
   void buildResidence(shared_ptr<Builder> currBuilder);
 
+  void buildResidence(shared_ptr<Builder> currBuilder, char residenceType);
+
   void improveResidence(shared_ptr<Builder> currBuilder);
 
   int getVertexNum();

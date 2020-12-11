@@ -1,9 +1,9 @@
 #ifndef __BOARDMODEL_H_
 #define __BOARDMODEL_H_
 
+#include "BoardView.h"
 #include "Colour.h"
 #include "ResourceType.h"
-#include "BoardView.h"
 
 #include <fstream>
 #include <memory>
@@ -26,15 +26,16 @@ private:
   std::shared_ptr<Builder> currBuilder;
   std::unique_ptr<BoardView> theBoardView;
   int seed;
+  void prepareBoard();
+  // loadLayout() sets up the board according to the given text file
+  void loadLayout(std::string line, bool);
+  void loadBuilder(std::string, int);
 
 public:
   // default constructor sets seed to be -1
   BoardModel();
 
   void initBoard(std::string fileName = "layout.txt");
-
-  // loadLayout() sets up the board according to the given text file
-  void loadLayout(std::string fileName="layout.txt");
 
   // moveGeese() sets gooseTile to point at tile of tileNum
   void moveGeese(int tileNum);
@@ -67,6 +68,8 @@ public:
   // returns true if a builder won the game
   bool checkWinner();
 
+  void initLoad(std::string);
+
   /***** Print Functions *****/
 
   void printBoard();
@@ -97,7 +100,6 @@ public:
 
   void setDice(char type);
   void setSeed(int _seed);
-  
 };
 
 #endif // __BOARDMODEL_H_

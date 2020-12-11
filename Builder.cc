@@ -3,14 +3,25 @@
 #include <iostream>
 
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
-Builder::Builder(Colour colour) : colour{colour}, points{0}, dice{'L'}, resources{{HEAT, 0},  {BRICK, 0}, {ENERGY, 0}, {GLASS, 0}, {WIFI, 0}} {}
+Builder::Builder(Colour colour)
+    : colour{colour}, points{0}, dice{'L'}, resources{{HEAT, 0},
+                                                      {BRICK, 0},
+                                                      {ENERGY, 0},
+                                                      {GLASS, 0},
+                                                      {WIFI, 0}} {}
 
-void Builder::buildResidence(int vertexNum) {
+void Builder::buildResidence(int vertexNum, char residenceType,
+                             map<ResourceType, int> cost) {
   buildings.insert(pair<int, char>(vertexNum, 'B'));
   points++;
+  for (auto &elem : cost) {
+    int resourceCost = cost[elem.first];
+    resources[elem.first] -= resourceCost;
+  }
 }
 
 void Builder::buildRoad(int edgeNum) { roads.emplace_back(edgeNum); }

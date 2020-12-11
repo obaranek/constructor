@@ -21,10 +21,12 @@ private:
 
 public:
   Residence(std::shared_ptr<Builder> owner);
+  Residence(shared_ptr<Builder> builderPtr, char type);
   char getType();
   shared_ptr<Builder> getOwner();
   int getReward();
   char improveResidence();
+  map<ResourceType, int> getCost();
 };
 
 #endif // __RESIDENCE_H_

@@ -7,52 +7,52 @@
 #include <map>
 #include <vector>
 
-class Builder{
-  private:
-    Colour colour;
-    int points;
-    std::map<ResourceType, int> resources;
-    std::map<int, char> buildings; // map of <vertexNum, buildingType>
-    std::vector<int> roads;
-    char dice; //dice can be either F or L. It is L at the start of the game
+class Builder {
+private:
+  Colour colour;
+  int points;
+  std::map<ResourceType, int> resources;
+  std::map<int, char> buildings; // map of <vertexNum, buildingType>
+  std::vector<int> roads;
+  char dice; // dice can be either F or L. It is L at the start of the game
 
-  public:
-    Builder(Colour colour);
+public:
+  Builder(Colour colour);
 
-    // TODO: Change raw pointers to smart pointers?
-    //void stealResources(Builder* otherBuilder);
+  // TODO: Change raw pointers to smart pointers?
+  // void stealResources(Builder* otherBuilder);
 
+  // buildResidence() adds verexNum to list of buildings
+  void buildResidence(int vertexNum, char residenceType,
+                      std::map<ResourceType, int>);
 
-    // buildResidence() adds verexNum to list of buildings
-    void buildResidence(int vertexNum);
+  // buildRoad() adds edgeNum to list of roads
+  void buildRoad(int edgeNum);
 
-    // buildRoad() adds edgeNum to list of roads
-    void buildRoad(int edgeNum);
+  void updateResidence(int vertexNum, char residenceType);
 
-    void updateResidence(int vertexNum, char residenceType);
+  // takeResources() adds the quantity of resource to builders resources
+  void takeResources(ResourceType type, int reward);
 
-    //takeResources() adds the quantity of resource to builders resources
-    void takeResources(ResourceType type, int reward);
+  // haveResidence() returns true if builder owns a residence at the vertexNum
+  bool haveResidence(int vertexNum);
 
-    // haveResidence() returns true if builder owns a residence at the vertexNum
-    bool haveResidence(int vertexNum);
+  // haveRoad() returns true if builder owns a road at the edgeNum
+  bool haveRoad(int edgeNum);
 
-    // haveRoad() returns true if builder owns a road at the edgeNum
-    bool haveRoad(int edgeNum);
+  // checkResources() returns true if builder owns at least
+  // the passed in quantity of respective ResourceType
+  bool checkResources(std::map<ResourceType, int> requiredResources);
 
-    // checkResources() returns true if builder owns at least
-    // the passed in quantity of respective ResourceType
-    bool checkResources(std::map<ResourceType,int> requiredResources);
+  /***** Getters and Setters *****/
 
-    /***** Getters and Setters *****/
+  Colour getColour();
+  int getPoints();
+  char getDiceType();
+  std::map<ResourceType, int> &getResources();
+  std::map<int, char> &getBuildings();
 
-    Colour getColour();
-    int getPoints();
-    char getDiceType();
-    std::map<ResourceType, int>& getResources();
-    std::map<int, char>& getBuildings();
-
-    void setDice(char diceType);
+  void setDice(char diceType);
 };
 
 #endif // __BUILDER_H_

@@ -1,13 +1,35 @@
 #include "Residence.h"
 #include "Builder.h"
+#include "ResourceType.h"
 
+#include <map>
 #include <stdexcept>
 
 using std::logic_error;
+using std::map;
+using std::shared_ptr;
 
 Residence::Residence(std::shared_ptr<Builder> owner)
-    : cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}}, reward{1},
-    type{'B'}, owner{owner}{};
+    : cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}}, reward{1}, type{'B'},
+      owner{owner} {};
+
+Residence::Residence(shared_ptr<Builder> builderPtr, char type)
+    : owner{builderPtr}, type{type} {
+  switch (type) {
+  case 'B':
+    reward = 1;
+    cost = {{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}};
+    break;
+  case 'H':
+    reward = 2;
+    cost = {{BRICK, 1}, {ENERGY, 1}, {HEAT, 3}, {GLASS, 3}};
+    break;
+  case 'T':
+    reward = 3;
+    cost = {{BRICK, 4}, {ENERGY, 3}, {HEAT, 5}, {GLASS, 5}, {WIFI, 1}};
+    break;
+  }
+}
 
 char Residence::getType() { return type; }
 
@@ -39,3 +61,4 @@ char Residence::improveResidence() {
   return type;
 }
 
+map<ResourceType, int> Residence::getCost() { return cost; }
