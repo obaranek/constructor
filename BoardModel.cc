@@ -336,7 +336,7 @@ void BoardModel::improveResidence(int vertexNum) {
 }
 
 void BoardModel::obtainResources(int value) {
-  if (value == 7 || value > 12 || value < 2) {
+  if (value > 12 || value < 2) {
     throw logic_error("BoardMdodel::obtainResources: Invalid value");
   }
   for (auto &tile : tiles) {
@@ -554,9 +554,9 @@ void BoardModel::playGoose() {
     string answer = "";
     Colour victimColor;
     bool validColor = false;
-    std::cout << "Choose a builder to steal from." << std::endl;
 
     do {
+      std::cout << "Choose a builder to steal from." << std::endl;
       std::cin >> answer;
       if (answer == "Blue") {
         victimColor = BLUE;
@@ -570,6 +570,8 @@ void BoardModel::playGoose() {
       } else if (answer == "YELLOW") {
         victimColor = YELLOW;
         validColor = true;
+      } else {
+        std::cout << "Invalid colour, make sure you enter the color corretly(case-sensitive)" << std::endl;
       }
     } while (!validColor);
 
