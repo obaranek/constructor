@@ -12,10 +12,10 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <sstream>
 #include <stdexcept>
-#include <iostream>
 
 using std::default_random_engine;
 using std::getline;
@@ -172,7 +172,7 @@ void BoardModel::initBoard(string fileName) {
 }
 
 void BoardModel::initLoad(std::string fileName) {
-  
+
   prepareBoard();
   ifstream ifs{fileName};
   if (ifs.fail()) {
@@ -181,13 +181,13 @@ void BoardModel::initLoad(std::string fileName) {
   int lineCtr = 1;
   string line;
   while (getline(ifs, line) && lineCtr <= 7) {
-	  stringstream ss{line};
+    stringstream ss{line};
     if (lineCtr == 1) {
       int builderNum;
       ss >> builderNum;
       currBuilder = builders[builderNum];
     } else if (lineCtr >= 2 && lineCtr <= 5) {
-	    loadBuilder(line, lineCtr - 2);
+      loadBuilder(line, lineCtr - 2);
     } else if (lineCtr == 6) {
       loadLayout(line, true);
     } else if (lineCtr == 7) {
@@ -197,18 +197,18 @@ void BoardModel::initLoad(std::string fileName) {
     }
     lineCtr++;
   }
-
 }
 
 void BoardModel::loadBuilder(string line, int builderNum) {
-	stringstream ss{line};
+  stringstream ss{line};
 
   int tokenCtr = 0;
   std::string token;
   while (ss >> token) {
     if (tokenCtr >= 0 && tokenCtr <= 4) {
       int tokenNum = stoi(token);
-      builders.at(builderNum)->takeResources(static_cast<ResourceType>(tokenCtr), tokenNum);
+      builders.at(builderNum)
+          ->takeResources(static_cast<ResourceType>(tokenCtr), tokenNum);
     } else if (token == "r") {
       string temp;
       while (ss >> temp && temp != "h") {
@@ -220,7 +220,8 @@ void BoardModel::loadBuilder(string line, int builderNum) {
         char residenceType;
         while (ss >> vertexNumber) {
           ss >> residenceType;
-          vertices.at(vertexNumber)->buildResidence(builders.at(builderNum), residenceType, true);
+          vertices.at(vertexNumber)
+              ->buildResidence(builders.at(builderNum), residenceType, true);
         }
       }
     }
@@ -275,12 +276,12 @@ void BoardModel::moveGeese(int tileNum) {
 
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
-  if(vertexNum < 0 || vertexNum > 53){
+  if (vertexNum < 0 || vertexNum > 53) {
     throw invalid_argument("Invalid <housing#>");
   }
 
   std::shared_ptr<Vertex> currVertex = vertices.at(vertexNum);
-  
+
   // Check if any adjacent vertices already have a residence built
   bool adjacentResidence = false;
 
@@ -297,7 +298,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
   if (adjacentResidence) {
     throw logic_error("Building exists in adjacent vertex");
   }
-  
+
   if (!gameStart) {
 
     // Check if builder has a road connecting to vertex
@@ -320,21 +321,21 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
     }
   }
 
-  try{
+  try {
     currVertex->buildResidence(currBuilder, 'B', gameStart);
-  } catch(logic_error e){
+  } catch (logic_error e) {
     throw e;
   }
 }
 
 void BoardModel::improveResidence(int vertexNum) {
-  if(vertexNum < 0 || vertexNum > 53){
+  if (vertexNum < 0 || vertexNum > 53) {
     throw invalid_argument("Invalid <housing#>");
   }
 
-  try{
+  try {
     vertices.at(vertexNum)->improveResidence(currBuilder);
-  } catch(logic_error e){
+  } catch (logic_error e) {
     throw e;
   }
 }
@@ -360,13 +361,13 @@ void BoardModel::obtainResources(int value) {
 }
 
 void BoardModel::BuildRoad(int edgeNum) {
-  if(edgeNum < 0 || edgeNum > 71){
+  if (edgeNum < 0 || edgeNum > 71) {
     throw invalid_argument("Invalid <road#>");
   }
 
-  try{
+  try {
     edges.at(edgeNum)->buildRoad(currBuilder, false);
-  }catch(logic_error e){
+  } catch (logic_error e) {
     throw e;
   }
 }
@@ -440,6 +441,19 @@ bool BoardModel::checkWinner() {
   return false;
 }
 
+void BoardModel::tradeResource(Colour otherBuilder, ResourceType give,
+                               ResourceType take) {
+  shared_ptr<Builder> otherBuilderPtr = builders[otherBuilder];
+  if (currBuilder->getResources()[give] > 0 &&
+      otherBuilderPtr->getResources()[take] > 0) {
+    currBuilder->getResources()[give] -= 1;
+    otherBuilderPtr->getResources()[take] -= 1;
+    currBuilder->getResources()[take] += 1;
+    otherBuilderPtr->getResources()[give] += 1;
+  } else {
+    throw logic_error("BoardModel::tradeResource: Not enough resources");
+  }
+}
 /***** Print Functions *****/
 
 void BoardModel::printBoard() { theBoardView->printBoard(this); }

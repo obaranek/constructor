@@ -89,6 +89,8 @@ public:
 
   void printWhereBuild();
 
+  void tradeResource(Colour otherBuilder, ResourceType give, ResourceType take);
+
   /***** Getters and Setters *****/
 
   std::shared_ptr<Builder> getCurrBuilder();
