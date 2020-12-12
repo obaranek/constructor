@@ -682,7 +682,8 @@ std::shared_ptr<Edge> BoardModel::getEdgePtr(int edgeNum) {
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
-std::shared_ptr<Tile> BoardModel::getGooseTile() { return gooseTile; }
+std::shared_ptr<Tile> BoardModel::getGooseTile() {
+  return tiles.at(gooseTile); }
 
 void BoardModel::setDice(char type) {
   if (type == 'L' || type == 'F') {
