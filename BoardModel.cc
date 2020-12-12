@@ -388,7 +388,7 @@ int BoardModel::rollDice() {
 }
 
 void BoardModel::playRoll(int diceValue) {
-  if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
+  if (diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
   if (diceValue == 7) {
