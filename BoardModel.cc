@@ -486,7 +486,8 @@ void BoardModel::playGoose() {
     int lostResources = totalResources / 2;
     for (int i = 0; i < lostResources; i++) {
       int resourceLost = getRndResource(seed);
-      builderResources[static_cast<ResourceType>(resourceLost)] += 1;
+      resourcesLost[static_cast<ResourceType>(resourceLost)] += 1;
+      builderResources[static_cast<ResourceType>(resourceLost)] -= 1;
     }
 
     std::string color = "";
@@ -520,7 +521,7 @@ void BoardModel::playGoose() {
     std::cout << "Choose where to place the GEESE." << std::endl;
     std::cin >> tempGooseString;
     std::stringstream ss {tempGooseString};
- 
+
     if ( ss >> newGooseTile && newGooseTile != gooseTile && newGooseTile >= 0 && newGooseTile <= 18 ) {
       isValidGooseTile = true;
     } else {
@@ -570,7 +571,7 @@ void BoardModel::playGoose() {
       } else if (answer == "Red") {
         victimColor = RED;
         validColor = true;
-      } else if (answer == "YELLOW") {
+      } else if (answer == "Yellow") {
         victimColor = YELLOW;
         validColor = true;
       } else {
