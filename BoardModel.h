@@ -19,12 +19,13 @@ class BoardView;
 class BoardModel {
 private:
   std::vector<std::shared_ptr<Tile>> tiles;
-  std::shared_ptr<Tile> gooseTile;
+  int gooseTile;
   std::vector<std::shared_ptr<Vertex>> vertices;
   std::vector<std::shared_ptr<Edge>> edges;
   std::vector<std::shared_ptr<Builder>> builders;
   std::shared_ptr<Builder> currBuilder;
   std::unique_ptr<BoardView> theBoardView;
+  int getStolenResource(std::shared_ptr<Builder> victim);
   int seed;
   void prepareBoard();
   // loadLayout() sets up the board according to the given text file
@@ -90,6 +91,8 @@ public:
   void printWhereBuild();
 
   void tradeResource(Colour otherBuilder, ResourceType give, ResourceType take);
+
+  void playGoose();
 
   /***** Getters and Setters *****/
 

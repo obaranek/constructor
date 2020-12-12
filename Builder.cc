@@ -16,10 +16,10 @@ Builder::Builder(Colour colour)
 
 void Builder::buildResidence(int vertexNum, char residenceType,
                              map<ResourceType, int> cost, bool free) {
-  
+
   buildings.insert(pair<int, char>(vertexNum, residenceType));
   points++;
-  
+
   if(!free){
     for (auto &elem : cost) {
       int resourceCost = cost[elem.first];
@@ -29,7 +29,7 @@ void Builder::buildResidence(int vertexNum, char residenceType,
 }
 
 void Builder::buildRoad(int edgeNum, std::map<ResourceType,int> cost, bool free ) {
-  roads.emplace_back(edgeNum); 
+  roads.emplace_back(edgeNum);
   if(!free){
     for(auto &elem : cost){
       int resCost = cost[elem.first];

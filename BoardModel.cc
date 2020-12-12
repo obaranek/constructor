@@ -256,7 +256,7 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
     case PARK:
       tiles.at(tileNum)->resourceType = PARK;
       if (!isLoad) {
-        gooseTile = tiles.at(tileNum);
+        gooseTile = tileNum;
       }
       break;
     default:
@@ -396,8 +396,193 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  // diceValue == 7 ? playGoose() : obtainResources(diceValue);
+  diceValue == 7 ? playGoose() : obtainResources(diceValue);
   obtainResources(diceValue); //@TODO: remove this once we implement goose
+}
+
+string getColourStr(Colour colour) {
+  if (colour == BLUE) {
+    return "Blue";
+  } else if (colour == ORANGE) {
+    return "Orange";
+  } else if (colour == RED) {
+    return "Red";
+  }
+  return "Yellow";
+}
+
+int getRndResource(int seed) {
+  vector<int> diceOptions = {0, 1, 2, 3, 4};
+
+  // set the correct seed based on if flag is used or not
+  unsigned long int localSeed;
+  if (seed < 0) {
+    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
+  } else {
+    localSeed = seed;
+  }
+
+  // defining random number generator with correct seed
+  default_random_engine rng{localSeed};
+  // shuffling the dice option vector
+  shuffle(diceOptions.begin(), diceOptions.end(), rng);
+  return *(diceOptions.begin());
+}
+
+int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
+  int totalResources = 0;
+  for (auto el : victim->getResources()) {
+    totalResources += el.second;
+  }
+
+  vector<int> resourceOptions = {};
+  int numBrick = victim->getResources()[BRICK] * 100 / totalResources;
+  int numEnergy = victim->getResources()[ENERGY] * 100 / totalResources;
+  int numHeat = victim->getResources()[HEAT] * 100 / totalResources;
+  int numWifi = victim->getResources()[WIFI] * 100 / totalResources;
+  int numGlass = victim->getResources()[GLASS] * 100 / totalResources;
+
+  for (int i = 0; i < numBrick; i++) {
+    resourceOptions.push_back(static_cast<int>(BRICK));
+  }
+  for (int i = 0; i < numEnergy; i++) {
+    resourceOptions.push_back(static_cast<int>(ENERGY));
+  }
+  for (int i = 0; i < numHeat; i++) {
+    resourceOptions.push_back(static_cast<int>(HEAT));
+  }
+  for (int i = 0; i < numWifi; i++) {
+    resourceOptions.push_back(static_cast<int>(WIFI));
+  }
+  for (int i = 0; i < numGlass; i++) {
+    resourceOptions.push_back(static_cast<int>(GLASS));
+  }
+
+  // set the correct seed based on if flag is used or not
+  unsigned long int localSeed;
+  if (seed < 0) {
+    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
+  } else {
+    localSeed = seed;
+  }
+
+  // defining random number generator with correct seed
+  default_random_engine rng{localSeed};
+  // shuffling the dice option vector
+  shuffle(resourceOptions.begin(), resourceOptions.end(), rng);
+  return *(resourceOptions.begin());
+}
+
+void BoardModel::playGoose() {
+  for (auto &builder : builders) {
+    map<ResourceType, int> resourcesLost = {
+        {BRICK, 0}, {WIFI, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}};
+    map<ResourceType, int> builderResources = builder->getResources();
+
+    int totalResources = 0;
+    for (auto el : builderResources) {
+      totalResources += el.second;
+    }
+
+    int lostResources = totalResources / 2;
+    for (int i = 0; i < lostResources; i++) {
+      int resourceLost = getRndResource(seed);
+      builderResources[static_cast<ResourceType>(resourceLost)] += 1;
+    }
+
+    std::string color = "";
+    Colour builderColour = builder->getColour();
+    color = getColourStr(builderColour);
+    std::cout << "Builder " << color << " loses " << lostResources
+              << " resources to the geese . They lose: " << std::endl;
+
+    for (auto &el : resourcesLost) {
+      std::string resource = "";
+      if (el.first == BRICK) {
+        resource = "BRICK";
+      } else if (el.first == WIFI) {
+        resource = "WIFI";
+      } else if (el.first == ENERGY) {
+        resource = "ENERGY";
+      } else if (el.first == GLASS) {
+        resource = "GLASS";
+      } else if (el.first == HEAT) {
+        resource = "HEAT";
+      }
+      std::cout << el.second << " " << resource << std::endl;
+    }
+  }
+
+  int newGooseTile = -1;
+  bool isValidGooseTile = false;
+
+  while (!isValidGooseTile) {
+    std::cout << "Choose where to place the GEESE." << std::endl;
+    std::cin >> newGooseTile;
+    if (newGooseTile == gooseTile || gooseTile < 0 || gooseTile > 53) {
+      std::cout << "Invalid goose Tile! Choose Again." << std::endl;
+    } else {
+      isValidGooseTile = true;
+    }
+  }
+  gooseTile = newGooseTile;
+
+  vector<shared_ptr<Builder>> stealFrom{};
+  for (auto &vertexNum : tiles.at(gooseTile)->vertices) {
+    if (vertices.at(vertexNum)->getResidence() == nullptr) {
+      continue;
+    } else if (vertices.at(vertexNum)->getResidence()->getOwner() ==
+               currBuilder) {
+      continue;
+    }
+    auto currVertexOwner = vertices.at(vertexNum)->getResidence()->getOwner();
+    if (currVertexOwner != nullptr) {
+      stealFrom.push_back(currVertexOwner);
+    }
+  }
+
+  if (stealFrom.size() > 0) {
+    std::cout << "Builder " << getColourStr(currBuilder->getColour())
+              << " can choose to steal from";
+    for (auto it = stealFrom.begin(); it != stealFrom.end(); ++it) {
+      std::cout << " " << getColourStr(it->get()->getColour());
+      if (it == stealFrom.end() - 1) {
+        std::cout << std::endl;
+      } else {
+        std::cout << ",";
+      }
+    }
+    string answer = "";
+    Colour victimColor;
+    bool validColor = false;
+    std::cout << "Choose a builder to steal from." << std::endl;
+
+    do {
+      std::cin >> answer;
+      if (answer == "Blue") {
+        victimColor = BLUE;
+        validColor = true;
+      } else if (answer == "Orange") {
+        victimColor = ORANGE;
+        validColor = true;
+      } else if (answer == "Red") {
+        victimColor = RED;
+        validColor = true;
+      } else if (answer == "YELLOW") {
+        victimColor = YELLOW;
+        validColor = true;
+      }
+    } while (!validColor);
+
+    shared_ptr<Builder> victim = builders.at(victimColor);
+    ResourceType stolenResource =
+        static_cast<ResourceType>(getStolenResource(victim));
+    victim->takeResources(stolenResource, -1);
+    currBuilder->takeResources(stolenResource, 1);
+  } else {
+    std::cout << "Builder " << getColourStr(currBuilder->getColour())
+              << " has no builders to seal from." << std::endl;
+  }
 }
 
 void BoardModel::next() {
