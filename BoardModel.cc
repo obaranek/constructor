@@ -518,10 +518,10 @@ void BoardModel::playGoose() {
   while (!isValidGooseTile) {
     std::cout << "Choose where to place the GEESE." << std::endl;
     std::cin >> newGooseTile;
-    if (newGooseTile == gooseTile || newGooseTile < 0 || newGooseTile > 18) {
-      std::cout << "Invalid goose Tile! Choose Again." << std::endl;
-    } else {
+    if (newGooseTile != gooseTile && newGooseTile > 0 && gooseTile < 18) {
       isValidGooseTile = true;
+    } else {
+      std::cout << "Invalid goose Tile! Choose Again." << std::endl;
     }
   }
   gooseTile = newGooseTile;
