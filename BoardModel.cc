@@ -391,8 +391,12 @@ void BoardModel::playRoll(int diceValue) {
   if (diceValue == 7 || diceValue > 12 || diceValue < 2) {
     throw invalid_argument("BoardModel::obtainResources:: Invalid value");
   }
-  diceValue == 7 ? playGoose() : obtainResources(diceValue);
-  obtainResources(diceValue); //@TODO: remove this once we implement goose
+  if (diceValue == 7) {
+    playGoose();
+    theBoardView->printBoard(this);
+  } else {
+    obtainResources(diceValue);
+  }
 }
 
 string getColourStr(Colour colour) {
@@ -682,8 +686,7 @@ std::shared_ptr<Edge> BoardModel::getEdgePtr(int edgeNum) {
 
 char BoardModel::getDiceType() { return currBuilder->getDiceType(); }
 
-std::shared_ptr<Tile> BoardModel::getGooseTile() {
-  return tiles.at(gooseTile); }
+std::shared_ptr<Tile> BoardModel::getGooseTile() { return tiles.at(gooseTile); }
 
 void BoardModel::setDice(char type) {
   if (type == 'L' || type == 'F') {
