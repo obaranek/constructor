@@ -193,7 +193,7 @@ void BoardModel::initLoad(std::string fileName) {
     } else if (lineCtr == 7) {
       int tile;
       ss >> tile;
-      gooseTile = tiles.at(tile);
+      gooseTile = tile;
     }
     lineCtr++;
   }
@@ -267,11 +267,6 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
   }
-}
-
-void BoardModel::moveGeese(int tileNum) {
-  gooseTile = tiles.at(tileNum);
-  // Lmao this wasn't trivial, i forgot about the stealing bs
 }
 
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {

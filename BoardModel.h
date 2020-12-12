@@ -38,9 +38,6 @@ public:
 
   void initBoard(std::string fileName = "layout.txt");
 
-  // moveGeese() sets gooseTile to point at tile of tileNum
-  void moveGeese(int tileNum);
-
   // buildResidence() builds a residence on the given vertexNum
   void buildResidence(int vertexNum, bool gameStart);
 
