@@ -538,8 +538,12 @@ void BoardModel::playGoose() {
                currBuilder) {
       continue;
     }
+    int totalBuilderResources = 0;
+    for (auto &el: vertices.at(vertexNum)->getResidence()->getOwner()->getResources()) {
+      totalBuilderResources += el.second;
+    }
     auto currVertexOwner = vertices.at(vertexNum)->getResidence()->getOwner();
-    if (currVertexOwner != nullptr) {
+    if (currVertexOwner != nullptr && totalBuilderResources > 0) {
       stealFrom.push_back(currVertexOwner);
     }
   }
