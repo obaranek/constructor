@@ -2,17 +2,20 @@
 #include "Builder.h"
 #include "Residence.h"
 
+#include <stdexcept>
+
 using namespace std;
+using std::invalid_argument;
 
 Vertex::Vertex(int number) : vertexNumber{number} {};
 
 void Vertex::buildResidence(shared_ptr<Builder> currBuilder, char residenceType, bool gameStart) {
-  
+
   // Check if no building exists on the vertex
   if (residence != NULL) {
     throw invalid_argument("Building already exists at that vertex");
   }
- 
+
   if(!gameStart){
     // Check if builder has enough resources
     bool enoughResources = currBuilder->checkResources({{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}});
@@ -27,7 +30,7 @@ void Vertex::buildResidence(shared_ptr<Builder> currBuilder, char residenceType,
 }
 
 void Vertex::improveResidence(shared_ptr<Builder> currBuilder) {
-  
+
   if (!(currBuilder->haveResidence(vertexNumber))) {
     throw invalid_argument("You do not own a residence at this vertex number");
   }
