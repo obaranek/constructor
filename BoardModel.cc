@@ -435,11 +435,11 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
   }
 
   vector<int> resourceOptions = {};
-  int numBrick = victim->getResources()[BRICK] * 100 / totalResources;
-  int numEnergy = victim->getResources()[ENERGY] * 100 / totalResources;
-  int numHeat = victim->getResources()[HEAT] * 100 / totalResources;
-  int numWifi = victim->getResources()[WIFI] * 100 / totalResources;
-  int numGlass = victim->getResources()[GLASS] * 100 / totalResources;
+  int numBrick = (victim->getResources()[BRICK] * 100) / totalResources;
+  int numEnergy = (victim->getResources()[ENERGY] * 100) / totalResources;
+  int numHeat = (victim->getResources()[HEAT] * 100) / totalResources;
+  int numWifi = (victim->getResources()[WIFI] * 100) / totalResources;
+  int numGlass = (victim->getResources()[GLASS] * 100) / totalResources;
 
   for (int i = 0; i < numBrick; i++) {
     resourceOptions.push_back(static_cast<int>(BRICK));
@@ -518,7 +518,7 @@ void BoardModel::playGoose() {
   while (!isValidGooseTile) {
     std::cout << "Choose where to place the GEESE." << std::endl;
     std::cin >> newGooseTile;
-    if (newGooseTile == gooseTile || gooseTile < 0 || gooseTile > 53) {
+    if (newGooseTile == gooseTile || newGooseTile < 0 || newGooseTile > 18) {
       std::cout << "Invalid goose Tile! Choose Again." << std::endl;
     } else {
       isValidGooseTile = true;
@@ -556,8 +556,8 @@ void BoardModel::playGoose() {
     bool validColor = false;
 
     do {
-      std::cout << "Choose a builder to steal from." << std::endl;
-      std::cin >> answer;
+     std::cout << "Choose a builder to steal from." << std::endl;
+     std::cin >> answer;
       if (answer == "Blue") {
         victimColor = BLUE;
         validColor = true;
