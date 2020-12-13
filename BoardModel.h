@@ -78,6 +78,9 @@ public:
 
   void playGoose();
 
+  // Changes layout of the board to have random values and resources
+  void initRandomBoard();
+
   /***** Print Functions *****/
 
   void printBoard();

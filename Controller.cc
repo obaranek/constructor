@@ -316,8 +316,7 @@ void Controller::startGame() {
   playTurn();
 }
 
-// TODO: uncomment when implemented
-void Controller::initRandomBoard() { /**theBoardModel->initRandomBoard(); **/ }
+void Controller::initRandomBoard() { theBoardModel->initRandomBoard(); }
 
 void Controller::initBoard(std::string fileName) {
   theBoardModel->initBoard(fileName);

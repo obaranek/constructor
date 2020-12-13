@@ -231,6 +231,77 @@ void BoardModel::loadBuilder(string line, int builderNum) {
   }
 }
 
+
+void BoardModel::initRandomBoard() {
+
+  prepareBoard();
+
+  // vector of vals (not including 7)
+  std::vector<int> tileValVector {2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
+  
+  // vector of resources (not including Park)
+  std::vector<ResourceType> resourceVector;
+  for(unsigned i = 0; i < tileValVector.size(); i++){
+    if( 0 <= i && i <= 2){
+      resourceVector.push_back(WIFI);
+    }
+    else if(3 <= i && i <= 5){
+      resourceVector.push_back(HEAT);
+    }
+    else if(6 <=i && i <= 9){
+      resourceVector.push_back(BRICK);
+    }
+    else if(10 <= i && i <= 13){
+      resourceVector.push_back(ENERGY);
+    }
+    else if(14 <= i && i <= 17){
+      resourceVector.push_back(GLASS);
+    }
+  }
+
+  // set the correct seed based on if flag is used or not
+  unsigned long int localSeed;
+  if (seed < 0) {
+    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
+  } else {
+    localSeed = seed;
+  }
+
+  // defining random number generator with correct seed
+  default_random_engine rng{localSeed};
+  // shuffling the value vector
+  shuffle(tileValVector.begin(), tileValVector.end(), rng);
+  //suffling the resources vector
+  shuffle(resourceVector.begin(), resourceVector.end(), rng);
+
+  // Assign each value with a resource
+  std::map<int,ResourceType> tileData; // stores pairs of (val, res)
+  
+  for(unsigned i = 0; i < tileValVector.size(); i++){
+    tileData.emplace_back({tileValVector[i], resourceVector[i]});
+  }
+  // Add Park into the tileData
+  tileData.emplace_back({7,PARK});
+
+  std::vector<int> keys;
+  for(auto pair : tileData){
+    keys.push_back(pair.first);
+  }
+  // shuffle keys
+  shuffle(keys.begin(), keys.end(), rng);
+
+  std::string randomLayout="";
+  for(int tileValue : keys){
+    randomLayout += tileData[tileValue];
+    randomLayout += " ";
+    randomLayout += tileValue;
+    randomLayout += " ";
+  }
+
+  loadLayout(randomLayout, false);
+}
+
+
 void BoardModel::loadLayout(std::string line, bool isLoad) {
   int tileNum = 0;
   int tileValue = 0;
@@ -457,7 +528,6 @@ int BoardModel::rollDice() {
   // shuffling the dice option vector
   shuffle(diceOptions.begin(), diceOptions.end(), rng);
   // return a shuffled element from the dice options array
-  std::cout << "Random Dice Number: " << *(diceOptions.begin()) << std::endl;
   return *(diceOptions.begin());
 }
 
