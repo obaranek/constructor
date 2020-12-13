@@ -10,7 +10,6 @@ private:
   ResourceType resourceType;
   int value;
   bool hasGeese;
-  //@TODO reflect changes in UML
   std::vector<int> vertices;
   std::vector<int> edges;
 

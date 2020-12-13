@@ -90,4 +90,6 @@ map<ResourceType, int> &Builder::getResources() { return resources; }
 
 map<int, char> &Builder::getBuildings() { return buildings; }
 
+vector<int>& Builder::getRoads(){ return roads; }
+
 void Builder::setDice(char diceType) { dice = diceType; }

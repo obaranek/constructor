@@ -31,6 +31,8 @@ private:
   // loadLayout() sets up the board according to the given text file
   void loadLayout(std::string line, bool);
   void loadBuilder(std::string, int);
+  std::string makeBuilderDataString(std::shared_ptr<Builder> builderPtr);
+  std::string makeBoardDataString();
 
 public:
   // default constructor sets seed to be -1
@@ -66,7 +68,15 @@ public:
   // returns true if a builder won the game
   bool checkWinner();
 
+  // Loads a previous game saved in passed in text file. 
   void initLoad(std::string);
+
+  // save() saves the current state of the game in a text file
+  void save(std::string fileName);
+
+  void tradeResource(Colour otherBuilder, ResourceType give, ResourceType take);
+
+  void playGoose();
 
   /***** Print Functions *****/
 
@@ -87,9 +97,6 @@ public:
 
   void printWhereBuild();
 
-  void tradeResource(Colour otherBuilder, ResourceType give, ResourceType take);
-
-  void playGoose();
 
   /***** Getters and Setters *****/
 

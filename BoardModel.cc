@@ -20,6 +20,7 @@
 using std::default_random_engine;
 using std::getline;
 using std::ifstream;
+using std::ofstream;
 using std::invalid_argument;
 using std::istringstream;
 using std::logic_error;
@@ -28,6 +29,7 @@ using std::stoi;
 using std::string;
 using std::stringstream;
 using std::vector;
+using std::map;
 
 /***** Constructors *****/
 
@@ -648,6 +650,79 @@ void BoardModel::tradeResource(Colour otherBuilder, ResourceType give,
     throw logic_error("BoardModel::tradeResource: Not enough resources");
   }
 }
+
+std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
+  string dataString = "";
+
+  // Resources
+  map<ResourceType, int> & builderResources = builderPtr->getResources();
+  dataString += builderResources[BRICK] + " " + builderResources[ENERGY] 
+    + " " + builderResources[GLASS]+ " " + builderResources[HEAT]
+    + " " + builderResources[WIFI]+" ";
+
+  // Roads
+  dataString += "r ";
+  vector<int>& builderRoads = builderPtr->getRoads();
+  for(int road : builderRoads){
+    dataString += std:::to_string(road) + " ";
+  }
+
+  // Residences
+  dataString += "h ";
+  map<int, char>& builderResidences = builderPtr->getBuildings();
+  for(auto elem& : builderResidences){
+    dataString += std::to_string(elem.first) + " " + elem.second " ";
+  }
+
+  return dataString;
+}
+
+std::string BoardModel::makeBoardDataString(){
+
+  std::string dataString = "";
+  
+  for(auto tile& : tiles){
+    ResourceType res = tile->getResourceType();
+    dataString += std::to_string(res) + " ";
+    int val = tile->getTileVal();
+    dataString += std::to_string(val) + " ";
+  }
+
+  return dataString;
+}
+
+
+void BoardModel::save(std::string fileName){
+
+  ifstream ofs{fileName};
+  if(ofs.fail()){
+    throw logic_error("Invalid filename passed to save");
+  }
+
+  // Store the currentBuilder's colour
+  int currBuilderNumber = currBuilder->getColour();
+  ofs << currBuilderNumber << std::endl;
+
+  // Store Builders' data
+  std::string builder0Data = makeBuilderDataString(builders[0]);
+  std::string builder1Data = makeBuilderDataString(builders[1]);
+  std::string builder2Data = makeBuilderDataString(builders[2]);
+  std::string builder3Data = makeBuilderDataString(builders[3]);
+  ofs << builder0Data << std::endl << builder1Data << std::endl
+    << builder2Data << std::endl << builder3Data << std::endl;
+
+  // Store board layout
+  std::string boardData = makeBoardDataString();
+  ofs << boardData << std::endl;
+
+  // Store goose tile
+  std::string gooseTileData = std::to_string(gooseTile);
+  ofs << gooseTileData << std::endl;
+
+  ofs.close();
+}
+
+
 /***** Print Functions *****/
 
 void BoardModel::printBoard() { theBoardView->printBoard(this); }

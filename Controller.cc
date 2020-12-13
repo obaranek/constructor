@@ -78,9 +78,7 @@ void Controller::playTurn() {
       // READS EOF, SAVE AND EXIT.
       if (std::cin.eof()) {
         std::string eofSaveFile{"backup.sv"};
-        // TODO: uncomment save
-        // theBoardModel->save(eofSaveFile);
-
+        theBoardModel->save(eofSaveFile);
         std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
         exit(0);
       }
@@ -218,9 +216,7 @@ void Controller::playTurn() {
       } else if (userInput == "save") { // save <file>
         std::string fileName;
         std::cin >> fileName;
-
-        // TODO: uncomment when done
-        // theBoardModel->save(fileName);
+        theBoardModel->save(fileName);
       } else if (userInput == "help") { // help
         theBoardModel->duringGameHelp();
       } else if (userInput == "next") {

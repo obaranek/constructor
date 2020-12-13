@@ -50,6 +50,7 @@ public:
   char getDiceType();
   std::map<ResourceType, int> &getResources();
   std::map<int, char> &getBuildings();
+  std::vector<int>& getRoads();
 
   void setDice(char diceType);
 };
