@@ -28,7 +28,7 @@ void Controller::playTurn() {
 
     // continue to set the dice type until user types 'roll'
     while (userInput != "roll") {
-      if (userInput == "loaded") {
+      if (userInput == "load") {
         theBoardModel->setDice('L');
       } else if (userInput == "fair") {
         theBoardModel->setDice('F');
