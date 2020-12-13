@@ -597,6 +597,7 @@ void BoardModel::playGoose() {
 }
 
 void BoardModel::next() {
+
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
 
   if (currBuilderIt ==
@@ -613,6 +614,7 @@ void BoardModel::next() {
 }
 
 void BoardModel::prevBuilder() {
+	
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
 
   if (currBuilderIt ==

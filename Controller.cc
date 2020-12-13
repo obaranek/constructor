@@ -307,7 +307,7 @@ void Controller::startGame() {
     // built house, change builder
     if (0 <= counter && counter <= 2) {
       theBoardModel->next();
-    } else if (4 <= counter && counter <= 7) {
+    } else if (4 <= counter && counter < 7) {
       theBoardModel->prevBuilder();
     }
   }
