@@ -337,24 +337,96 @@ void BoardModel::improveResidence(int vertexNum) {
   }
 }
 
+std::string getColourFromInt(int col){
+	switch(col){
+		case BLUE:
+			return "Blue";
+		case RED:
+			return "Red";
+		case ORANGE:
+			return "Orange";
+		case YELLOW:
+			return "Yellow";
+		default:
+			throw logic_error("Unable to print builder colour");
+	}
+}
+
+std::string getStringFromResType(ResourceType tileResource){
+	switch(tileResource){
+		case BRICK:
+			return "Brick";
+		case ENERGY:
+			return "Energy";
+		case GLASS:
+			return "Glass";
+		case HEAT:
+			return "Heat";
+		case WIFI:
+			return "Wifi";
+		default:
+			throw logic_error("Unable to print resource");
+	}
+}
+
 void BoardModel::obtainResources(int value) {
   if (value > 12 || value < 2) {
     throw logic_error("BoardMdodel::obtainResources: Invalid value");
   }
+
+  std::vector<std::map<ResourceType, int>> buildersGains;
+  for(int i  = 0; i < builders.size(); i++){
+  	buildersGains.push_back({ {BRICK,0}, {ENERGY, 0}, {GLASS, 0}, {HEAT,0}, {WIFI, 0} });
+  }
+
+  std::vector<bool> didRewardBuildersVector {false, false, false, false};
+
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
+      
+      //If the tile has geese in it, no builder gets resources
+      if(tile->tileNumber == this->gooseTile){
+	      continue;
+      }
+
       for (auto &tileVertexNum : tile->vertices) {
+
         auto tileVertex = vertices.at(tileVertexNum);
         auto residence = tileVertex->getResidence();
+
         if (!residence) {
           continue;
         }
+
         int reward = residence->getReward();
         residence->getOwner()->takeResources(tileResource, reward);
+	
+	std::map<ResourceType, int> tempGains = buildersGains[residence->getOwner()->getColour()];
+	tempGains[tileResource] += reward;
+	buildersGains[residence->getOwner()->getColour()] = tempGains;
+	didRewardBuildersVector[residence->getOwner()->getColour()] = true;
       }
     }
   }
+
+  auto it = std::find(didRewardBuildersVector.begin(), didRewardBuildersVector.end() , true);
+
+ if( it == didRewardBuildersVector.end()){
+ 	std::cout << "No builders gained resources." << std::endl;
+ } else{
+ 	for(int i = 0; i < builders.size() ; i ++){
+		if(didRewardBuildersVector[i]){
+			std::cout << "Builder " << getColourFromInt(i) << " gained: " <<std::endl; 
+			std::map<ResourceType, int> rewards = buildersGains[i];
+			for(auto reward : rewards){
+				if(reward.second != 0){
+					std::cout << reward.second << " " << getStringFromResType(reward.first) << std::endl;	
+				}
+			}
+		}	
+	}
+ }
 }
 
 void BoardModel::BuildRoad(int edgeNum) {
