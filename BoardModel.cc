@@ -656,22 +656,34 @@ std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
 
   // Resources
   map<ResourceType, int> & builderResources = builderPtr->getResources();
-  dataString += builderResources[BRICK] + " " + builderResources[ENERGY] 
-    + " " + builderResources[GLASS]+ " " + builderResources[HEAT]
-    + " " + builderResources[WIFI]+" ";
+  dataString += std::to_string(builderResources[BRICK]);
+  dataString += " ";
+  dataString += std::to_string(builderResources[ENERGY]);
+  dataString += " ";
+  dataString += std::to_string(builderResources[GLASS]);
+  dataString += " ";
+  dataString += std::to_string(builderResources[HEAT]);
+  dataString += " ";
+  dataString += " ";
+  dataString += std::to_string(builderResources[WIFI]);
+  dataString += " ";
 
   // Roads
   dataString += "r ";
   vector<int>& builderRoads = builderPtr->getRoads();
   for(int road : builderRoads){
-    dataString += std:::to_string(road) + " ";
+    dataString += std::to_string(road);
+    dataString += " ";
   }
 
   // Residences
   dataString += "h ";
   map<int, char>& builderResidences = builderPtr->getBuildings();
-  for(auto elem& : builderResidences){
-    dataString += std::to_string(elem.first) + " " + elem.second " ";
+  for(auto elem : builderResidences){
+    dataString += std::to_string(elem.first);
+    dataString += " ";
+    dataString += elem.second;
+    dataString += " ";
   }
 
   return dataString;
@@ -681,7 +693,7 @@ std::string BoardModel::makeBoardDataString(){
 
   std::string dataString = "";
   
-  for(auto tile& : tiles){
+  for(auto tile : tiles){
     ResourceType res = tile->getResourceType();
     dataString += std::to_string(res) + " ";
     int val = tile->getTileVal();
@@ -694,7 +706,7 @@ std::string BoardModel::makeBoardDataString(){
 
 void BoardModel::save(std::string fileName){
 
-  ifstream ofs{fileName};
+  ofstream ofs{fileName};
   if(ofs.fail()){
     throw logic_error("Invalid filename passed to save");
   }
