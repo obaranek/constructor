@@ -236,7 +236,7 @@ void BoardModel::initRandomBoard() {
 
   prepareBoard();
 
-  // vector of vals (not including 7)
+  // vector of vals (not including 7) : size = 18 elements
   std::vector<int> tileValVector {2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
   
   // vector of resources (not including Park)
@@ -274,30 +274,25 @@ void BoardModel::initRandomBoard() {
   //suffling the resources vector
   shuffle(resourceVector.begin(), resourceVector.end(), rng);
 
-  // Assign each value with a resource
-  std::map<int,ResourceType> tileData; // stores pairs of (val, res)
-  
-  for(unsigned i = 0; i < tileValVector.size(); i++){
-    tileData.emplace_back({tileValVector[i], resourceVector[i]});
-  }
-  // Add Park into the tileData
-  tileData.emplace_back({7,PARK});
 
-  std::vector<int> keys;
-  for(auto pair : tileData){
-    keys.push_back(pair.first);
-  }
-  // shuffle keys
-  shuffle(keys.begin(), keys.end(), rng);
+	std::vector<int> parkOptions {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
+	shuffle(parkOptions.begin(), parkOptions.end(), rng);
+	int parkLocation = *parkOptions.begin(); 
 
-  std::string randomLayout="";
-  for(int tileValue : keys){
-    randomLayout += tileData[tileValue];
+
+		std::string randomLayout="";
+  for(int i = 0; i < tileValVector.size(); i++){
+      	  randomLayout += std::to_string(resourceVector[i]);
     randomLayout += " ";
-    randomLayout += tileValue;
+    randomLayout += std::to_string(tileValVector[i]);
     randomLayout += " ";
+    if(i == parkLocation){
+     	randomLayout += std::to_string(5);
+    	randomLayout += " ";
+    	randomLayout += std::to_string(7);
+    	randomLayout += " ";
+    }
   }
-
   loadLayout(randomLayout, false);
 }
 
