@@ -35,7 +35,7 @@ using std::map;
 /***** Constructors *****/
 
 BoardModel::BoardModel()
-    :  theBoardView{std::make_unique<BoardView>()}, seed {-1}, 
+    :  theBoardView{std::make_unique<BoardView>()}, seed {-1},
     rng{std::default_random_engine{std::chrono::system_clock::now().time_since_epoch().count()}}
 {
   // make 4 builders:
@@ -301,7 +301,7 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
   istringstream ss{line};
 
   while (ss >> resourceNum) {
-    
+
 	  if(tileNum > 18){
 	  	throw std::invalid_argument("Incorrectly formatted layout: too many tiles");
 	  }
@@ -603,7 +603,7 @@ void BoardModel::playGoose() {
     }
 
     int lostResources = 0;
-    
+
     vector<int> diceOptions = {0, 1, 2, 3, 4};
 
     if (totalResources >= 10) {
@@ -674,14 +674,17 @@ void BoardModel::playGoose() {
       continue;
     }
     int totalBuilderResources = 0;
+
     for (auto &el: vertices.at(vertexNum)->getResidence()->getOwner()->getResources()) {
       totalBuilderResources += el.second;
     }
     auto currVertexOwner = vertices.at(vertexNum)->getResidence()->getOwner();
     if (currVertexOwner != nullptr && totalBuilderResources > 0) {
-      stealFrom.push_back(currVertexOwner);
+      if (std::find(stealFrom.begin(), stealFrom.end(), currVertexOwner) != stealFrom.end() ) {
+       stealFrom.push_back(currVertexOwner);
     }
   }
+}
 
   if (stealFrom.size() > 0) {
     std::cout << "Builder " << getColourStr(currBuilder->getColour())
