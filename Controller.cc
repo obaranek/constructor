@@ -180,18 +180,18 @@ void Controller::playTurn() {
 
         ResourceType takeResourceType = BRICK;
 
-        if (giveResource[0] == 'B' || giveResource[0] == 'b') { // brick
-          giveResourceType = ResourceType::BRICK;
-        } else if (giveResource[0] == 'E' || giveResource[0] == 'e') { // energy
-          giveResourceType = ResourceType::ENERGY;
-        } else if (giveResource[0] == 'G' || giveResource[0] == 'g') { // glass
-          giveResourceType = ResourceType::GLASS;
-        } else if (giveResource[0] == 'H' || giveResource[0] == 'h') { // heat
-          giveResourceType = ResourceType::HEAT;
-        } else if (giveResource[0] == 'W' || giveResource[0] == 'w') { // wifi
-          giveResourceType = ResourceType::WIFI;
-        } else if (giveResource[0] == 'P' || giveResource[0] == 'p') { // park
-          giveResourceType = ResourceType::PARK;
+        if (takeResource[0] == 'B' || takeResource[0] == 'b') { // brick
+          takeResourceType = ResourceType::BRICK;
+        } else if (takeResource[0] == 'E' || takeResource[0] == 'e') { // energy
+          takeResourceType = ResourceType::ENERGY;
+        } else if (takeResource[0] == 'G' || takeResource[0] == 'g') { // glass
+          takeResourceType = ResourceType::GLASS;
+        } else if (takeResource[0] == 'H' || takeResource[0] == 'h') { // heat
+          takeResourceType = ResourceType::HEAT;
+        } else if (takeResource[0] == 'W' || takeResource[0] == 'w') { // wifi
+          takeResourceType = ResourceType::WIFI;
+        } else if (takeResource[0] == 'P' || takeResource[0] == 'p') { // park
+          takeResourceType = ResourceType::PARK;
         } else {
           std::cout << "Invalid <take>" << std::endl;
           continue;
@@ -207,19 +207,29 @@ void Controller::playTurn() {
         std::string acceptTrade;
         std::cin >> acceptTrade;
 
-        while (acceptTrade != "yes" || acceptTrade != "no") {
+        while (acceptTrade != "yes" && acceptTrade != "Yes" && acceptTrade != "y" && acceptTrade != "Y" && 
+			acceptTrade != "no" && acceptTrade != "No" && acceptTrade != "n" && acceptTrade != "N") {
           std::cout << "Invalid input." << std::endl;
           theBoardModel->printTradeResources(
               otherBuilderColour, giveResourceType, takeResourceType);
           std::cin >> acceptTrade;
         }
 
-        if (acceptTrade == "yes") {
-
-           theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
+        if (acceptTrade == "yes" || acceptTrade == "Yes" || acceptTrade == "y" || acceptTrade == "Y") {
+	  try{
+	   theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
           takeResourceType);
-        }
+	   std::cout << "Trade was successful" <<std::endl;
+	  } catch (std::logic_error e){
+	  	std::cout << e.what() << std::endl;
+	  } catch(...) {
+	  	std::cout << "Could not trade resource, please try again later." << std::endl;
+	  }
+	}
 
+	if(acceptTrade == "no" || acceptTrade == "No" || acceptTrade == "n" || acceptTrade == "N" ) {
+		std::cout << "The trade was rejected" << std::endl;
+	}
       } else if (userInput == "save") { // save <file>
         std::string fileName;
         std::cin >> fileName;

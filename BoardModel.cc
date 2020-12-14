@@ -200,6 +200,9 @@ void BoardModel::initLoad(std::string fileName) {
     }
     lineCtr++;
   }
+  if(lineCtr != 8){
+  	throw logic_error("Could not load incorrectly formatted load file passed in");
+  }
 }
 
 void BoardModel::loadBuilder(string line, int builderNum) {
