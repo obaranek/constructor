@@ -208,9 +208,8 @@ void Controller::playTurn() {
 
         if (acceptTrade == "yes") {
 
-          //@TODO: uncomment when done
-          // theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
-          // takeResourceType);
+           theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
+          takeResourceType);
         }
 
       } else if (userInput == "save") { // save <file>
