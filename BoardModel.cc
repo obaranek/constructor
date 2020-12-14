@@ -21,23 +21,23 @@
 using std::default_random_engine;
 using std::getline;
 using std::ifstream;
-using std::ofstream;
 using std::invalid_argument;
 using std::istringstream;
 using std::logic_error;
+using std::map;
+using std::ofstream;
 using std::shared_ptr;
 using std::stoi;
 using std::string;
 using std::stringstream;
 using std::vector;
-using std::map;
 
 /***** Constructors *****/
 
 BoardModel::BoardModel()
-    :  theBoardView{std::make_unique<BoardView>()}, seed {-1},
-    rng{std::default_random_engine{std::chrono::system_clock::now().time_since_epoch().count()}}
-{
+    : theBoardView{std::make_unique<BoardView>()}, seed{-1},
+      rng{std::default_random_engine{
+          std::chrono::system_clock::now().time_since_epoch().count()}} {
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
@@ -202,8 +202,9 @@ void BoardModel::initLoad(std::string fileName) {
     }
     lineCtr++;
   }
-  if(lineCtr != 8){
-  	throw logic_error("Could not load incorrectly formatted load file passed in");
+  if (lineCtr != 8) {
+    throw logic_error(
+        "Could not load incorrectly formatted load file passed in");
   }
 }
 
@@ -237,61 +238,55 @@ void BoardModel::loadBuilder(string line, int builderNum) {
   }
 }
 
-
 void BoardModel::initRandomBoard() {
 
   prepareBoard();
 
   // vector of vals (not including 7) : size = 18 elements
-  std::vector<int> tileValVector {2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
+  std::vector<int> tileValVector{2, 3, 3, 4, 4,  5,  5,  6,  6,
+                                 8, 8, 9, 9, 10, 10, 11, 11, 12};
 
   // vector of resources (not including Park)
   std::vector<ResourceType> resourceVector;
-  for(unsigned i = 0; i < tileValVector.size(); i++){
-    if( 0 <= i && i <= 2){
+  for (unsigned i = 0; i < tileValVector.size(); i++) {
+    if (0 <= i && i <= 2) {
       resourceVector.push_back(WIFI);
-    }
-    else if(3 <= i && i <= 5){
+    } else if (3 <= i && i <= 5) {
       resourceVector.push_back(HEAT);
-    }
-    else if(6 <=i && i <= 9){
+    } else if (6 <= i && i <= 9) {
       resourceVector.push_back(BRICK);
-    }
-    else if(10 <= i && i <= 13){
+    } else if (10 <= i && i <= 13) {
       resourceVector.push_back(ENERGY);
-    }
-    else if(14 <= i && i <= 17){
+    } else if (14 <= i && i <= 17) {
       resourceVector.push_back(GLASS);
     }
   }
 
   // shuffling the value vector
   shuffle(tileValVector.begin(), tileValVector.end(), rng);
-  //suffling the resources vector
+  // suffling the resources vector
   shuffle(resourceVector.begin(), resourceVector.end(), rng);
 
+  std::vector<int> parkOptions{0, 1,  2,  3,  4,  5,  6,  7,  8,
+                               9, 10, 11, 12, 13, 14, 15, 16, 17};
+  shuffle(parkOptions.begin(), parkOptions.end(), rng);
+  int parkLocation = *parkOptions.begin();
 
-	std::vector<int> parkOptions {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
-	shuffle(parkOptions.begin(), parkOptions.end(), rng);
-	int parkLocation = *parkOptions.begin();
-
-
-		std::string randomLayout="";
-  for(size_t i = 0; i < tileValVector.size(); i++){
-      	  randomLayout += std::to_string(resourceVector[i]);
+  std::string randomLayout = "";
+  for (size_t i = 0; i < tileValVector.size(); i++) {
+    randomLayout += std::to_string(resourceVector[i]);
     randomLayout += " ";
     randomLayout += std::to_string(tileValVector[i]);
     randomLayout += " ";
-    if((int)i == parkLocation){
-     	randomLayout += std::to_string(5);
-    	randomLayout += " ";
-    	randomLayout += std::to_string(7);
-    	randomLayout += " ";
+    if ((int)i == parkLocation) {
+      randomLayout += std::to_string(5);
+      randomLayout += " ";
+      randomLayout += std::to_string(7);
+      randomLayout += " ";
     }
   }
   loadLayout(randomLayout, false);
 }
-
 
 void BoardModel::loadLayout(std::string line, bool isLoad) {
   int tileNum = 0;
@@ -302,9 +297,10 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
 
   while (ss >> resourceNum) {
 
-	  if(tileNum > 18){
-	  	throw std::invalid_argument("Incorrectly formatted layout: too many tiles");
-	  }
+    if (tileNum > 18) {
+      throw std::invalid_argument(
+          "Incorrectly formatted layout: too many tiles");
+    }
 
     switch (resourceNum) {
     case BRICK:
@@ -336,9 +332,9 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
   }
-	if (tileNum != 19){
-		throw std::invalid_argument("Incorrectly formatted layout: too few tiles");
-	}
+  if (tileNum != 19) {
+    throw std::invalid_argument("Incorrectly formatted layout: too few tiles");
+  }
 }
 
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {
@@ -375,8 +371,8 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
          edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
       int edgeNum = *edgeNumIt;
       bool edgeHasRoad = edges.at(edgeNum)->doesHaveRoad();
-      if(!edgeHasRoad){
-      	continue;
+      if (!edgeHasRoad) {
+        continue;
       }
       // At this point, we know that the ege has a road:
       auto ownerColour = edges.at(edgeNum)->getOwnerColour();
@@ -412,36 +408,36 @@ void BoardModel::improveResidence(int vertexNum) {
   }
 }
 
-std::string getColourFromInt(int col){
-	switch(col){
-		case BLUE:
-			return "Blue";
-		case RED:
-			return "Red";
-		case ORANGE:
-			return "Orange";
-		case YELLOW:
-			return "Yellow";
-		default:
-			throw logic_error("Unable to print builder colour");
-	}
+std::string getColourFromInt(int col) {
+  switch (col) {
+  case BLUE:
+    return "Blue";
+  case RED:
+    return "Red";
+  case ORANGE:
+    return "Orange";
+  case YELLOW:
+    return "Yellow";
+  default:
+    throw logic_error("Unable to print builder colour");
+  }
 }
 
-std::string getStringFromResType(ResourceType tileResource){
-	switch(tileResource){
-		case BRICK:
-			return "Brick";
-		case ENERGY:
-			return "Energy";
-		case GLASS:
-			return "Glass";
-		case HEAT:
-			return "Heat";
-		case WIFI:
-			return "Wifi";
-		default:
-			throw logic_error("Unable to print resource");
-	}
+std::string getStringFromResType(ResourceType tileResource) {
+  switch (tileResource) {
+  case BRICK:
+    return "Brick";
+  case ENERGY:
+    return "Energy";
+  case GLASS:
+    return "Glass";
+  case HEAT:
+    return "Heat";
+  case WIFI:
+    return "Wifi";
+  default:
+    throw logic_error("Unable to print resource");
+  }
 }
 
 void BoardModel::obtainResources(int value) {
@@ -450,19 +446,20 @@ void BoardModel::obtainResources(int value) {
   }
 
   std::vector<std::map<ResourceType, int>> buildersGains;
-  for(size_t i  = 0; i < builders.size(); i++){
-  	buildersGains.push_back({ {BRICK,0}, {ENERGY, 0}, {GLASS, 0}, {HEAT,0}, {WIFI, 0} });
+  for (size_t i = 0; i < builders.size(); i++) {
+    buildersGains.push_back(
+        {{BRICK, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}, {WIFI, 0}});
   }
 
-  std::vector<bool> didRewardBuildersVector {false, false, false, false};
+  std::vector<bool> didRewardBuildersVector{false, false, false, false};
 
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
 
-      //If the tile has geese in it, no builder gets resources
-      if(tile->tileNumber == this->gooseTile){
-	      continue;
+      // If the tile has geese in it, no builder gets resources
+      if (tile->tileNumber == this->gooseTile) {
+        continue;
       }
 
       for (auto &tileVertexNum : tile->vertices) {
@@ -477,31 +474,35 @@ void BoardModel::obtainResources(int value) {
         int reward = residence->getReward();
         residence->getOwner()->takeResources(tileResource, reward);
 
-	std::map<ResourceType, int> tempGains = buildersGains[residence->getOwner()->getColour()];
-	tempGains[tileResource] += reward;
-	buildersGains[residence->getOwner()->getColour()] = tempGains;
-	didRewardBuildersVector[residence->getOwner()->getColour()] = true;
+        std::map<ResourceType, int> tempGains =
+            buildersGains[residence->getOwner()->getColour()];
+        tempGains[tileResource] += reward;
+        buildersGains[residence->getOwner()->getColour()] = tempGains;
+        didRewardBuildersVector[residence->getOwner()->getColour()] = true;
       }
     }
   }
 
-  auto it = std::find(didRewardBuildersVector.begin(), didRewardBuildersVector.end() , true);
+  auto it = std::find(didRewardBuildersVector.begin(),
+                      didRewardBuildersVector.end(), true);
 
- if( it == didRewardBuildersVector.end()){
- 	std::cout << "No builders gained resources." << std::endl;
- } else{
- 	for(size_t i= 0; i < builders.size() ; i++){
-		if(didRewardBuildersVector[i]){
-			std::cout << "Builder " << getColourFromInt(i) << " gained: " <<std::endl;
-			std::map<ResourceType, int> rewards = buildersGains[i];
-			for(auto reward : rewards){
-				if(reward.second != 0){
-					std::cout << reward.second << " " << getStringFromResType(reward.first) << std::endl;
-				}
-			}
-		}
-	}
- }
+  if (it == didRewardBuildersVector.end()) {
+    std::cout << "No builders gained resources." << std::endl;
+  } else {
+    for (size_t i = 0; i < builders.size(); i++) {
+      if (didRewardBuildersVector[i]) {
+        std::cout << "Builder " << getColourFromInt(i)
+                  << " gained: " << std::endl;
+        std::map<ResourceType, int> rewards = buildersGains[i];
+        for (auto reward : rewards) {
+          if (reward.second != 0) {
+            std::cout << reward.second << " "
+                      << getStringFromResType(reward.first) << std::endl;
+          }
+        }
+      }
+    }
+  }
 }
 
 void BoardModel::BuildRoad(int edgeNum) {
@@ -563,11 +564,21 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
   }
 
   vector<int> resourceOptions = {};
-  int numBrick = totalResources != 0 ? (victim->getResources()[BRICK] * 100) / totalResources : 0;
-  int numEnergy = totalResources != 0 ? (victim->getResources()[ENERGY] * 100) / totalResources : 0;
-  int numHeat = totalResources != 0 ? (victim->getResources()[HEAT] * 100) / totalResources : 0;
-  int numWifi = totalResources != 0 ? (victim->getResources()[WIFI] * 100) / totalResources : 0;
-  int numGlass = totalResources != 0 ? (victim->getResources()[GLASS] * 100) / totalResources : 0;
+  int numBrick = totalResources != 0
+                     ? (victim->getResources()[BRICK] * 100) / totalResources
+                     : 0;
+  int numEnergy = totalResources != 0
+                      ? (victim->getResources()[ENERGY] * 100) / totalResources
+                      : 0;
+  int numHeat = totalResources != 0
+                    ? (victim->getResources()[HEAT] * 100) / totalResources
+                    : 0;
+  int numWifi = totalResources != 0
+                    ? (victim->getResources()[WIFI] * 100) / totalResources
+                    : 0;
+  int numGlass = totalResources != 0
+                     ? (victim->getResources()[GLASS] * 100) / totalResources
+                     : 0;
 
   for (int i = 0; i < numBrick; i++) {
     resourceOptions.push_back(static_cast<int>(BRICK));
@@ -592,7 +603,7 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
 
 void BoardModel::playGoose() {
   for (auto &builder : builders) {
-      	  map<ResourceType, int> resourcesLost = {
+    map<ResourceType, int> resourcesLost = {
         {BRICK, 0}, {WIFI, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}};
     map<ResourceType, int> &builderResources = builder->getResources();
 
@@ -612,11 +623,11 @@ void BoardModel::playGoose() {
     for (int i = 0; i < lostResources; i++) {
       int resourceLost;
       do {
-  // shuffling the dice option vector
-  shuffle(diceOptions.begin(), diceOptions.end(), rng);
-  resourceLost = *(diceOptions.begin());
+        // shuffling the dice option vector
+        shuffle(diceOptions.begin(), diceOptions.end(), rng);
+        resourceLost = *(diceOptions.begin());
 
-      } while(builderResources[static_cast<ResourceType>(resourceLost)] <= 0);
+      } while (builderResources[static_cast<ResourceType>(resourceLost)] <= 0);
 
       builderResources[static_cast<ResourceType>(resourceLost)] -= 1;
       resourcesLost[static_cast<ResourceType>(resourceLost)] += 1;
@@ -627,25 +638,24 @@ void BoardModel::playGoose() {
     color = getColourStr(builderColour);
     if (lostResources > 0) {
       std::cout << "Builder " << color << " loses " << lostResources
-              << " resources to the geese . They lose: " << std::endl;
+                << " resources to the geese . They lose: " << std::endl;
 
-
-    for (auto &el : resourcesLost) {
-      std::string resource = "";
-      if (el.first == BRICK) {
-        resource = "BRICK";
-      } else if (el.first == WIFI) {
-        resource = "WIFI";
-      } else if (el.first == ENERGY) {
-        resource = "ENERGY";
-      } else if (el.first == GLASS) {
-        resource = "GLASS";
-      } else if (el.first == HEAT) {
-        resource = "HEAT";
+      for (auto &el : resourcesLost) {
+        std::string resource = "";
+        if (el.first == BRICK) {
+          resource = "BRICK";
+        } else if (el.first == WIFI) {
+          resource = "WIFI";
+        } else if (el.first == ENERGY) {
+          resource = "ENERGY";
+        } else if (el.first == GLASS) {
+          resource = "GLASS";
+        } else if (el.first == HEAT) {
+          resource = "HEAT";
+        }
+        std::cout << el.second << " " << resource << std::endl;
       }
-      std::cout << el.second << " " << resource << std::endl;
     }
-  }
   }
 
   int newGooseTile = -1;
@@ -655,9 +665,10 @@ void BoardModel::playGoose() {
   while (!isValidGooseTile) {
     std::cout << "Choose where to place the GEESE." << std::endl;
     std::cin >> tempGooseString;
-    std::stringstream ss {tempGooseString};
+    std::stringstream ss{tempGooseString};
 
-    if ( ss >> newGooseTile && newGooseTile != gooseTile && newGooseTile >= 0 && newGooseTile <= 18 ) {
+    if (ss >> newGooseTile && newGooseTile != gooseTile && newGooseTile >= 0 &&
+        newGooseTile <= 18) {
       isValidGooseTile = true;
     } else {
       std::cout << "Invalid goose Tile! Choose Again." << std::endl;
@@ -675,16 +686,18 @@ void BoardModel::playGoose() {
     }
     int totalBuilderResources = 0;
 
-    for (auto &el: vertices.at(vertexNum)->getResidence()->getOwner()->getResources()) {
+    for (auto &el :
+         vertices.at(vertexNum)->getResidence()->getOwner()->getResources()) {
       totalBuilderResources += el.second;
     }
     auto currVertexOwner = vertices.at(vertexNum)->getResidence()->getOwner();
     if (currVertexOwner != nullptr && totalBuilderResources > 0) {
-      if (std::find(stealFrom.begin(), stealFrom.end(), currVertexOwner) == stealFrom.end() ) {
-       stealFrom.push_back(currVertexOwner);
+      if (std::find(stealFrom.begin(), stealFrom.end(), currVertexOwner) ==
+          stealFrom.end()) {
+        stealFrom.push_back(currVertexOwner);
+      }
     }
   }
-}
 
   if (stealFrom.size() > 0) {
     std::cout << "Builder " << getColourStr(currBuilder->getColour())
@@ -702,22 +715,38 @@ void BoardModel::playGoose() {
     bool validColor = false;
 
     do {
-     std::cout << "Choose a builder to steal from." << std::endl;
-     std::cin >> answer;
+      std::cout << "Choose a builder to steal from." << std::endl;
+      std::cin >> answer;
       if (answer[0] == 'B' || answer[0] == 'b') {
         victimColor = BLUE;
-        validColor = true;
+        if (std::find(stealFrom.begin(), stealFrom.end(),
+                      builders.at(static_cast<int>(victimColor))) !=
+            stealFrom.end()) {
+          validColor = true;
+        }
       } else if (answer[0] == 'O' || answer[0] == 'o') {
         victimColor = ORANGE;
-        validColor = true;
+        if (std::find(stealFrom.begin(), stealFrom.end(),
+                      builders.at(static_cast<int>(victimColor))) !=
+            stealFrom.end()) {
+          validColor = true;
+        }
       } else if (answer[0] == 'R' || answer[0] == 'r') {
         victimColor = RED;
-        validColor = true;
+        if (std::find(stealFrom.begin(), stealFrom.end(),
+                      builders.at(static_cast<int>(victimColor))) !=
+            stealFrom.end()) {
+          validColor = true;
+        }
       } else if (answer[0] == 'Y' || answer[0] == 'y') {
         victimColor = YELLOW;
-        validColor = true;
+        if (std::find(stealFrom.begin(), stealFrom.end(),
+                      builders.at(static_cast<int>(victimColor))) !=
+            stealFrom.end()) {
+          validColor = true;
+        }
       } else {
-        std::cout << "Invalid colour, make sure you enter the color corretly(case-sensitive)" << std::endl;
+        std::cout << "Invalid colour" << std::endl;
       }
     } while (!validColor);
 
@@ -726,8 +755,10 @@ void BoardModel::playGoose() {
         static_cast<ResourceType>(getStolenResource(victim));
     victim->takeResources(stolenResource, -1);
     currBuilder->takeResources(stolenResource, 1);
-    std::cout << "Builder " << getColourStr(currBuilder->getColour()) << " steals "
-      << getStringFromResType(stolenResource) << " from builder " << getColourStr(victim->getColour()) << std::endl;
+    std::cout << "Builder " << getColourStr(currBuilder->getColour())
+              << " steals " << getStringFromResType(stolenResource)
+              << " from builder " << getColourStr(victim->getColour())
+              << std::endl;
   } else {
     std::cout << "Builder " << getColourStr(currBuilder->getColour())
               << " has no builders to seal from." << std::endl;
@@ -791,11 +822,11 @@ void BoardModel::tradeResource(Colour otherBuilder, ResourceType give,
   }
 }
 
-std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
+std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr) {
   string dataString = "";
 
   // Resources
-  map<ResourceType, int> & builderResources = builderPtr->getResources();
+  map<ResourceType, int> &builderResources = builderPtr->getResources();
   dataString += std::to_string(builderResources[BRICK]);
   dataString += " ";
   dataString += std::to_string(builderResources[ENERGY]);
@@ -810,16 +841,16 @@ std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
 
   // Roads
   dataString += "r ";
-  vector<int>& builderRoads = builderPtr->getRoads();
-  for(int road : builderRoads){
+  vector<int> &builderRoads = builderPtr->getRoads();
+  for (int road : builderRoads) {
     dataString += std::to_string(road);
     dataString += " ";
   }
 
   // Residences
   dataString += "h ";
-  map<int, char>& builderResidences = builderPtr->getBuildings();
-  for(auto elem : builderResidences){
+  map<int, char> &builderResidences = builderPtr->getBuildings();
+  for (auto elem : builderResidences) {
     dataString += std::to_string(elem.first);
     dataString += " ";
     dataString += elem.second;
@@ -829,11 +860,11 @@ std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
   return dataString;
 }
 
-std::string BoardModel::makeBoardDataString(){
+std::string BoardModel::makeBoardDataString() {
 
   std::string dataString = "";
 
-  for(auto tile : tiles){
+  for (auto tile : tiles) {
     ResourceType res = tile->getResourceType();
     dataString += std::to_string(res) + " ";
     int val = tile->getTileVal();
@@ -843,11 +874,10 @@ std::string BoardModel::makeBoardDataString(){
   return dataString;
 }
 
-
-void BoardModel::save(std::string fileName){
+void BoardModel::save(std::string fileName) {
 
   ofstream ofs{fileName};
-  if(ofs.fail()){
+  if (ofs.fail()) {
     throw logic_error("Invalid filename passed to save");
   }
 
@@ -860,8 +890,10 @@ void BoardModel::save(std::string fileName){
   std::string builder1Data = makeBuilderDataString(builders[1]);
   std::string builder2Data = makeBuilderDataString(builders[2]);
   std::string builder3Data = makeBuilderDataString(builders[3]);
-  ofs << builder0Data << std::endl << builder1Data << std::endl
-    << builder2Data << std::endl << builder3Data << std::endl;
+  ofs << builder0Data << std::endl
+      << builder1Data << std::endl
+      << builder2Data << std::endl
+      << builder3Data << std::endl;
 
   // Store board layout
   std::string boardData = makeBoardDataString();
@@ -873,7 +905,6 @@ void BoardModel::save(std::string fileName){
 
   ofs.close();
 }
-
 
 /***** Print Functions *****/
 
