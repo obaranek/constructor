@@ -625,7 +625,7 @@ void BoardModel::playGoose() {
     }
 
     int lostResources = 0;
-    if (totalResources > 10) {
+    if (totalResources >= 10) {
       lostResources = totalResources / 2;
     }
     for (int i = 0; i < lostResources; i++) {
