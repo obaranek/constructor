@@ -680,7 +680,7 @@ void BoardModel::playGoose() {
     }
     auto currVertexOwner = vertices.at(vertexNum)->getResidence()->getOwner();
     if (currVertexOwner != nullptr && totalBuilderResources > 0) {
-      if (std::find(stealFrom.begin(), stealFrom.end(), currVertexOwner) != stealFrom.end() ) {
+      if (std::find(stealFrom.begin(), stealFrom.end(), currVertexOwner) == stealFrom.end() ) {
        stealFrom.push_back(currVertexOwner);
     }
   }
