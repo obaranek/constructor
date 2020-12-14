@@ -28,13 +28,14 @@ private:
   std::unique_ptr<BoardView> theBoardView;
   int getStolenResource(std::shared_ptr<Builder> victim);
   int seed;
+  std::default_random_engine rng;
   void prepareBoard();
   // loadLayout() sets up the board according to the given text file
   void loadLayout(std::string line, bool);
   void loadBuilder(std::string, int);
   std::string makeBuilderDataString(std::shared_ptr<Builder> builderPtr);
   std::string makeBoardDataString();
-
+  
 public:
   // default constructor sets seed to be -1
   BoardModel();

@@ -35,7 +35,9 @@ using std::map;
 /***** Constructors *****/
 
 BoardModel::BoardModel()
-    :  theBoardView{std::make_unique<BoardView>()}, seed {-1} {
+    :  theBoardView{std::make_unique<BoardView>()}, seed {-1}, 
+    rng{std::default_random_engine{std::chrono::system_clock::now().time_since_epoch().count()}}
+{
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
@@ -263,16 +265,6 @@ void BoardModel::initRandomBoard() {
     }
   }
 
-  // set the correct seed based on if flag is used or not
-  unsigned long int localSeed;
-  if (seed < 0) {
-    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
-  } else {
-    localSeed = seed;
-  }
-
-  // defining random number generator with correct seed
-  default_random_engine rng{localSeed};
   // shuffling the value vector
   shuffle(tileValVector.begin(), tileValVector.end(), rng);
   //suffling the resources vector
@@ -527,16 +519,6 @@ void BoardModel::BuildRoad(int edgeNum) {
 int BoardModel::rollDice() {
   vector<int> diceOptions = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
-  // set the correct seed based on if flag is used or not
-  unsigned long int localSeed;
-  if (seed < 0) {
-    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
-  } else {
-    localSeed = seed;
-  }
-
-  // defining random number generator with correct seed
-  default_random_engine rng{localSeed};
   // shuffling the dice option vector
   shuffle(diceOptions.begin(), diceOptions.end(), rng);
   // return a shuffled element from the dice options array
@@ -566,19 +548,9 @@ string getColourStr(Colour colour) {
   return "Yellow";
 }
 
-int getRndResource(int seed) {
+int getRndResource(int seed, std::default_random_engine rng) {
   vector<int> diceOptions = {0, 1, 2, 3, 4};
 
-  // set the correct seed based on if flag is used or not
-  unsigned long int localSeed;
-  if (seed < 0) {
-    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
-  } else {
-    localSeed = seed;
-  }
-
-  // defining random number generator with correct seed
-  default_random_engine rng{localSeed};
   // shuffling the dice option vector
   shuffle(diceOptions.begin(), diceOptions.end(), rng);
   return *(diceOptions.begin());
@@ -613,16 +585,6 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
     resourceOptions.push_back(static_cast<int>(GLASS));
   }
 
-  // set the correct seed based on if flag is used or not
-  unsigned long int localSeed;
-  if (seed < 0) {
-    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
-  } else {
-    localSeed = seed;
-  }
-
-  // defining random number generator with correct seed
-  default_random_engine rng{localSeed};
   // shuffling the dice option vector
   shuffle(resourceOptions.begin(), resourceOptions.end(), rng);
   return *(resourceOptions.begin());
@@ -648,7 +610,7 @@ void BoardModel::playGoose() {
     for (int i = 0; i < lostResources; i++) {
       int resourceLost;
       do {
-        resourceLost = getRndResource(seed);
+        resourceLost = getRndResource(seed, rng);
       } while(builderResources[static_cast<ResourceType>(resourceLost)] <= 0);
 
       builderResources[static_cast<ResourceType>(resourceLost)] -= 1;
@@ -966,6 +928,7 @@ void BoardModel::setDice(char type) {
 void BoardModel::setSeed(int _seed) {
   if (_seed >= 0) {
     seed = _seed;
+    rng = std::default_random_engine{_seed};
   } else {
     throw invalid_argument("seed can't be negative");
   }
