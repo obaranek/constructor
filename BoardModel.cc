@@ -717,16 +717,16 @@ void BoardModel::playGoose() {
     do {
      std::cout << "Choose a builder to steal from." << std::endl;
      std::cin >> answer;
-      if (answer == "Blue") {
+      if (answer[0] == 'B' || answer[0] == 'b') {
         victimColor = BLUE;
         validColor = true;
-      } else if (answer == "Orange") {
+      } else if (answer[0] == 'O' || answer[0] == 'o') {
         victimColor = ORANGE;
         validColor = true;
-      } else if (answer == "Red") {
+      } else if (answer[0] == 'R' || answer[0] == 'r') {
         victimColor = RED;
         validColor = true;
-      } else if (answer == "Yellow") {
+      } else if (answer[0] == 'Y' || answer[0] == 'y') {
         victimColor = YELLOW;
         validColor = true;
       } else {
