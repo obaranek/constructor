@@ -1,5 +1,5 @@
-#ifndef __BUILDER_H_
-#define __BUILDER_H_
+#ifndef BUILDER_H
+#define BUILDER_H
 
 #include "Colour.h"
 #include "ResourceType.h"
@@ -55,4 +55,4 @@ public:
   void setDice(char diceType);
 };
 
-#endif // __BUILDER_H_
+#endif /* BUILDER_H */

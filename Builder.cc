@@ -8,11 +8,11 @@
 using namespace std;
 
 Builder::Builder(Colour colour)
-    : colour{colour}, points{0}, dice{'L'}, resources{{HEAT, 0},
+    : colour{colour}, points{0},  resources{{HEAT, 0},
                                                       {BRICK, 0},
                                                       {ENERGY, 0},
                                                       {GLASS, 0},
-                                                      {WIFI, 0}} {}
+                                                      {WIFI, 0}}, dice{'L'} {}
 
 void Builder::buildResidence(int vertexNum, char residenceType,
                              map<ResourceType, int> cost, bool free) {

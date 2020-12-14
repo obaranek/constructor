@@ -197,23 +197,23 @@ BoardView::vertexEdgeVertex(std::ostream &os, bool blank,
 }
 
 std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
-    const std::shared_ptr<Tile> tile, bool leftBar, bool rightBar, 
+    const std::shared_ptr<Tile> tile, bool leftBar, bool rightBar,
     bool checkGeese, BoardModel* board) {
 
   std::string middle = "";
-   
+
   if (blank) {
     os << makeBlank(10);
     return os;
   }
-  
+
   if (leftBar) os << "  | ";
-  
+
   if(!checkGeese){ // Printing ResourceType
     if (tile != NULL) {
       middle = resToString(tile->getResourceType());
     }
-    
+
     if (middle.length() == 0) {
       os << makeBlank(6);
     } else {
@@ -228,7 +228,7 @@ std::ostream &BoardView::borderResourceBorder(std::ostream &os, bool blank,
       os << makeBlank(6);
     }
   }
-  
+
   if (!rightBar) return os;
 
   switch(middle.length()){
@@ -305,7 +305,7 @@ std::ostream &BoardView::printTileVal(std::ostream &os,
 // Prints the current status of all builders in order from builder 0 to 3
 void BoardView::printStatus(
     const std::vector<std::shared_ptr<Builder>> &builderVector) {
-  for (int counter = 0; counter < (builderVector.size()); ++counter) {
+  for (size_t counter = 0; counter < (builderVector.size()); ++counter) {
     std::shared_ptr<Builder> currentBuilder = builderVector.at(counter);
     std::map<ResourceType, int> resourceMap{currentBuilder->getResources()};
 
@@ -386,7 +386,7 @@ void BoardView::printBoard(BoardModel *board) {
   // Line 6:
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, false, NULL, true, true);
-  borderResourceBorder(cout, false, board->getTilePtr(0), false, false, true, board);  
+  borderResourceBorder(cout, false, board->getTilePtr(0), false, false, true, board);
   borderResourceBorder(cout, false, NULL, true, true);
   borderResourceBorder(cout, true);
   cout << std::endl;
@@ -648,7 +648,7 @@ void BoardView::printBoard(BoardModel *board) {
   // Line 34:
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, false, board->getTilePtr(16), true, true, true, board);
-  borderResourceBorder(cout, false, NULL, false, false);  
+  borderResourceBorder(cout, false, NULL, false, false);
   borderResourceBorder(cout, false, board->getTilePtr(17), true, true, true, board);
   borderResourceBorder(cout, true);
   cout << std::endl;

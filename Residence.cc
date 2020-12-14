@@ -11,16 +11,16 @@ using std::map;
 using std::shared_ptr;
 
 Residence::Residence(std::shared_ptr<Builder> owner)
-    : cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}}, reward{1}, type{'B'},
-      costToImprove{{GLASS, 2}, {HEAT, 3}},  
-      owner{owner} {};
+    : cost{{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}, {WIFI, 1}}, reward{1}, type{'B'},
+          owner{owner},  costToImprove{{GLASS, 2}, {HEAT, 3}}
+ {};
 
 Residence::Residence(shared_ptr<Builder> builderPtr, char type)
-    : owner{builderPtr}, type{type} {
+    :  type{type}, owner{builderPtr}{
   switch (type) {
   case 'B':
     reward = 1;
-    cost = {{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}};
+    cost = {{BRICK, 1}, {ENERGY, 1}, {GLASS, 1}, {WIFI, 1}};
     costToImprove = {{GLASS, 2}, {HEAT, 3}};
     break;
   case 'H':
@@ -48,7 +48,7 @@ void Residence::improveResidence(int vertexNum) {
   }
 
   bool enoughResources = owner->checkResources(costToImprove);
-  
+
   if(!enoughResources){
     throw logic_error("You don't have enough resources to upgrade that residence");
   }
@@ -60,14 +60,14 @@ void Residence::improveResidence(int vertexNum) {
       cost = {{BRICK, 1}, {ENERGY, 1}, {HEAT, 3}, {GLASS, 3}, {WIFI, 1}};
       owner->updateResidence(vertexNum,type, costToImprove);
       costToImprove = {{GLASS, 2}, {HEAT, 3}};
-  } 
+  }
   else if (type == 'H') {
       type = 'T';
       reward = 3;
       cost = {{BRICK, 4}, {ENERGY, 3}, {HEAT, 5}, {GLASS, 5}, {WIFI, 2}};
       owner->updateResidence(vertexNum,type, costToImprove);
       costToImprove = {{BRICK, 3}, {ENERGY, 2}, {GLASS, 2}, {WIFI, 1}, {HEAT, 2}};
-  } 
+  }
   else {
     throw invalid_argument("Invalid housing typed passed to Residence class");
   }

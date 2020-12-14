@@ -91,32 +91,32 @@ void Controller::playTurn() {
       } else if (userInput == "residence") { // residence
         theBoardModel->printResidences();
       } else if (userInput == "build-road") { // build-road <road#>
-        
+
         int edgeValue;
         std::cin >> edgeValue;
         try{
           theBoardModel->BuildRoad(edgeValue);
-        } catch(logic_error e){
+        } catch(logic_error &e){
           std::cout << e.what() << std::endl;
         }
 
       } else if (userInput == "build-res") { // build-res <housing#>
-        
+
         int vertexValue;
         std::cin >> vertexValue;
-        try{  
+        try{
           theBoardModel->buildResidence(vertexValue, false);
-        } catch(logic_error e){
+        } catch(logic_error &e){
           std::cout << e.what() << std::endl;
         }
 
       } else if (userInput == "improve") { // improve <housing#>
-        
+
         int vertexValue;
         std::cin >> vertexValue;
         try{
           theBoardModel->improveResidence(vertexValue);
-        } catch(logic_error e){
+        } catch(logic_error &e){
           std::cout << e.what() << std::endl;
         }
       } else if (userInput == "trade") { // trade <colour> <give> <take>
@@ -170,7 +170,7 @@ void Controller::playTurn() {
         std::string takeResource;
         std::cin >> takeResource;
 
-        ResourceType takeResourceType;
+        ResourceType takeResourceType = BRICK;
 
         if (giveResource[0] == 'B' || giveResource[0] == 'b') { // brick
           giveResourceType = ResourceType::BRICK;
@@ -262,10 +262,10 @@ void Controller::startGame() {
 
   if (initMethodCall.empty()) {
     initBoard();
-  } 
+  }
   else if (initMethodCall == "initLoad") {
     initLoad(fileName);
-  } 
+  }
   else if (initMethodCall == "initBoard") {
     if (fileName == "") {
       initBoard();
@@ -294,12 +294,12 @@ void Controller::startGame() {
 
       // get user input
       std::cin >> userVertexInput;
-      
+
       try{ // Try building the residence
         theBoardModel->buildResidence(userVertexInput, true);
         acceptHouse = true;
-      } catch(std::logic_error e){
-        std::cout << e.what() << std::endl; 
+      } catch(std::logic_error &e){
+        std::cout << e.what() << std::endl;
       }
 
     } while (!acceptHouse);

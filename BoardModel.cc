@@ -34,7 +34,7 @@ using std::map;
 /***** Constructors *****/
 
 BoardModel::BoardModel()
-    : seed{-1}, theBoardView{std::make_unique<BoardView>()} {
+    :  theBoardView{std::make_unique<BoardView>()}, seed {-1} {
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
@@ -238,7 +238,7 @@ void BoardModel::initRandomBoard() {
 
   // vector of vals (not including 7) : size = 18 elements
   std::vector<int> tileValVector {2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
-  
+
   // vector of resources (not including Park)
   std::vector<ResourceType> resourceVector;
   for(unsigned i = 0; i < tileValVector.size(); i++){
@@ -277,16 +277,16 @@ void BoardModel::initRandomBoard() {
 
 	std::vector<int> parkOptions {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
 	shuffle(parkOptions.begin(), parkOptions.end(), rng);
-	int parkLocation = *parkOptions.begin(); 
+	int parkLocation = *parkOptions.begin();
 
 
 		std::string randomLayout="";
-  for(int i = 0; i < tileValVector.size(); i++){
+  for(size_t i = 0; i < tileValVector.size(); i++){
       	  randomLayout += std::to_string(resourceVector[i]);
     randomLayout += " ";
     randomLayout += std::to_string(tileValVector[i]);
     randomLayout += " ";
-    if(i == parkLocation){
+    if((int)i == parkLocation){
      	randomLayout += std::to_string(5);
     	randomLayout += " ";
     	randomLayout += std::to_string(7);
@@ -386,7 +386,7 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
 
   try {
     currVertex->buildResidence(currBuilder, 'B', gameStart);
-  } catch (logic_error e) {
+  } catch (logic_error &e) {
     throw e;
   }
 }
@@ -398,7 +398,7 @@ void BoardModel::improveResidence(int vertexNum) {
 
   try {
     vertices.at(vertexNum)->improveResidence(currBuilder);
-  } catch (logic_error e) {
+  } catch (logic_error &e) {
     throw e;
   }
 }
@@ -441,7 +441,7 @@ void BoardModel::obtainResources(int value) {
   }
 
   std::vector<std::map<ResourceType, int>> buildersGains;
-  for(int i  = 0; i < builders.size(); i++){
+  for(size_t i  = 0; i < builders.size(); i++){
   	buildersGains.push_back({ {BRICK,0}, {ENERGY, 0}, {GLASS, 0}, {HEAT,0}, {WIFI, 0} });
   }
 
@@ -450,7 +450,7 @@ void BoardModel::obtainResources(int value) {
   for (auto &tile : tiles) {
     if (tile->value == value) {
       ResourceType tileResource = tile->resourceType;
-      
+
       //If the tile has geese in it, no builder gets resources
       if(tile->tileNumber == this->gooseTile){
 	      continue;
@@ -467,7 +467,7 @@ void BoardModel::obtainResources(int value) {
 
         int reward = residence->getReward();
         residence->getOwner()->takeResources(tileResource, reward);
-	
+
 	std::map<ResourceType, int> tempGains = buildersGains[residence->getOwner()->getColour()];
 	tempGains[tileResource] += reward;
 	buildersGains[residence->getOwner()->getColour()] = tempGains;
@@ -481,16 +481,16 @@ void BoardModel::obtainResources(int value) {
  if( it == didRewardBuildersVector.end()){
  	std::cout << "No builders gained resources." << std::endl;
  } else{
- 	for(int i = 0; i < builders.size() ; i ++){
+ 	for(size_t i= 0; i < builders.size() ; i++){
 		if(didRewardBuildersVector[i]){
-			std::cout << "Builder " << getColourFromInt(i) << " gained: " <<std::endl; 
+			std::cout << "Builder " << getColourFromInt(i) << " gained: " <<std::endl;
 			std::map<ResourceType, int> rewards = buildersGains[i];
 			for(auto reward : rewards){
 				if(reward.second != 0){
-					std::cout << reward.second << " " << getStringFromResType(reward.first) << std::endl;	
+					std::cout << reward.second << " " << getStringFromResType(reward.first) << std::endl;
 				}
 			}
-		}	
+		}
 	}
  }
 }
@@ -502,7 +502,7 @@ void BoardModel::BuildRoad(int edgeNum) {
 
   try {
     edges.at(edgeNum)->buildRoad(currBuilder, false);
-  } catch (logic_error e) {
+  } catch (logic_error &e) {
     throw e;
   }
 }
@@ -751,7 +751,7 @@ void BoardModel::next() {
 }
 
 void BoardModel::prevBuilder() {
-	
+
   auto currBuilderIt = find(builders.begin(), builders.end(), currBuilder);
 
   if (currBuilderIt ==
@@ -831,7 +831,7 @@ std::string BoardModel::makeBuilderDataString(shared_ptr<Builder> builderPtr){
 std::string BoardModel::makeBoardDataString(){
 
   std::string dataString = "";
-  
+
   for(auto tile : tiles){
     ResourceType res = tile->getResourceType();
     dataString += std::to_string(res) + " ";
