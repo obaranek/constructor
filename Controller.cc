@@ -49,7 +49,6 @@ void Controller::playTurn() {
         std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
         exit(0);
       }
-
     }
 
     // final dice type or dice type used last round
@@ -200,8 +199,7 @@ void Controller::playTurn() {
         std::shared_ptr<Builder> currBuilder{theBoardModel->getCurrBuilder()};
 
         // print required output to display
-        theBoardModel->printTradeResources(otherBuilderColour, giveResourceType,
-                                           takeResourceType);
+        theBoardModel->printTradeResources(otherBuilderColour, giveResourceType, takeResourceType);
 
         // wait for reply (yes / no)
         std::string acceptTrade;
@@ -310,7 +308,14 @@ void Controller::startGame() {
       theBoardModel->printWhereBuild();
 
       // get user input
-      std::cin >> userVertexInput;
+      if (std::cin.eof()) {
+        std::string eofSaveFile{"backup.sv"};
+        theBoardModel->save(eofSaveFile);
+        std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
+        exit(0);
+      } else {
+        std::cin >> userVertexInput;
+      }
 
       try{ // Try building the residence
         theBoardModel->buildResidence(userVertexInput, true);
