@@ -28,7 +28,6 @@ private:
   std::unique_ptr<BoardView> theBoardView;
   int getStolenResource(std::shared_ptr<Builder> victim);
   int seed;
-  std::default_random_engine rng;
   void prepareBoard();
   // loadLayout() sets up the board according to the given text file
   void loadLayout(std::string line, bool);
@@ -37,7 +36,7 @@ private:
   std::string makeBoardDataString();
 
 public:
-  // default constructor sets seed to be -1 and rng to use current time
+  // default constructor sets seed to be -1
   BoardModel();
 
   void initBoard(std::string fileName = "layout.txt");
