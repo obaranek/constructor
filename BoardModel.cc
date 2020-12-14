@@ -6,6 +6,7 @@
 #include "Builder.h"
 #include "Edge.h"
 #include "Residence.h"
+#include "ResourceType.h"
 #include "Tile.h"
 #include "Vertex.h"
 
@@ -618,15 +619,23 @@ void BoardModel::playGoose() {
     map<ResourceType, int> builderResources = builder->getResources();
 
     int totalResources = 0;
+
     for (auto el : builderResources) {
       totalResources += el.second;
     }
 
-    int lostResources = totalResources / 2;
+    int lostResources = 0;
+    if (totalResources > 10) {
+      lostResources = totalResources / 2;
+    }
     for (int i = 0; i < lostResources; i++) {
-      int resourceLost = getRndResource(seed);
-      resourcesLost[static_cast<ResourceType>(resourceLost)] += 1;
+      int resourceLost;
+      do {
+        resourceLost = getRndResource(seed);
+      } while(builderResources[static_cast<ResourceType>(resourceLost)] <= 0);
+
       builderResources[static_cast<ResourceType>(resourceLost)] -= 1;
+      resourcesLost[static_cast<ResourceType>(resourceLost)] += 1;
     }
 
     std::string color = "";
