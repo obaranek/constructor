@@ -592,7 +592,6 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
 
 void BoardModel::playGoose() {
   for (auto &builder : builders) {
-	std::cout << "Builder Colour: " << getColourStr(builder->getColour()) << std::endl; 
       	  map<ResourceType, int> resourcesLost = {
         {BRICK, 0}, {WIFI, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}};
     map<ResourceType, int> &builderResources = builder->getResources();
@@ -604,13 +603,19 @@ void BoardModel::playGoose() {
     }
 
     int lostResources = 0;
+    
+    vector<int> diceOptions = {0, 1, 2, 3, 4};
+
     if (totalResources >= 10) {
       lostResources = totalResources / 2;
     }
     for (int i = 0; i < lostResources; i++) {
       int resourceLost;
       do {
-        resourceLost = getRndResource(seed, rng);
+  // shuffling the dice option vector
+  shuffle(diceOptions.begin(), diceOptions.end(), rng);
+  resourceLost = *(diceOptions.begin());
+
       } while(builderResources[static_cast<ResourceType>(resourceLost)] <= 0);
 
       builderResources[static_cast<ResourceType>(resourceLost)] -= 1;
