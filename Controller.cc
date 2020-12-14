@@ -41,8 +41,15 @@ void Controller::playTurn() {
         std::cout << "Please enter 'help' for a list of valid commands."
                   << std::endl;
       }
-
       std::cin >> userInput;
+      // READS EOF, SAVE AND EXIT.
+      if (std::cin.eof()) {
+        std::string eofSaveFile{"backup.sv"};
+        theBoardModel->save(eofSaveFile);
+        std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
+        exit(0);
+      }
+
     }
 
     // final dice type or dice type used last round
