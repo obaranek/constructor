@@ -641,8 +641,10 @@ void BoardModel::playGoose() {
     std::string color = "";
     Colour builderColour = builder->getColour();
     color = getColourStr(builderColour);
-    std::cout << "Builder " << color << " loses " << lostResources
+    if (lostResources > 0) {
+      std::cout << "Builder " << color << " loses " << lostResources
               << " resources to the geese . They lose: " << std::endl;
+
 
     for (auto &el : resourcesLost) {
       std::string resource = "";
@@ -659,6 +661,7 @@ void BoardModel::playGoose() {
       }
       std::cout << el.second << " " << resource << std::endl;
     }
+  }
   }
 
   int newGooseTile = -1;
