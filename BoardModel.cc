@@ -35,7 +35,9 @@ using std::map;
 /***** Constructors *****/
 
 BoardModel::BoardModel()
-    :  theBoardView{std::make_unique<BoardView>()}, seed {-1} {
+    :  theBoardView{std::make_unique<BoardView>()}, seed {-1},
+      rng{default_random_engine{std::chrono::system_clock::now().time_since_epoch().count()}}
+{
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
@@ -526,18 +528,6 @@ void BoardModel::BuildRoad(int edgeNum) {
 
 int BoardModel::rollDice() {
   vector<int> diceOptions = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-
-  // set the correct seed based on if flag is used or not
-  unsigned long int localSeed;
-  if (seed < 0) {
-    localSeed = std::chrono::system_clock::now().time_since_epoch().count();
-  } else {
-    localSeed = seed;
-  }
-
-  // defining random number generator with correct seed
-  default_random_engine rng{localSeed};
-  // shuffling the dice option vector
   shuffle(diceOptions.begin(), diceOptions.end(), rng);
   // return a shuffled element from the dice options array
   return *(diceOptions.begin());
@@ -965,6 +955,7 @@ void BoardModel::setDice(char type) {
 void BoardModel::setSeed(int _seed) {
   if (_seed >= 0) {
     seed = _seed;
+    rng = default_random_engine{_seed};
   } else {
     throw invalid_argument("seed can't be negative");
   }
