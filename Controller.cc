@@ -72,6 +72,7 @@ void Controller::playTurn() {
       diceValue = theBoardModel->rollDice();
     }
 
+    std::cout << "You rolled: " << diceValue <<std::endl;
     // play the roll by calling playRoll and pass in the dice value
     theBoardModel->playRoll(diceValue);
 

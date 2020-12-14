@@ -306,6 +306,11 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
   istringstream ss{line};
 
   while (ss >> resourceNum) {
+    
+	  if(tileNum > 18){
+	  	throw std::invalid_argument("Incorrectly formatted layout: too many tiles");
+	  }
+
     switch (resourceNum) {
     case BRICK:
       tiles.at(tileNum)->resourceType = BRICK;
@@ -336,6 +341,9 @@ void BoardModel::loadLayout(std::string line, bool isLoad) {
     tiles.at(tileNum)->value = tileValue;
     tileNum++;
   }
+	if (tileNum != 19){
+		throw std::invalid_argument("Incorrectly formatted layout: too few tiles");
+	}
 }
 
 void BoardModel::buildResidence(int vertexNum, bool gameStart) {

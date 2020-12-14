@@ -2,6 +2,8 @@
 #include <sstream>
 #include <string>
 #include <memory>
+#include<stdexcept>
+
 #include "BoardView.h"
 #include "Controller.h"
 
@@ -10,19 +12,19 @@ const std::string eContradictingCommandLineOptions{ "ERROR: contradicting comman
 const std::string eUnrecognizedCommandLineOption{ "ERROR: unrecognized command line option: " };
 const std::string eInvalidSeedValue{ "ERROR: invalid seed value"};
 
-void usage_ContradictingCommandLineOptions(std::string previousOption, std::string contradictOption) {
+int usage_ContradictingCommandLineOptions(std::string previousOption, std::string contradictOption) {
     std::cerr << eContradictingCommandLineOptions << previousOption << " and " << contradictOption << std::endl;
-    exit(1);
+    return 1;
 }
 
-void usage_UnrecognizedCommandLineOption(std::string option) {
+int usage_UnrecognizedCommandLineOption(std::string option) {
     std::cerr << eUnrecognizedCommandLineOption << option << std::endl;
-    exit(1);
+    return 1;
 }
 
-void usage_invalidSeedValue() {
+int usage_invalidSeedValue() {
     std::cerr << eInvalidSeedValue << std::endl;
-    exit(1);
+    return 1;
 }
 
 int main(int argc, char* argv[]) {
@@ -49,7 +51,7 @@ int main(int argc, char* argv[]) {
                 int seedNumber;
 
                 if (ss >> seedNumber && seedNumber < 0) {
-                    usage_invalidSeedValue();
+                    return usage_invalidSeedValue();
                 } else {
                     theController->setBoardSeed(seedNumber);
                     theController->setSeedValue(seedNumber);
@@ -67,7 +69,15 @@ int main(int argc, char* argv[]) {
                 if (argument == "-board") {
                     std::string fileName{ argv[counter + 1] };
 
-                    theController->initBoard(fileName);
+		    try{
+                    	theController->initBoard(fileName);
+		    } catch ( std::logic_error e){
+		    	std::cout<< e.what() << std::endl;
+			return 1;
+		    } catch (...) {
+		    	std::cout << "Could not initialise the board" << std::endl;
+			return 1;
+		    }
                     theController->setInitMethodCall("-initBoard");
                     theController->setFileName(fileName);
 
@@ -78,8 +88,15 @@ int main(int argc, char* argv[]) {
                     theController->startGame();
                 } else if (argument == "-load") {
                     std::string fileName{ argv[counter + 1] };
-                    theController->initLoad(fileName);
-                    theController->setInitMethodCall("initLoad");
+                    try{
+		    	theController->initLoad(fileName);
+		    } catch (std::logic_error e){
+		    	std::cout << e.what() << std::endl;
+			return 1;
+		    } catch(...){
+		    	std::cout << "Could not initialise random board" << std::endl;
+		    }
+		    theController->setInitMethodCall("initLoad");
                     theController->setFileName(fileName);
 
                     loadPresent = true;
@@ -88,23 +105,31 @@ int main(int argc, char* argv[]) {
                     // load the game
                     theController->playTurn();
                 } else if (argument == "-random-board") {
-                    theController->initRandomBoard();
-                    theController->setInitMethodCall("initRandomBoard");
+                    try{
+			theController->initRandomBoard();
+		    } catch(std::logic_error e){
+		    	std::cout << e.what() << std::endl;
+			return 1;
+		    } catch(...) {
+		    	std::cout << "Could not initialise random board" << std::endl;
+			return 1;
+		    }
+			theController->setInitMethodCall("initRandomBoard");
 
                     randomBoardPresent = true;
 
                     // start the game
                     theController->startGame();
                 } else if (argument != "-seed") {
-                    usage_UnrecognizedCommandLineOption(argument);
+                    return usage_UnrecognizedCommandLineOption(argument);
                 }
             } else {
                 if (boardPresent == true) {
-                    usage_ContradictingCommandLineOptions("-board", argument);
+                    return usage_ContradictingCommandLineOptions("-board", argument);
                 } else if (randomBoardPresent == true) {
-                    usage_ContradictingCommandLineOptions("-random-board", argument);
+                    return usage_ContradictingCommandLineOptions("-random-board", argument);
                 } else if (loadPresent == true) {
-                    usage_ContradictingCommandLineOptions("-load", argument);
+                    return usage_ContradictingCommandLineOptions("-load", argument);
                 }
             }
         }
