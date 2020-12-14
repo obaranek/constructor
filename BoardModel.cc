@@ -616,7 +616,7 @@ void BoardModel::playGoose() {
   for (auto &builder : builders) {
     map<ResourceType, int> resourcesLost = {
         {BRICK, 0}, {WIFI, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}};
-    map<ResourceType, int> builderResources = builder->getResources();
+    map<ResourceType, int> &builderResources = builder->getResources();
 
     int totalResources = 0;
 
@@ -739,6 +739,8 @@ void BoardModel::playGoose() {
         static_cast<ResourceType>(getStolenResource(victim));
     victim->takeResources(stolenResource, -1);
     currBuilder->takeResources(stolenResource, 1);
+    std::cout << "Builder " << getColourStr(currBuilder->getColour()) << " steals "
+      << getStringFromResType(stolenResource) << " from builder " << getColourStr(victim->getColour()) << std::endl;
   } else {
     std::cout << "Builder " << getColourStr(currBuilder->getColour())
               << " has no builders to seal from." << std::endl;
