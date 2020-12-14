@@ -382,6 +382,11 @@ void BoardModel::buildResidence(int vertexNum, bool gameStart) {
     for (auto edgeNumIt = currVertex->edges.begin();
          edgeNumIt != currVertex->edges.end(); edgeNumIt++) {
       int edgeNum = *edgeNumIt;
+      bool edgeHasRoad = edges.at(edgeNum)->doesHaveRoad();
+      if(!edgeHasRoad){
+      	continue;
+      }
+      // At this point, we know that the ege has a road:
       auto ownerColour = edges.at(edgeNum)->getOwnerColour();
 
       if (ownerColour == currBuilder->getColour()) {
