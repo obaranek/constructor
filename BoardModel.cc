@@ -630,7 +630,8 @@ int BoardModel::getStolenResource(std::shared_ptr<Builder> victim) {
 
 void BoardModel::playGoose() {
   for (auto &builder : builders) {
-    map<ResourceType, int> resourcesLost = {
+	std::cout << "Builder Colour: " << getColourStr(builder->getColour()) << std::endl; 
+      	  map<ResourceType, int> resourcesLost = {
         {BRICK, 0}, {WIFI, 0}, {ENERGY, 0}, {GLASS, 0}, {HEAT, 0}};
     map<ResourceType, int> &builderResources = builder->getResources();
 
