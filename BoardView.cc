@@ -683,7 +683,7 @@ void BoardView::printBoard(BoardModel *board) {
   // Line 38:
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, true);
-  borderResourceBorder(cout, false, board->getTilePtr(18), false, false, true, board);
+  borderResourceBorder(cout, false, board->getTilePtr(18), true, true, true, board);
   borderResourceBorder(cout, true);
   borderResourceBorder(cout, true);
   cout << endl;
