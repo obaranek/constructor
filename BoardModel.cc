@@ -36,8 +36,8 @@ using std::vector;
 
 BoardModel::BoardModel()
     : theBoardView{std::make_unique<BoardView>()}, seed{-1},
-      rng{std::default_random_engine{
-          std::chrono::system_clock::now().time_since_epoch().count()}} {
+      rng{static_cast<unsigned int>(
+          std::chrono::system_clock::now().time_since_epoch().count())} {
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
