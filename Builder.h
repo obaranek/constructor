@@ -19,16 +19,17 @@ private:
 public:
   Builder(Colour colour);
 
-  // TODO: Change raw pointers to smart pointers?
   // void stealResources(Builder* otherBuilder);
 
   // buildResidence() adds vertexNum to list of buildings
-  void buildResidence(int vertexNum, char residenceType, std::map<ResourceType, int>, bool);
+  void buildResidence(int vertexNum, char residenceType,
+                      std::map<ResourceType, int>, bool);
 
   // buildRoad() adds edgeNum to list of roads
-  void buildRoad(int edgeNum, std::map<ResourceType,int> cost, bool free);
+  void buildRoad(int edgeNum, std::map<ResourceType, int> cost, bool free);
 
-  void updateResidence(int vertexNum, char residenceType, std::map<ResourceType,int> cost);
+  void updateResidence(int vertexNum, char residenceType,
+                       std::map<ResourceType, int> cost);
 
   // takeResources() adds the quantity of resource to builders resources
   void takeResources(ResourceType type, int reward);
@@ -50,7 +51,7 @@ public:
   char getDiceType();
   std::map<ResourceType, int> &getResources();
   std::map<int, char> &getBuildings();
-  std::vector<int>& getRoads();
+  std::vector<int> &getRoads();
 
   void setDice(char diceType);
 };
