@@ -967,7 +967,7 @@ void BoardModel::setDice(char type) {
 void BoardModel::setSeed(int _seed) {
   if (_seed >= 0) {
     seed = _seed;
-    rng = std::default_random_engine{_seed};
+    rng = std::default_random_engine{static_cast<unsigned int>(seed)};
   } else {
     throw invalid_argument("seed can't be negative");
   }
