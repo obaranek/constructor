@@ -7,9 +7,9 @@
 
 #include <fstream>
 #include <memory>
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
 class Tile;
 class Vertex;
@@ -35,7 +35,7 @@ private:
   void loadBuilder(std::string, int);
   std::string makeBuilderDataString(std::shared_ptr<Builder> builderPtr);
   std::string makeBoardDataString();
-  
+
 public:
   // default constructor sets seed to be -1
   BoardModel();
@@ -70,7 +70,7 @@ public:
   // returns true if a builder won the game
   bool checkWinner();
 
-  // Loads a previous game saved in passed in text file. 
+  // Loads a previous game saved in passed in text file.
   void initLoad(std::string);
 
   // save() saves the current state of the game in a text file
@@ -101,7 +101,6 @@ public:
                            const ResourceType take);
 
   void printWhereBuild();
-
 
   /***** Getters and Setters *****/
 

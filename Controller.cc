@@ -4,8 +4,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 using std::logic_error;
 
@@ -49,7 +49,6 @@ void Controller::playTurn() {
         std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
         exit(0);
       }
-
     }
 
     // final dice type or dice type used last round
@@ -72,7 +71,7 @@ void Controller::playTurn() {
       diceValue = theBoardModel->rollDice();
     }
 
-    std::cout << "You rolled: " << diceValue <<std::endl;
+    std::cout << "You rolled: " << diceValue << std::endl;
     // play the roll by calling playRoll and pass in the dice value
     theBoardModel->playRoll(diceValue);
 
@@ -102,9 +101,9 @@ void Controller::playTurn() {
 
         int edgeValue;
         std::cin >> edgeValue;
-        try{
+        try {
           theBoardModel->BuildRoad(edgeValue);
-        } catch(logic_error &e){
+        } catch (logic_error &e) {
           std::cout << e.what() << std::endl;
         }
 
@@ -112,19 +111,46 @@ void Controller::playTurn() {
 
         int vertexValue;
         std::cin >> vertexValue;
-        try{
+        try {
           theBoardModel->buildResidence(vertexValue, false);
-        } catch(logic_error &e){
+        } catch (logic_error &e) {
           std::cout << e.what() << std::endl;
+        }
+
+        bool isPlayerWon{theBoardModel->checkWinner()};
+
+        if (isPlayerWon == true) {
+          std::cout << "Congratulations! "
+                    << (theBoardModel->getCurrBuilder())->getColour()
+                    << " has won!" << std::endl;
+          std::cout << "Would you like to play again?" << std::endl;
+
+          std::string userReplayInput;
+          std::cin >> userReplayInput;
+
+          while (userReplayInput != "yes" && userReplayInput != "no") {
+            std::cout << "Invalid input." << std::endl;
+            std::cout << "Would you like to play again? (yes / no)"
+                      << std::endl;
+            std::cin >> userReplayInput;
+          }
+
+          if (userReplayInput == "yes") {
+            initMethodCall = "";
+            startGame();
+          } else {
+            IsGameEnd = true;
+            return;
+          }
         }
 
       } else if (userInput == "improve") { // improve <housing#>
 
         int vertexValue;
         std::cin >> vertexValue;
-        try{
+        try {
           theBoardModel->improveResidence(vertexValue);
-        } catch(logic_error &e){
+        } catch (logic_error &e) {
           std::cout << e.what() << std::endl;
         }
       } else if (userInput == "trade") { // trade <colour> <give> <take>
@@ -207,29 +233,34 @@ void Controller::playTurn() {
         std::string acceptTrade;
         std::cin >> acceptTrade;
 
-        while (acceptTrade != "yes" && acceptTrade != "Yes" && acceptTrade != "y" && acceptTrade != "Y" && 
-			acceptTrade != "no" && acceptTrade != "No" && acceptTrade != "n" && acceptTrade != "N") {
+        while (acceptTrade != "yes" && acceptTrade != "Yes" &&
+               acceptTrade != "y" && acceptTrade != "Y" &&
+               acceptTrade != "no" && acceptTrade != "No" &&
+               acceptTrade != "n" && acceptTrade != "N") {
           std::cout << "Invalid input." << std::endl;
           theBoardModel->printTradeResources(
               otherBuilderColour, giveResourceType, takeResourceType);
           std::cin >> acceptTrade;
         }
 
-        if (acceptTrade == "yes" || acceptTrade == "Yes" || acceptTrade == "y" || acceptTrade == "Y") {
-	  try{
-	   theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
-          takeResourceType);
-	   std::cout << "Trade was successful" <<std::endl;
-	  } catch (std::logic_error e){
-	  	std::cout << e.what() << std::endl;
-	  } catch(...) {
-	  	std::cout << "Could not trade resource, please try again later." << std::endl;
-	  }
-	}
+        if (acceptTrade == "yes" || acceptTrade == "Yes" ||
+            acceptTrade == "y" || acceptTrade == "Y") {
+          try {
+            theBoardModel->tradeResource(otherBuilderColour, giveResourceType,
+                                         takeResourceType);
+            std::cout << "Trade was successful" << std::endl;
+          } catch (std::logic_error &e) {
+            std::cout << e.what() << std::endl;
+          } catch (...) {
+            std::cout << "Could not trade resource, please try again later."
+                      << std::endl;
+          }
+        }
 
-	if(acceptTrade == "no" || acceptTrade == "No" || acceptTrade == "n" || acceptTrade == "N" ) {
-		std::cout << "The trade was rejected" << std::endl;
-	}
+        if (acceptTrade == "no" || acceptTrade == "No" || acceptTrade == "n" ||
+            acceptTrade == "N") {
+          std::cout << "The trade was rejected" << std::endl;
+        }
       } else if (userInput == "save") { // save <file>
         std::string fileName;
         std::cin >> fileName;
@@ -244,33 +275,6 @@ void Controller::playTurn() {
                   << std::endl;
       }
     }
-
-    //
-    // END PLAYER TURN
-    //
-    bool isPlayerWon{theBoardModel->checkWinner()};
-
-    if (isPlayerWon == true) {
-      std::cout << "Congratulations! "
-                << (theBoardModel->getCurrBuilder())->getColour() << " has won!"
-                << std::endl;
-      std::cout << "Would you like to play again?" << std::endl;
-
-      std::string userReplayInput;
-      std::cin >> userReplayInput;
-
-      while (userReplayInput != "yes" || userReplayInput != "no") {
-        std::cout << "Invalid input." << std::endl;
-        std::cout << "Would you like to play again? (yes / no)" << std::endl;
-        std::cin >> userReplayInput;
-      }
-
-      if (userReplayInput == "yes") {
-        startGame();
-      } else {
-        IsGameEnd = true;
-      }
-    }
   }
 }
 
@@ -279,15 +283,13 @@ void Controller::startGame() {
 
   if (initMethodCall.empty()) {
     initBoard();
-  }
-  else if (initMethodCall == "initLoad") {
+  } else if (initMethodCall == "initLoad") {
     initLoad(fileName);
-  }
-  else if (initMethodCall == "initBoard") {
+  } else if (initMethodCall == "initBoard") {
     if (fileName == "") {
       initBoard();
     } else {
-    initBoard(fileName);
+      initBoard(fileName);
     }
   } else {
     initRandomBoard();
@@ -312,10 +314,10 @@ void Controller::startGame() {
       // get user input
       std::cin >> userVertexInput;
 
-      try{ // Try building the residence
+      try { // Try building the residence
         theBoardModel->buildResidence(userVertexInput, true);
         acceptHouse = true;
-      } catch(std::logic_error &e){
+      } catch (std::logic_error &e) {
         std::cout << e.what() << std::endl;
       }
 

@@ -36,8 +36,8 @@ using std::vector;
 
 BoardModel::BoardModel()
     : theBoardView{std::make_unique<BoardView>()}, seed{-1},
-      rng{std::default_random_engine{
-          std::chrono::system_clock::now().time_since_epoch().count()}} {
+      rng{static_cast<unsigned int>(
+          std::chrono::system_clock::now().time_since_epoch().count())} {
   // make 4 builders:
   builders.emplace_back(std::make_shared<Builder>(Colour::BLUE));
   builders.emplace_back(std::make_shared<Builder>(Colour::RED));
@@ -222,7 +222,8 @@ void BoardModel::loadBuilder(string line, int builderNum) {
       string temp;
       while (ss >> temp && temp != "h") {
         int edgeNum = stoi(temp);
-        edges.at(edgeNum)->buildRoad(builders.at(builderNum), true);
+        edges.at(edgeNum)->buildRoad(vertices, edges, builders.at(builderNum),
+                                     true);
       }
       if (temp == "h") {
         int vertexNumber;
@@ -509,9 +510,8 @@ void BoardModel::BuildRoad(int edgeNum) {
   if (edgeNum < 0 || edgeNum > 71) {
     throw invalid_argument("Invalid <road#>");
   }
-
   try {
-    edges.at(edgeNum)->buildRoad(currBuilder, false);
+    edges.at(edgeNum)->buildRoad(vertices, edges, currBuilder, false);
   } catch (logic_error &e) {
     throw e;
   }
@@ -967,7 +967,7 @@ void BoardModel::setDice(char type) {
 void BoardModel::setSeed(int _seed) {
   if (_seed >= 0) {
     seed = _seed;
-    rng = std::default_random_engine{_seed};
+    rng = std::default_random_engine{static_cast<unsigned int>(seed)};
   } else {
     throw invalid_argument("seed can't be negative");
   }
