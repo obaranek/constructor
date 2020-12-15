@@ -222,7 +222,8 @@ void BoardModel::loadBuilder(string line, int builderNum) {
       string temp;
       while (ss >> temp && temp != "h") {
         int edgeNum = stoi(temp);
-        edges.at(edgeNum)->buildRoad(builders.at(builderNum), true);
+        edges.at(edgeNum)->buildRoad(vertices, edges, builders.at(builderNum),
+                                     true);
       }
       if (temp == "h") {
         int vertexNumber;
@@ -509,9 +510,8 @@ void BoardModel::BuildRoad(int edgeNum) {
   if (edgeNum < 0 || edgeNum > 71) {
     throw invalid_argument("Invalid <road#>");
   }
-
   try {
-    edges.at(edgeNum)->buildRoad(currBuilder, false);
+    edges.at(edgeNum)->buildRoad(vertices, edges, currBuilder, false);
   } catch (logic_error &e) {
     throw e;
   }
