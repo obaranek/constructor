@@ -117,6 +117,33 @@ void Controller::playTurn() {
           std::cout << e.what() << std::endl;
         }
 
+        bool isPlayerWon{theBoardModel->checkWinner()};
+
+        if (isPlayerWon == true) {
+          std::cout << "Congratulations! "
+                    << (theBoardModel->getCurrBuilder())->getColour()
+                    << " has won!" << std::endl;
+          std::cout << "Would you like to play again?" << std::endl;
+
+          std::string userReplayInput;
+          std::cin >> userReplayInput;
+
+          while (userReplayInput != "yes" && userReplayInput != "no") {
+            std::cout << "Invalid input." << std::endl;
+            std::cout << "Would you like to play again? (yes / no)"
+                      << std::endl;
+            std::cin >> userReplayInput;
+          }
+
+          if (userReplayInput == "yes") {
+            initMethodCall = "";
+            startGame();
+          } else {
+            IsGameEnd = true;
+            return;
+          }
+        }
+
       } else if (userInput == "improve") { // improve <housing#>
 
         int vertexValue;
@@ -246,33 +273,6 @@ void Controller::playTurn() {
         std::cout << "Invalid command." << std::endl;
         std::cout << "Please enter 'help' for a list of valid commands."
                   << std::endl;
-      }
-    }
-
-    //
-    // END PLAYER TURN
-    //
-    bool isPlayerWon{theBoardModel->checkWinner()};
-
-    if (isPlayerWon == true) {
-      std::cout << "Congratulations! "
-                << (theBoardModel->getCurrBuilder())->getColour() << " has won!"
-                << std::endl;
-      std::cout << "Would you like to play again?" << std::endl;
-
-      std::string userReplayInput;
-      std::cin >> userReplayInput;
-
-      while (userReplayInput != "yes" || userReplayInput != "no") {
-        std::cout << "Invalid input." << std::endl;
-        std::cout << "Would you like to play again? (yes / no)" << std::endl;
-        std::cin >> userReplayInput;
-      }
-
-      if (userReplayInput == "yes") {
-        startGame();
-      } else {
-        IsGameEnd = true;
       }
     }
   }
