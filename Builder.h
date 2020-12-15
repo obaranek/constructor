@@ -19,9 +19,6 @@ private:
 public:
   Builder(Colour colour);
 
-  // TODO: Change raw pointers to smart pointers?
-  // void stealResources(Builder* otherBuilder);
-
   // buildResidence() adds vertexNum to list of buildings
   void buildResidence(int vertexNum, char residenceType, std::map<ResourceType, int>, bool);
 
