@@ -702,6 +702,7 @@ void BoardModel::playGoose() {
   if (stealFrom.size() > 0) {
     std::cout << "Builder " << getColourStr(currBuilder->getColour())
               << " can choose to steal from";
+    std::sort(stealFrom.begin(), stealFrom.end());
     for (auto it = stealFrom.begin(); it != stealFrom.end(); ++it) {
       std::cout << " " << getColourStr(it->get()->getColour());
       if (it == stealFrom.end() - 1) {
