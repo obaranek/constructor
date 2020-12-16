@@ -314,6 +314,13 @@ void Controller::startGame() {
       // get user input
       std::cin >> userVertexInput;
 
+      if(std::cin.eof()){
+      	std::string eofSaveFile{"backup.sv"};
+	theBoardModel->save(eofSaveFile);
+	std::cout << "Saving to " << eofSaveFile << "..." << std::endl;
+	return;
+      }
+
       try { // Try building the residence
         theBoardModel->buildResidence(userVertexInput, true);
         acceptHouse = true;
